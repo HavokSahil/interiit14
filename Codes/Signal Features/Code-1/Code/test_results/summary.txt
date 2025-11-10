@@ -1,0 +1,58 @@
+RF Signal Feature Extraction - Test Results Summary
+============================================================
+
+Signal: QPSK
+----------------------------------------
+  Center Frequency: 100.000 kHz
+  Bandwidth: 69.000 kHz
+  Frequency Range: 66.000 to 135.000 kHz
+  Number of Bursts: 1
+  Duty Cycle: 100.00%
+  Modulation Type: PSK-like (Phase Shift Keying)
+
+Signal: FM
+----------------------------------------
+  Center Frequency: 130.000 kHz
+  Bandwidth: 60.000 kHz
+  Frequency Range: 120.000 to 180.000 kHz
+  Number of Bursts: 1
+  Duty Cycle: 100.00%
+  Modulation Type: PSK-like (Phase Shift Keying)
+
+Signal: BURST
+----------------------------------------
+  Center Frequency: 200.000 kHz
+  Bandwidth: 4.000 kHz
+  Frequency Range: 198.000 to 202.000 kHz
+  Number of Bursts: 2
+  Duty Cycle: 40.80%
+  Modulation Type: QAM-like (Amplitude and Phase)
+
+Signal: AM
+----------------------------------------
+  Center Frequency: 120.000 kHz
+  Bandwidth: 0.000 kHz
+  Frequency Range: 120.000 to 120.000 kHz
+  Number of Bursts: 1
+  Duty Cycle: 100.00%
+  Modulation Type: AM (Amplitude Modulation)
+
+
+Generated Files:
+----------------------------------------
+  qpsk_spectrogram.png
+  qpsk_psd.png
+  qpsk_constellation.png
+  qpsk_timedomain.png
+  fm_spectrogram.png
+  fm_psd.png
+  fm_constellation.png
+  fm_timedomain.png
+  burst_spectrogram.png
+  burst_psd.png
+  burst_constellation.png
+  burst_timedomain.png
+  am_spectrogram.png
+  am_psd.png
+  am_constellation.png
+  am_timedomain.png

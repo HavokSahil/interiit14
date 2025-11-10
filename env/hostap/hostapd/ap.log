@@ -1,0 +1,1787 @@
+random: Trying to read entropy from /dev/random
+Configuration file: hostapd.conf
+ctrl_interface_group=0
+nl80211: Kernel version: Linux 6.18.0-rc2-custom+ (#8 SMP PREEMPT_DYNAMIC Mon Nov  3 19:18:33 IST 2025; x86_64)
+nl80211: Maximum supported attribute ID: 345
+nl80211: Initialize interface wlan1 (driver: ath9k_htc)
+nl80211: TDLS supported
+nl80211: TDLS external setup
+nl80211: Supported cipher 00-0f-ac:1
+nl80211: Supported cipher 00-0f-ac:5
+nl80211: Supported cipher 00-0f-ac:2
+nl80211: Supported cipher 00-0f-ac:4
+nl80211: Supported cipher 00-0f-ac:10
+nl80211: Supported cipher 00-0f-ac:8
+nl80211: Supported cipher 00-0f-ac:9
+nl80211: Supported cipher 00-0f-ac:6
+nl80211: Supported cipher 00-0f-ac:13
+nl80211: Supported cipher 00-0f-ac:11
+nl80211: Supported cipher 00-0f-ac:12
+nl80211: Using driver-based off-channel TX
+nl80211: Driver-advertised extended capabilities (default) - hexdump(len=8): 04 00 00 00 00 00 00 40
+nl80211: Driver-advertised extended capabilities mask (default) - hexdump(len=8): 04 00 00 00 00 00 00 40
+nl80211: Use separate P2P group interface (driver advertised support)
+nl80211: key_mgmt=0x105ff0f enc=0xfef auth=0x7 flags=0x4000511db1bfae0 flags2=0x6008103 rrm_flags=0x10 probe_resp_offloads=0x0 max_stations=0 max_remain_on_chan=5000 max_scan_ssids=4
+nl80211: interface wlan1 in phy phy1
+nl80211: Set mode ifindex 3 iftype 3 (AP)
+nl80211: Setup AP(wlan1) - device_ap_sme=0
+nl80211: Subscribe to mgmt frames with AP handle 0x55ba21004dd0
+nl80211: Register frame type=0xb0 (WLAN_FC_STYPE_AUTH) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0x0 (WLAN_FC_STYPE_ASSOC_REQ) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0x20 (WLAN_FC_STYPE_REASSOC_REQ) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0xa0 (WLAN_FC_STYPE_DISASSOC) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0xc0 (WLAN_FC_STYPE_DEAUTH) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0x40 (WLAN_FC_STYPE_PROBE_REQ) nl_handle=0x55ba21004dd0 match= multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=04 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=0501 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=0503 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=0504 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=06 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=08 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=09 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=0a multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=11 multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=7e multicast=0
+nl80211: Register frame type=0xd0 (WLAN_FC_STYPE_ACTION) nl_handle=0x55ba21004dd0 match=7f multicast=0
+rfkill: initial event: idx=4 type=1 op=0 soft=0 hard=0
+nl80211: Add own interface ifindex 3 (ifidx_reason -1)
+nl80211: if_indices[16]: 3(-1)
+nl80211: Do not open EAPOL RX socket - using control port for RX
+phy: phy1
+BSS count 1, BSSID mask 00:00:00:00:00:00 (0 bits)
+wlan1: interface state UNINITIALIZED->COUNTRY_UPDATE
+Previous country code 00, new country code IN 
+Continue interface setup after channel list update
+ctrl_iface not configured!
+random: Got 20/20 bytes from /dev/random
+Channel list update timeout - try to continue anyway
+nl80211: Regulatory information - country=00
+nl80211: 2402-2472 @ 40 MHz 20 mBm
+nl80211: 2457-2482 @ 20 MHz 20 mBm (no IR)
+nl80211: 2474-2494 @ 20 MHz 20 mBm (no OFDM) (no IR)
+nl80211: 5170-5250 @ 80 MHz 20 mBm (no IR)
+nl80211: 5250-5330 @ 80 MHz 20 mBm (DFS) (no IR)
+nl80211: 5490-5730 @ 160 MHz 20 mBm (DFS) (no IR)
+nl80211: 5735-5835 @ 80 MHz 20 mBm (no IR)
+nl80211: 57240-63720 @ 2160 MHz 0 mBm
+nl80211: Added 802.11b mode based on 802.11g information
+nl80211: Mode IEEE 802.11g: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467[DISABLED] 2472[DISABLED] 2484[DISABLED]
+nl80211: Mode IEEE 802.11b: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467[DISABLED] 2472[DISABLED] 2484[DISABLED]
+Allowed channel: mode=1 chan=1 freq=2412 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=2 freq=2417 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=3 freq=2422 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=4 freq=2427 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=5 freq=2432 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=6 freq=2437 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=7 freq=2442 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=8 freq=2447 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=9 freq=2452 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=10 freq=2457 MHz max_tx_power=20 dBm
+Allowed channel: mode=1 chan=11 freq=2462 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=1 freq=2412 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=2 freq=2417 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=3 freq=2422 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=4 freq=2427 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=5 freq=2432 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=6 freq=2437 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=7 freq=2442 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=8 freq=2447 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=9 freq=2452 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=10 freq=2457 MHz max_tx_power=20 dBm
+Allowed channel: mode=0 chan=11 freq=2462 MHz max_tx_power=20 dBm
+Completing interface initialization
+Mode: IEEE 802.11g  Channel: 1  Frequency: 2412 MHz
+DFS 0 channels required radar detection
+nl80211: Set freq 2412 (ht_enabled=0, vht_enabled=0, he_enabled=0, eht_enabled=0, bandwidth=20 MHz, cf1=2412 MHz, cf2=0 MHz)
+  * freq=2412
+  * eht_enabled=0
+  * he_enabled=0
+  * vht_enabled=0
+  * ht_enabled=0
+  * radar_background=0
+  * channel_type=0
+RATE[0] rate=10 flags=0x1
+RATE[1] rate=20 flags=0x1
+RATE[2] rate=55 flags=0x1
+RATE[3] rate=110 flags=0x1
+RATE[4] rate=60 flags=0x0
+RATE[5] rate=90 flags=0x0
+RATE[6] rate=120 flags=0x0
+RATE[7] rate=180 flags=0x0
+RATE[8] rate=240 flags=0x0
+RATE[9] rate=360 flags=0x0
+RATE[10] rate=480 flags=0x0
+RATE[11] rate=540 flags=0x0
+hostapd_setup_bss(hapd=0x55ba20ffaf10 (wlan1), first=1)
+nl80211: flush -> DEL_STATION wlan1 (all)
+Using interface wlan1 with hwaddr 24:ec:99:b4:29:56 and ssid "test"
+nl80211: Setting QoS Map - hexdump(len=20): 35 02 16 06 08 0f 00 07 ff ff 10 1f 20 27 ff ff 28 2f ff ff
+nl80211: Set beacon (beacon_set=0)
+nl80211: Beacon head - hexdump(len=55): 80 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01
+nl80211: Beacon tail - hexdump(len=65): 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: ifindex=3
+nl80211: beacon_int=100
+nl80211: beacon_rate=0
+nl80211: rate_type=0
+nl80211: dtim_period=2
+nl80211: ssid=test
+  * beacon_int=100
+  * dtim_period=2
+nl80211: hidden SSID not in use
+nl80211: privacy=0
+nl80211: auth_algs=0x1
+nl80211: wpa_version=0x0
+nl80211: key_mgmt_suites=0x4
+nl80211: pairwise_ciphers=0x0
+nl80211: group_cipher=0x1
+nl80211: beacon_ies - hexdump(len=19): 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: proberesp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: assocresp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+  * freq=2412
+  * eht_enabled=0
+  * he_enabled=0
+  * vht_enabled=0
+  * ht_enabled=0
+  * radar_background=0
+  * channel_type=0
+nl80211: multicast to unicast disabled on interface wlan1
+wlan1: Deauthenticate all stations at BSS start
+nl80211: send_mlme - da=ff:ff:ff:ff:ff:ff sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0xc0 (WLAN_FC_STYPE_DEAUTH) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=26): c0 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 02 00
+nl80211: Frame TX command accepted; cookie 0x17
+nl80211: Set wlan1 operstate 0->1 (UP)
+netlink: Operstate: ifindex=3 linkmode=-1 (no change), operstate=6 (IF_OPER_UP)
+nl80211: link=-1: TX queue param set: queue=0 aifs=1 cw_min=3 cw_max=7 burst_time=15 --> res=0
+nl80211: link=-1: TX queue param set: queue=1 aifs=1 cw_min=7 cw_max=15 burst_time=30 --> res=0
+nl80211: link=-1: TX queue param set: queue=2 aifs=3 cw_min=15 cw_max=63 burst_time=0 --> res=0
+nl80211: link=-1: TX queue param set: queue=3 aifs=7 cw_min=15 cw_max=1023 burst_time=0 --> res=0
+wlan1: interface state COUNTRY_UPDATE->ENABLED
+wlan1: AP-ENABLED 
+wlan1: Setup of interface done.
+just a simple test string
+RTM_NEWLINK: ifi_index=3 ifname=wlan1 operstate=6 linkmode=0 ifi_family=0 ifi_flags=0x11043 ([UP][RUNNING][LOWER_UP])
+RTM_NEWLINK: ifi_index=3 ifname=wlan1 operstate=6 linkmode=0 ifi_family=0 ifi_flags=0x11043 ([UP][RUNNING][LOWER_UP])
+nl80211: Event message available
+nl80211: Drv Event 15 (NL80211_CMD_START_AP) received for wlan1
+wlan1: nl80211: Ignored unknown event (cmd=15)
+nl80211: Event message available
+nl80211: Drv Event 60 (NL80211_CMD_FRAME_TX_STATUS) received for wlan1
+nl80211: MLME event 60 (NL80211_CMD_FRAME_TX_STATUS) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=24:ec:99:b4:29:56 on link_id=-1
+nl80211: MLME event frame - hexdump(len=26): c0 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 02 00
+nl80211: Frame TX status event A1=ff:ff:ff:ff:ff:ff stype=12 cookie=0x17 ack=1
+wlan1: Event TX_STATUS (16) received
+mgmt::deauth cb
+RX ctrl_iface - hexdump_ascii(len=6):
+     41 54 54 41 43 48                                 ATTACH          
+CTRL_IFACE monitor attached /tmp/wpa_ctrl_5105-1\x00
+RX ctrl_iface - hexdump_ascii(len=9):
+     53 54 41 2d 46 49 52 53 54                        STA-FIRST       
+RX ctrl_iface - hexdump_ascii(len=9):
+     53 54 41 2d 4e 45 58 54 20                        STA-NEXT        
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=1 entropy=0
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=2 entropy=1
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=3 entropy=2
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 10 19 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x1910 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=4 entropy=3
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 19 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x1940 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=5 entropy=4
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 19 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x1950 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=6 entropy=5
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 60 19 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x1960 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=7 entropy=6
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 19 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x1970 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=8 entropy=7
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=9 entropy=8
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=26:8a:b4:87:21:5b on link_id=-1
+nl80211: MLME event frame - hexdump(len=135): 40 00 00 00 ff ff ff ff ff ff 26 8a b4 87 21 5b ff ff ff ff ff ff 20 64 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 2d 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 15 00 7f 0a 00 00 0a 82 00 40 00 00 00 01 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=26:8a:b4:87:21:5b bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x6420 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=135
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 135 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=26:8a:b4:87:21:5b sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 26 8a b4 87 21 5b 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 26:8a:b4:87:21:5b sent probe request for broadcast SSID
+Add randomness: count=10 entropy=9
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=11 entropy=10
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=12 entropy=11
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 1c 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-82 fc=0x40 seq_ctrl=0x1c40 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=13 entropy=12
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 1c 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-81 fc=0x40 seq_ctrl=0x1c70 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=14 entropy=13
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=15 entropy=14
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 80 1d 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-82 fc=0x40 seq_ctrl=0x1d80 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=16 entropy=15
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff 80 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x380 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=96:c4:08:4c:02:32 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 96:c4:08:4c:02:32 sent probe request for broadcast SSID
+Add randomness: count=17 entropy=16
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff 90 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x390 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=96:c4:08:4c:02:32 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 96:c4:08:4c:02:32 sent probe request for broadcast SSID
+Add randomness: count=18 entropy=17
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff b0 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 02 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-25 fc=0x40 seq_ctrl=0x3b0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+Ignore Probe Request due to DS Params mismatch: chan=1 != ds.chan=2
+Add randomness: count=19 entropy=18
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 1f 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x1f00 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=20 entropy=19
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 1f 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x1f50 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=21 entropy=20
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 60 1f 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x1f60 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=22 entropy=21
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=fa:35:0c:e7:ef:46 on link_id=-1
+nl80211: MLME event frame - hexdump(len=115): 40 00 3c 00 ff ff ff ff ff ff fa 35 0c e7 ef 46 ff ff ff ff ff ff 40 17 00 09 49 49 54 50 2d 57 69 46 69 01 08 02 04 0b 16 0c 12 18 24 32 04 30 48 60 6c 2d 1a ef 19 03 ff ff 00 00 01 00 00 00 00 00 2c 01 01 00 00 00 00 00 00 00 00 00 00 7f 0a 04 00 48 00 01 00 00 40 00 01 ff 16 23 01 08 0a 10 60 80 02 70 1e 1f 0d c0 27 0e 91 bd 00 fa ff fa ff
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=fa:35:0c:e7:ef:46 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-84 fc=0x40 seq_ctrl=0x1740 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=115
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 115 (TYPE=4)
+Add randomness: count=23 entropy=22
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=24 entropy=23
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=25 entropy=24
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 20 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x20c0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=26 entropy=25
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=27 entropy=26
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x2200 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=28 entropy=27
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 30 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x2230 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=29 entropy=28
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2240 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=30 entropy=29
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2250 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=31 entropy=30
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 60 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x2260 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=32 entropy=31
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 22 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2270 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=33 entropy=32
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=34 entropy=33
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=35 entropy=34
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 23 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x23c0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=36 entropy=35
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff f0 23 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x23f0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=37 entropy=36
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x2500 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=38 entropy=37
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 10 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2510 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=39 entropy=38
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 20 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2520 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=40 entropy=39
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 30 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-76 fc=0x40 seq_ctrl=0x2530 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=41 entropy=40
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x2540 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=42 entropy=41
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 25 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2570 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=43 entropy=42
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=44 entropy=43
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=45 entropy=44
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=46 entropy=45
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 90 26 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x2690 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=47 entropy=46
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff a0 26 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-76 fc=0x40 seq_ctrl=0x26a0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=48 entropy=47
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 26 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x26c0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=49 entropy=48
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff d0 26 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 0b b7 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x26d0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=50 entropy=49
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=51 entropy=50
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=52 entropy=51
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=53 entropy=52
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=54 entropy=53
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=55 entropy=54
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=56 entropy=55
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 28 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x2800 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=57 entropy=56
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 28 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x2840 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=58 entropy=57
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff 20 07 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x720 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=96:c4:08:4c:02:32 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 96:c4:08:4c:02:32 sent probe request for broadcast SSID
+Add randomness: count=59 entropy=58
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff 30 07 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-26 fc=0x40 seq_ctrl=0x730 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=96:c4:08:4c:02:32 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 96:c4:08:4c:02:32 sent probe request for broadcast SSID
+Add randomness: count=60 entropy=59
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff 50 07 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 02 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-26 fc=0x40 seq_ctrl=0x750 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+Ignore Probe Request due to DS Params mismatch: chan=1 != ds.chan=2
+Add randomness: count=61 entropy=60
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=62 entropy=61
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=63 entropy=62
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=64 entropy=63
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=96:c4:08:4c:02:32 on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 96 c4 08 4c 02 32 ff ff ff ff ff ff e0 07 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 06 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=96:c4:08:4c:02:32 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-69 fc=0x40 seq_ctrl=0x7e0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+Ignore Probe Request due to DS Params mismatch: chan=1 != ds.chan=6
+Add randomness: count=65 entropy=64
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=66 entropy=65
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=67 entropy=66
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=68 entropy=67
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 33 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3300 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=69 entropy=68
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 33 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x3350 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=70 entropy=69
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 60 33 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3360 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=71 entropy=70
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 80 34 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3480 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=72 entropy=71
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff f0 34 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x34f0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=73 entropy=72
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 36 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3640 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=74 entropy=73
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 36 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3650 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=75 entropy=74
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 36 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x3670 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=76 entropy=75
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 37 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x37c0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=77 entropy=76
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff e0 37 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-75 fc=0x40 seq_ctrl=0x37e0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=78 entropy=77
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff f0 37 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x37f0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=79 entropy=78
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=80 entropy=79
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=81 entropy=80
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=24:ec:99:b4:29:56 A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=98): 40 00 3a 01 24 ec 99 b4 29 56 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 60 86 00 04 74 65 73 74 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 7f 0b 05 00 0a 82 01 40 40 00 80 01 20 dd 07 00 50 f2 08 00 00 00 ff 03 02 00 ff dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=24:ec:99:b4:29:56 sa=0e:ed:c0:e3:59:0e bssid=24:ec:99:b4:29:56 freq=2412 ssi_signal=-23 fc=0x40 seq_ctrl=0x8660 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=98
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 98 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted; cookie 0x18
+STA 0e:ed:c0:e3:59:0e sent probe request for our SSID
+Add randomness: count=82 entropy=81
+nl80211: Event message available
+nl80211: Drv Event 60 (NL80211_CMD_FRAME_TX_STATUS) received for wlan1
+nl80211: MLME event 60 (NL80211_CMD_FRAME_TX_STATUS) on wlan1(24:ec:99:b4:29:56) A1=0e:ed:c0:e3:59:0e A2=24:ec:99:b4:29:56 on link_id=-1
+nl80211: MLME event frame - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX status event A1=0e:ed:c0:e3:59:0e stype=5 cookie=0x18 ack=1
+wlan1: Event TX_STATUS (16) received
+mgmt::proberesp cb ok=1
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=24:ec:99:b4:29:56 A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=30): b0 00 3a 01 24 ec 99 b4 29 56 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 70 86 00 00 01 00 00 00
+nl80211: Frame event
+nl80211: RX frame da=24:ec:99:b4:29:56 sa=0e:ed:c0:e3:59:0e bssid=24:ec:99:b4:29:56 freq=2412 ssi_signal=-24 fc=0xb0 seq_ctrl=0x8670 stype=11 (WLAN_FC_STYPE_AUTH) len=30
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 30 (TYPE=11)
+CTRL_IFACE monitor send /tmp/wpa_ctrl_5105-1\x00
+mgmt::auth
+authentication: STA=0e:ed:c0:e3:59:0e auth_alg=0 auth_transaction=1 status_code=0 wep=0 seq_ctrl=0x8670
+  New STA
+ap_sta_add: register ap_handle_timer timeout for 0e:ed:c0:e3:59:0e (300 seconds - ap_max_inactivity)
+nl80211: sta_remove -> DEL_STATION wlan1 0e:ed:c0:e3:59:0e --> -2 (No such file or directory)
+nl80211: NL80211_CMD_NEW_STATION STA 0e:ed:c0:e3:59:0e
+  * supported rates - hexdump(len=4): 02 04 0b 16
+  * capability=0x0
+  * aid=1 (UNASSOC_STA workaround)
+  * listen_interval=0
+  * flags set=0x0 mask=0xa0
+wlan1: STA 0e:ed:c0:e3:59:0e IEEE 802.11: authentication OK (open system)
+wlan1: STA 0e:ed:c0:e3:59:0e MLME: MLME-AUTHENTICATE.indication(0e:ed:c0:e3:59:0e, OPEN_SYSTEM)
+wlan1: STA 0e:ed:c0:e3:59:0e MLME: MLME-DELETEKEYS.request(0e:ed:c0:e3:59:0e)
+authentication reply: STA=0e:ed:c0:e3:59:0e auth_alg=0 auth_transaction=2 resp=0 (IE len=0) (dbg=handle-auth)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0xb0 (WLAN_FC_STYPE_AUTH) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=30): b0 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 02 00 00 00
+nl80211: Frame TX command accepted; cookie 0x19
+Add randomness: count=83 entropy=82
+nl80211: Event message available
+nl80211: Drv Event 19 (NL80211_CMD_NEW_STATION) received for wlan1
+nl80211: New station 0e:ed:c0:e3:59:0e
+nl80211: Event message available
+nl80211: Drv Event 60 (NL80211_CMD_FRAME_TX_STATUS) received for wlan1
+nl80211: MLME event 60 (NL80211_CMD_FRAME_TX_STATUS) on wlan1(24:ec:99:b4:29:56) A1=0e:ed:c0:e3:59:0e A2=24:ec:99:b4:29:56 on link_id=-1
+nl80211: MLME event frame - hexdump(len=30): b0 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 02 00 00 00
+nl80211: Frame TX status event A1=0e:ed:c0:e3:59:0e stype=11 cookie=0x19 ack=1
+wlan1: Event TX_STATUS (16) received
+mgmt::auth cb
+wlan1: STA 0e:ed:c0:e3:59:0e IEEE 802.11: authenticated
+nl80211: Set STA flags - ifname=wlan1 addr=0e:ed:c0:e3:59:0e total_flags=0x20 flags_or=0x0 flags_and=0xfffffff0 authorized=0
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=24:ec:99:b4:29:56 A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=129): 00 00 3a 01 24 ec 99 b4 29 56 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 80 86 01 14 01 00 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 32 04 30 48 60 6c 21 02 08 13 46 05 73 10 91 00 04 3b 14 51 51 53 54 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 7f 06 04 00 08 02 01 40 dd 07 00 50 f2 02 00 01 00 dd 08 8c fd f0 01 01 02 01 00 dd 06 50 6f 9a 23 01 01 dd 09 50 6f 9a 16 02 00 03 01 02
+nl80211: Frame event
+nl80211: RX frame da=24:ec:99:b4:29:56 sa=0e:ed:c0:e3:59:0e bssid=24:ec:99:b4:29:56 freq=2412 ssi_signal=-23 fc=0x0 seq_ctrl=0x8680 stype=0 (WLAN_FC_STYPE_ASSOC_REQ) len=129
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 129 (TYPE=0)
+CTRL_IFACE monitor send /tmp/wpa_ctrl_5105-1\x00
+mgmt::assoc_req
+association request: STA=0e:ed:c0:e3:59:0e capab_info=0x1401 listen_interval=1 seq_ctrl=0x8680
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+WMM IE - hexdump(len=7): 00 50 f2 02 00 01 00
+Validating WMM IE: OUI 00:50:f2  OUI type 2  OUI sub-type 0  version 1  QoS info 0x0
+MBO: Association Request attributes - hexdump(len=5): 02 00 03 01 02
+  new AID 1
+wlan1: STA 0e:ed:c0:e3:59:0e IEEE 802.11: association OK (aid 1)
+nl80211: Set beacon (beacon_set=1)
+nl80211: Beacon head - hexdump(len=55): 80 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01
+nl80211: Beacon tail - hexdump(len=65): 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: ifindex=3
+nl80211: beacon_int=100
+nl80211: beacon_rate=0
+nl80211: rate_type=0
+nl80211: dtim_period=2
+nl80211: ssid=test
+  * beacon_int=100
+  * dtim_period=2
+nl80211: hidden SSID not in use
+nl80211: privacy=0
+nl80211: auth_algs=0x1
+nl80211: wpa_version=0x0
+nl80211: key_mgmt_suites=0x4
+nl80211: pairwise_ciphers=0x0
+nl80211: group_cipher=0x1
+nl80211: beacon_ies - hexdump(len=19): 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: proberesp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: assocresp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+  * freq=2412
+  * eht_enabled=0
+  * he_enabled=0
+  * vht_enabled=0
+  * ht_enabled=0
+  * radar_background=0
+  * channel_type=0
+nl80211: multicast to unicast disabled on interface wlan1
+Add associated STA 0e:ed:c0:e3:59:0e (added_unassoc=1 auth_alg=0 ft_over_ds=0 reassoc=0 authorized=0 ft_tk=0 fils_tk=0)
+nl80211: NL80211_CMD_SET_STATION STA 0e:ed:c0:e3:59:0e
+  * supported rates - hexdump(len=12): 82 84 8b 96 0c 12 18 24 30 48 60 6c
+  * capability=0x1401
+  * aid=1
+  * listen_interval=1
+  * flags set=0xa8 mask=0xa8
+  * qosinfo=0x0
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x10 (WLAN_FC_STYPE_ASSOC_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=125): 10 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 01 14 00 00 01 c0 01 08 82 84 8b 96 0c 12 18 24 32 04 30 48 60 6c 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 5a 03 24 01 00 6e 14 35 02 16 06 08 0f 00 07 ff ff 10 1f 20 27 ff ff 28 2f ff ff dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted; cookie 0x1a
+Add randomness: count=84 entropy=83
+nl80211: Event message available
+nl80211: Drv Event 60 (NL80211_CMD_FRAME_TX_STATUS) received for wlan1
+nl80211: MLME event 60 (NL80211_CMD_FRAME_TX_STATUS) on wlan1(24:ec:99:b4:29:56) A1=0e:ed:c0:e3:59:0e A2=24:ec:99:b4:29:56 on link_id=-1
+nl80211: MLME event frame - hexdump(len=125): 10 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 01 14 00 00 01 c0 01 08 82 84 8b 96 0c 12 18 24 32 04 30 48 60 6c 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 5a 03 24 01 00 6e 14 35 02 16 06 08 0f 00 07 ff ff 10 1f 20 27 ff ff 28 2f ff ff dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX status event A1=0e:ed:c0:e3:59:0e stype=1 cookie=0x1a ack=1
+wlan1: Event TX_STATUS (16) received
+mgmt::assoc_resp cb
+wlan1: STA 0e:ed:c0:e3:59:0e IEEE 802.11: associated (aid 1)
+wlan1: AP-STA-CONNECTED 0e:ed:c0:e3:59:0e
+CTRL_IFACE monitor send /tmp/wpa_ctrl_5105-1\x00
+wlan1: STA 0e:ed:c0:e3:59:0e MLME: MLME-ASSOCIATE.indication(0e:ed:c0:e3:59:0e)
+wlan1: STA 0e:ed:c0:e3:59:0e MLME: MLME-DELETEKEYS.request(0e:ed:c0:e3:59:0e)
+wlan1: STA 0e:ed:c0:e3:59:0e IEEE 802.11: binding station to interface 'wlan1'
+nl80211: wlan1[3]: set_sta_vlan(0e:ed:c0:e3:59:0e, ifname=wlan1[3], vlan_id=0)
+nl80211: Set STA flags - ifname=wlan1 addr=0e:ed:c0:e3:59:0e total_flags=0x63 flags_or=0x3 flags_and=0xfffffff3 authorized=1
+wlan1: STA 0e:ed:c0:e3:59:0e RADIUS: starting accounting session B880C5821C3FCBF4
+IEEE 802.1X: Ignore STA - 802.1X not enabled or forced for WPS
+wlan1: hostapd_new_assoc_sta: reschedule ap_handle_timer timeout for 0e:ed:c0:e3:59:0e (300 seconds - ap_max_inactivity)
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=85 entropy=84
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 39 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x3940 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=86 entropy=85
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 70 39 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x3970 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=87 entropy=86
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=88 entropy=87
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=89 entropy=88
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 80 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3a80 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=90 entropy=89
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 90 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x3a90 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=91 entropy=90
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff b0 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x3ab0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=92 entropy=91
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x3ac0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=93 entropy=92
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff d0 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3ad0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=94 entropy=93
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff e0 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x3ae0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=95 entropy=94
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff f0 3a 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3af0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=96 entropy=95
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=24:ec:99:b4:29:56 A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=35): d0 10 3a 01 24 ec 99 b4 29 56 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 10 00 0a 1a 0b dd dd 05 50 6f 9a 03 01
+nl80211: Frame event
+nl80211: RX frame da=24:ec:99:b4:29:56 sa=0e:ed:c0:e3:59:0e bssid=24:ec:99:b4:29:56 freq=2412 ssi_signal=-22 fc=0x10d0 seq_ctrl=0x10 stype=13 (WLAN_FC_STYPE_ACTION) len=35
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 35 (TYPE=13)
+CTRL_IFACE monitor send /tmp/wpa_ctrl_5105-1\x00
+mgmt::action
+RX_ACTION category 10 action 26 sa 0e:ed:c0:e3:59:0e da 24:ec:99:b4:29:56 len 35 freq 2412
+WNM: Received WNM Notification Request frame from 0e:ed:c0:e3:59:0e (dialog_token=11 type=221)
+WNM: Notification Request subelements - hexdump(len=7): dd 05 50 6f 9a 03 01
+MBO: STA 0e:ed:c0:e3:59:0e updated cellular data capability: 1
+Add randomness: count=97 entropy=96
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 3c 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x3c00 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=98 entropy=97
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 3d 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-81 fc=0x40 seq_ctrl=0x3dc0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=99 entropy=98
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 40 3f 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x3f40 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=100 entropy=99
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 50 3f 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x3f50 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=101 entropy=100
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff b0 40 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-77 fc=0x40 seq_ctrl=0x40b0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=102 entropy=101
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff c0 40 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x40c0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=103 entropy=102
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff d0 40 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-76 fc=0x40 seq_ctrl=0x40d0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=104 entropy=103
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=105 entropy=104
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 00 42 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-80 fc=0x40 seq_ctrl=0x4200 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=106 entropy=105
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=9e:2f:9d:89:04:a1 on link_id=-1
+nl80211: MLME event frame - hexdump(len=192): 40 00 00 00 ff ff ff ff ff ff 9e 2f 9d 89 04 a1 ff ff ff ff ff ff 90 43 00 07 44 49 52 45 43 54 2d 01 08 0c 12 18 24 30 48 60 6c 03 01 01 dd 6e 00 50 f2 04 10 4a 00 01 10 10 3a 00 01 00 10 08 00 02 11 e8 10 47 00 10 8c d8 60 67 89 a2 4d d7 b0 aa 14 88 60 bb 0b 0e 10 54 00 08 00 01 00 50 f2 00 00 00 10 3c 00 01 02 10 02 00 02 00 00 10 09 00 02 00 00 10 12 00 02 00 00 10 11 00 08 4b 41 52 54 48 45 45 4b 10 49 00 09 00 01 37 10 05 00 02 00 01 10 49 00 06 00 37 2a 00 01 20 dd 0d 50 6f 9a 0a 00 00 06 01 10 1c 44 00 06 dd 11 50 6f 9a 09 02 02 00 24 00 06 05 00 47 4c 04 51 0b
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=9e:2f:9d:89:04:a1 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x4390 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=192
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 192 (TYPE=4)
+Add randomness: count=107 entropy=106
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=108 entropy=107
+RX ctrl_iface - hexdump_ascii(len=9):
+     53 54 41 2d 46 49 52 53 54                        STA-FIRST       
+RX ctrl_iface - hexdump_ascii(len=26):
+     53 54 41 2d 4e 45 58 54 20 30 65 3a 65 64 3a 63   STA-NEXT 0e:ed:c
+     30 3a 65 33 3a 35 39 3a 30 65                     0:e3:59:0e      
+RX ctrl_iface - hexdump_ascii(len=9):
+     53 54 41 2d 4e 45 58 54 20                        STA-NEXT        
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 0e ed c0 e3 59 0e ff ff ff ff ff ff f0 14 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 44 dd 0a 50 6f 9a 16 03 01 01 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=0e:ed:c0:e3:59:0e bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x14f0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 0e:ed:c0:e3:59:0e sent probe request for broadcast SSID
+Add randomness: count=109 entropy=108
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 0e ed c0 e3 59 0e ff ff ff ff ff ff 00 15 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 2f dd 0a 50 6f 9a 16 03 01 01 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=0e:ed:c0:e3:59:0e bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x1500 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 0e:ed:c0:e3:59:0e sent probe request for broadcast SSID
+Add randomness: count=110 entropy=109
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=16:83:92:8a:67:0f on link_id=-1
+nl80211: MLME event frame - hexdump(len=131): 40 00 00 00 ff ff ff ff ff ff 16 83 92 8a 67 0f ff ff ff ff ff ff b0 6e 00 00 01 08 02 04 0b 16 0c 12 18 24 32 04 30 48 60 6c 2d 1a e7 09 17 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 0a 04 00 c8 80 01 40 00 00 00 00 ff 1e 23 01 78 20 0a c0 ab 0e 30 0e 00 fd 09 8c 0e 0f f2 00 fa ff fa ff fa ff fa ff 61 1c c7 71 ff 03 02 00 10 dd 0a 50 6f 9a 16 03 01 03 65 01 01
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=16:83:92:8a:67:0f bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-74 fc=0x40 seq_ctrl=0x6eb0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=131
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 131 (TYPE=4)
+nl80211: send_mlme - da=16:83:92:8a:67:0f sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 16 83 92 8a 67 0f 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 16:83:92:8a:67:0f sent probe request for broadcast SSID
+Add randomness: count=111 entropy=110
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=112 entropy=111
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=44:a3:bb:1a:18:dc on link_id=-1
+nl80211: MLME event frame - hexdump(len=144): 40 00 00 00 ff ff ff ff ff ff 44 a3 bb 1a 18 dc ff ff ff ff ff ff 00 4e 00 09 49 49 54 50 2d 57 69 46 69 01 08 02 04 0b 16 0c 12 18 24 32 04 30 48 60 6c 2d 1a e7 09 17 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 0e 04 00 48 80 00 40 00 80 01 00 00 00 00 00 ff 1e 23 01 78 20 0a c0 ab 0e 30 0e 00 fd 09 8c 0e 0f fe 00 fa ff fa ff fa ff fa ff 61 1c c7 71 ff 03 02 00 0b dd 0a 50 6f 9a 16 03 01 03 65 01 01
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=44:a3:bb:1a:18:dc bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-67 fc=0x40 seq_ctrl=0x4e00 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=144
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 144 (TYPE=4)
+Add randomness: count=113 entropy=112
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=114 entropy=113
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=115 entropy=114
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=116 entropy=115
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=117 entropy=116
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=118 entropy=117
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=26:8a:b4:87:21:5b on link_id=-1
+nl80211: MLME event frame - hexdump(len=135): 40 00 00 00 ff ff ff ff ff ff 26 8a b4 87 21 5b ff ff ff ff ff ff 70 69 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 2d 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 15 00 7f 0a 00 00 0a 82 00 40 00 00 00 01 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 02 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=26:8a:b4:87:21:5b bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-76 fc=0x40 seq_ctrl=0x6970 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=135
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 135 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=26:8a:b4:87:21:5b sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 26 8a b4 87 21 5b 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 26:8a:b4:87:21:5b sent probe request for broadcast SSID
+Add randomness: count=119 entropy=118
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=120 entropy=119
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=121 entropy=120
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=122 entropy=121
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=123 entropy=122
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=124 entropy=123
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=125 entropy=124
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=be:c8:6a:f4:b2:41 on link_id=-1
+nl80211: MLME event frame - hexdump(len=171): 40 00 00 00 ff ff ff ff ff ff be c8 6a f4 b2 41 ff ff ff ff ff ff e0 94 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a ad 09 17 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 7f 0a 04 00 0a 82 01 40 00 40 80 21 bf 0c 92 f9 91 33 fa ff 0c 03 fa ff 0c 23 dd 07 00 50 f2 08 00 29 00 ff 1a 23 0f 01 10 82 40 00 00 30 40 89 0d 01 80 08 00 0c 00 fa ff fa ff 19 1c c7 71 ff 03 02 00 12 ff 10 6c a7 00 e0 01 01 00 10 76 08 00 18 22 22 22 22 dd 0a 50 6f 9a 16 03 01 01 65 01 01
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=be:c8:6a:f4:b2:41 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-81 fc=0x40 seq_ctrl=0x94e0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=171
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 171 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+nl80211: send_mlme - da=be:c8:6a:f4:b2:41 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 be c8 6a f4 b2 41 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA be:c8:6a:f4:b2:41 sent probe request for broadcast SSID
+Add randomness: count=126 entropy=125
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=127 entropy=126
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=128 entropy=127
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=a6:a0:f4:7d:17:3b on link_id=-1
+nl80211: MLME event frame - hexdump(len=116): 40 00 00 00 ff ff ff ff ff ff a6 a0 f4 7d 17 3b ff ff ff ff ff ff f0 9d 00 00 01 04 82 84 8b 96 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 2d 40 1b ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 0b 00 00 08 04 00 00 00 40 00 00 20 ff 1c 23 01 08 08 18 00 80 20 30 02 00 0d 00 9f 08 00 00 00 fd ff fd ff 39 1c c7 71 1c 07
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=a6:a0:f4:7d:17:3b bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x9df0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=116
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 116 (TYPE=4)
+nl80211: send_mlme - da=a6:a0:f4:7d:17:3b sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 a6 a0 f4 7d 17 3b 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA a6:a0:f4:7d:17:3b sent probe request for broadcast SSID
+Add randomness: count=129 entropy=128
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=130 entropy=129
+nl80211: Event message available
+nl80211: BSS Event 83 (NL80211_CMD_UNEXPECTED_FRAME) received for wlan1
+wlan1: Event RX_FROM_UNKNOWN (17) received
+Data/PS-poll frame from not associated STA 96:c4:08:4c:02:32
+nl80211: send_mlme - da=96:c4:08:4c:02:32 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0xc0 (WLAN_FC_STYPE_DEAUTH) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=26): c0 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 07 00
+nl80211: Frame TX command accepted; cookie 0x1b
+nl80211: Event message available
+nl80211: Drv Event 60 (NL80211_CMD_FRAME_TX_STATUS) received for wlan1
+nl80211: MLME event 60 (NL80211_CMD_FRAME_TX_STATUS) on wlan1(24:ec:99:b4:29:56) A1=96:c4:08:4c:02:32 A2=24:ec:99:b4:29:56 on link_id=-1
+nl80211: MLME event frame - hexdump(len=26): c0 00 00 00 96 c4 08 4c 02 32 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 07 00
+nl80211: Frame TX status event A1=96:c4:08:4c:02:32 stype=12 cookie=0x1b ack=0
+wlan1: Event TX_STATUS (16) received
+mgmt::deauth cb
+handle_deauth_cb: STA 96:c4:08:4c:02:32 not found
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 0e ed c0 e3 59 0e ff ff ff ff ff ff 80 26 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 01 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=0e:ed:c0:e3:59:0e bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x2680 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 0e:ed:c0:e3:59:0e sent probe request for broadcast SSID
+Add randomness: count=131 entropy=130
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 0e ed c0 e3 59 0e ff ff ff ff ff ff 10 28 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 05 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 39 dd 0a 50 6f 9a 16 03 01 01 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=0e:ed:c0:e3:59:0e bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-69 fc=0x40 seq_ctrl=0x2810 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+Ignore Probe Request due to DS Params mismatch: chan=1 != ds.chan=5
+Add randomness: count=132 entropy=131
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=133 entropy=132
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=134 entropy=133
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=135 entropy=134
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=136 entropy=135
+RX ctrl_iface - hexdump_ascii(len=38):
+     52 45 51 5f 4c 49 4e 4b 5f 4d 45 41 53 55 52 45   REQ_LINK_MEASURE
+     4d 45 4e 54 20 30 65 3a 65 64 3a 63 30 3a 65 33   MENT 0e:ed:c0:e3
+     3a 35 39 3a 30 65                                 :59:0e          
+JUST A TEST FLAG
+Request Link Measurement: dest addr 0e:ed:c0:e3:59:0e
+Request Link Measurement: the driver does not support TX power insertion
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=137 entropy=136
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=138 entropy=137
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=139 entropy=138
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=140 entropy=139
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=aa:d9:5a:80:ee:f7 on link_id=-1
+nl80211: MLME event frame - hexdump(len=107): 40 00 00 00 ff ff ff ff ff ff aa d9 5a 80 ee f7 ff ff ff ff ff ff d0 02 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 09 04 00 00 00 00 00 00 40 80 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 25 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=aa:d9:5a:80:ee:f7 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-75 fc=0x40 seq_ctrl=0x2d0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=107
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 107 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+nl80211: send_mlme - da=aa:d9:5a:80:ee:f7 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 aa d9 5a 80 ee f7 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA aa:d9:5a:80:ee:f7 sent probe request for broadcast SSID
+Add randomness: count=141 entropy=140
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=aa:d9:5a:80:ee:f7 on link_id=-1
+nl80211: MLME event frame - hexdump(len=107): 40 00 00 00 ff ff ff ff ff ff aa d9 5a 80 ee f7 ff ff ff ff ff ff 00 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 02 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 09 04 00 00 00 00 00 00 40 80 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 25 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=aa:d9:5a:80:ee:f7 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-74 fc=0x40 seq_ctrl=0x300 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=107
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 107 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+Ignore Probe Request due to DS Params mismatch: chan=1 != ds.chan=2
+Add randomness: count=142 entropy=141
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=143 entropy=142
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=144 entropy=143
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=145 entropy=144
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=82:b4:75:c6:34:2b on link_id=-1
+nl80211: MLME event frame - hexdump(len=126): 40 00 00 00 ff ff ff ff ff ff 82 b4 75 c6 34 2b ff ff ff ff ff ff 90 0f 00 09 49 49 54 50 2d 57 69 46 69 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a ad 01 13 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 7f 0b 04 00 0a 82 00 40 00 40 80 01 20 bf 0c 92 f9 91 33 fa ff 62 03 fa ff 62 03 ff 03 02 00 1c dd 0a 50 6f 9a 16 03 01 02 65 01 01
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=82:b4:75:c6:34:2b bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-81 fc=0x40 seq_ctrl=0xf90 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=126
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 126 (TYPE=4)
+Add randomness: count=146 entropy=145
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=147 entropy=146
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=148 entropy=147
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=149 entropy=148
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=150 entropy=149
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=0e:ed:c0:e3:59:0e on link_id=-1
+nl80211: MLME event frame - hexdump(len=136): 40 00 00 00 ff ff ff ff ff ff 0e ed c0 e3 59 0e ff ff ff ff ff ff 00 34 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bf 0c 12 f1 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 26 00 7f 0b 00 00 0a 82 00 40 40 00 00 01 20 ff 03 02 00 4d dd 0a 50 6f 9a 16 03 01 01 65 01 01 dd 08 8c fd f0 01 01 02 01 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=0e:ed:c0:e3:59:0e bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-24 fc=0x40 seq_ctrl=0x3400 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=136
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 136 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=8)
+nl80211: send_mlme - da=0e:ed:c0:e3:59:0e sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 0e ed c0 e3 59 0e 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 0e:ed:c0:e3:59:0e sent probe request for broadcast SSID
+Add randomness: count=151 entropy=150
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=152 entropy=151
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=153 entropy=152
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=154 entropy=153
+RX ctrl_iface - hexdump_ascii(len=6):
+     44 45 54 41 43 48                                 DETACH          
+CTRL_IFACE monitor detached /tmp/wpa_ctrl_5105-1\x00
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=66:8e:1f:6f:92:1f on link_id=-1
+nl80211: MLME event frame - hexdump(len=141): 40 00 00 00 ff ff ff ff ff ff 66 8e 1f 6f 92 1f ff ff ff ff ff ff f0 72 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 6f 09 13 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 7f 0a 04 00 00 00 00 00 00 40 80 20 bf 0c 12 e0 90 33 fe ff 86 01 fe ff 86 01 dd 07 00 50 f2 08 00 23 00 ff 1a 23 0b 09 10 c2 40 00 02 30 0c 89 0d c1 83 08 02 0c 00 fe ff fe ff 19 1c c7 71 ff 03 02 00 1d
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=66:8e:1f:6f:92:1f bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-83 fc=0x40 seq_ctrl=0x72f0 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=141
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 141 (TYPE=4)
+Unknown Microsoft information element ignored (type=8 len=7)
+nl80211: send_mlme - da=66:8e:1f:6f:92:1f sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 66 8e 1f 6f 92 1f 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 66:8e:1f:6f:92:1f sent probe request for broadcast SSID
+Add randomness: count=155 entropy=154
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=156 entropy=155
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=54:b8:02:18:22:e7 on link_id=-1
+nl80211: MLME event frame - hexdump(len=91): 40 00 00 00 ff ff ff ff ff ff 54 b8 02 18 22 e7 ff ff ff ff ff ff 50 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 21 00 1f ff 00 00 00 00 00 00 00 00 00 80 01 00 00 00 00 00 00 00 00 00 00 00 7f 05 00 00 00 80 01 dd 09 00 10 18 02 00 10 00 00 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=54:b8:02:18:22:e7 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-78 fc=0x40 seq_ctrl=0x350 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=91
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 91 (TYPE=4)
+unknown vendor specific information element ignored (vendor OUI 00:10:18 len=9)
+nl80211: send_mlme - da=54:b8:02:18:22:e7 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 54 b8 02 18 22 e7 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 54:b8:02:18:22:e7 sent probe request for broadcast SSID
+Add randomness: count=157 entropy=156
+nl80211: Event message available
+nl80211: BSS Event 59 (NL80211_CMD_FRAME) received for wlan1
+nl80211: MLME event 59 (NL80211_CMD_FRAME) on wlan1(24:ec:99:b4:29:56) A1=ff:ff:ff:ff:ff:ff A2=54:b8:02:18:22:e7 on link_id=-1
+nl80211: MLME event frame - hexdump(len=91): 40 00 00 00 ff ff ff ff ff ff 54 b8 02 18 22 e7 ff ff ff ff ff ff 60 03 00 00 01 04 02 04 0b 16 32 08 0c 12 18 24 30 48 60 6c 03 01 01 2d 1a 21 00 1f ff 00 00 00 00 00 00 00 00 00 80 01 00 00 00 00 00 00 00 00 00 00 00 7f 05 00 00 00 80 01 dd 09 00 10 18 02 00 10 00 00 00
+nl80211: Frame event
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=54:b8:02:18:22:e7 bssid=ff:ff:ff:ff:ff:ff freq=2412 ssi_signal=-79 fc=0x40 seq_ctrl=0x360 stype=4 (WLAN_FC_STYPE_PROBE_REQ) len=91
+wlan1: Event RX_MGMT (18) received
+RX_DEBUG frame received: 91 (TYPE=4)
+unknown vendor specific information element ignored (vendor OUI 00:10:18 len=9)
+nl80211: send_mlme - da=54:b8:02:18:22:e7 sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=1 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0x50 (WLAN_FC_STYPE_PROBE_RESP) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=1 offchanok=0
+CMD_FRAME - hexdump(len=120): 50 00 00 00 54 b8 02 18 22 e7 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: Frame TX command accepted (no ACK); cookie 0x0
+STA 54:b8:02:18:22:e7 sent probe request for broadcast SSID
+Add randomness: count=158 entropy=157
+nl80211: Beacon event message available
+wlan1: Event RX_MGMT (18) received
+unknown vendor specific information element ignored (vendor OUI 8c:fd:f0 len=7)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=57)
+unknown vendor specific information element ignored (vendor OUI 00:11:74 len=12)
+Add randomness: count=159 entropy=158
+Signal 2 received - terminating
+hostapd_interface_deinit_free(0x55ba20ff9ae0)
+hostapd_interface_deinit_free: num_bss=1 conf->num_bss=1
+hostapd_interface_deinit(0x55ba20ff9ae0)
+wlan1: interface state ENABLED->DISABLED
+hostapd_bss_deinit: deinit bss wlan1
+wlan1: STA 0e:ed:c0:e3:59:0e MLME: MLME-DEAUTHENTICATE.indication(0e:ed:c0:e3:59:0e, 1)
+Removing station 0e:ed:c0:e3:59:0e
+wlan1: AP-STA-DISCONNECTED 0e:ed:c0:e3:59:0e
+nl80211: Set STA flags - ifname=wlan1 addr=0e:ed:c0:e3:59:0e total_flags=0x62 flags_or=0x2 flags_and=0xfffffff2 authorized=0
+nl80211: Set beacon (beacon_set=1)
+nl80211: Beacon head - hexdump(len=55): 80 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 00 00 00 00 00 00 00 00 64 00 01 14 00 04 74 65 73 74 01 08 82 84 8b 96 0c 12 18 24 03 01 01
+nl80211: Beacon tail - hexdump(len=65): 2a 01 04 32 04 30 48 60 6c 46 05 73 00 00 00 00 3b 02 51 00 7f 08 04 00 08 02 01 40 00 40 dd 18 00 50 f2 02 01 01 01 00 03 a4 00 00 27 a4 00 00 42 43 5e 00 62 32 2f 00 dd 07 50 6f 9a 16 01 01 00
+nl80211: ifindex=3
+nl80211: beacon_int=100
+nl80211: beacon_rate=0
+nl80211: rate_type=0
+nl80211: dtim_period=2
+nl80211: ssid=test
+  * beacon_int=100
+  * dtim_period=2
+nl80211: hidden SSID not in use
+nl80211: privacy=0
+nl80211: auth_algs=0x1
+nl80211: wpa_version=0x0
+nl80211: key_mgmt_suites=0x4
+nl80211: pairwise_ciphers=0x0
+nl80211: group_cipher=0x1
+nl80211: beacon_ies - hexdump(len=19): 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: proberesp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+nl80211: assocresp_ies - hexdump(len=26): 46 05 73 00 00 00 00 7f 08 04 00 08 02 01 40 00 40 dd 07 50 6f 9a 16 01 01 00
+  * freq=2412
+  * eht_enabled=0
+  * he_enabled=0
+  * vht_enabled=0
+  * ht_enabled=0
+  * radar_background=0
+  * channel_type=0
+nl80211: multicast to unicast disabled on interface wlan1
+ap_free_sta: cancel ap_handle_timer for 0e:ed:c0:e3:59:0e
+wlan1: Deauthenticate all stations
+nl80211: send_mlme - da=ff:ff:ff:ff:ff:ff sa=24:ec:99:b4:29:56 bssid=24:ec:99:b4:29:56 noack=0 freq=0 no_cck=0 offchanok=0 wait_time=0 no_encrypt=0 fc=0xc0 (WLAN_FC_STYPE_DEAUTH) nlmode=3
+nl80211: send_mlme - Use bss->freq=2412
+nl80211: send_mlme -> send_frame_cmd
+nl80211: CMD_FRAME freq=2412 wait=0 no_cck=0 no_ack=0 offchanok=0
+CMD_FRAME - hexdump(len=26): c0 00 00 00 ff ff ff ff ff ff 24 ec 99 b4 29 56 24 ec 99 b4 29 56 00 00 03 00
+nl80211: Frame TX command accepted; cookie 0x1c
+wlan1: AP-DISABLED 
+hostapd_cleanup(hapd=0x55ba20ffaf10 (wlan1))
+wlan1: CTRL-EVENT-TERMINATING 
+hostapd_free_hapd_data(wlan1)
+hostapd_interface_deinit_free: driver=0x55ba14e78840 drv_priv=0x55ba21005f20 -> hapd_deinit
+nl80211: deinit ifname=wlan1 disabled_11b_rates=0
+nl80211: Remove beacon (ifindex=3)
+netlink: Operstate: ifindex=3 linkmode=0 (kernel-control), operstate=6 (IF_OPER_UP)
+nl80211: Unsubscribe mgmt frames handle 0x8888dd32a988c559 (deinit)
+hostapd_interface_free(0x55ba20ff9ae0)
+hostapd_interface_free: free hapd 0x55ba20ffaf10
+hostapd_cleanup_iface(0x55ba20ff9ae0)
+hostapd_cleanup_iface_partial(0x55ba20ff9ae0)
+hostapd_cleanup_iface: free iface=0x55ba20ff9ae0

@@ -1,0 +1,5 @@
+set_neighbor aa:bb:cc:dd:ee:01 ssid=aabb nr=0b000124240101
+set_neighbor aa:bb:cc:dd:ee:02 ssid=aa11 nr=0b000124280101
+set_neighbor aa:bb:cc:dd:ee:03 ssid=aa22 nr=0b0001242c0101
+set_neighbor aa:bb:cc:dd:ee:04 ssid=aa44 nr=803253021dccaf0800005101070603000100
+

@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+import socket
+import struct
+import os
+import binascii
+import select
+import subprocess
+import time
+import re
+from stationinfo import StationInfo
+
+class HostapdControl:
+    def __init__(self, ctrl_path="/var/run/hostapd/wlan0"):
+        self.ctrl_path = ctrl_path
+        self.sock = None
+        self.local_path = f"/tmp/hostapd_ctrl_{os.getpid()}"
+
+    # --- Connection Management ---
+    def connect(self):
+        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+        if os.path.exists(self.local_path):
+            os.unlink(self.local_path)
+        self.sock.bind(self.local_path)
+        self.sock.connect(self.ctrl_path)
+        self.send_command("ATTACH")
+        print(f"[+] Connected to hostapd: {self.ctrl_path}")
+
+    def disconnect(self):
+        if self.sock:
+            try:
+                self.send_command("DETACH")
+            except Exception:
+                pass
+            self.sock.close()
+            if os.path.exists(self.local_path):
+                os.unlink(self.local_path)
+        print("[+] Disconnected from hostapd")
+
+    def send_command(self, cmd, timeout=3.0):
+        self.sock.send(cmd.encode())
+        print(f"SENT: {cmd}")
+        ready = select.select([self.sock], [], [], timeout)
+        if ready[0]:
+            resp = self.sock.recv(8192).decode("utf-8", errors="ignore")
+            return resp.strip()
+        return None
+
+    def get_stations(self):
+        """Return list of connected stations (MACs)."""
+        macs = []
+        resp = self.send_command("STA-FIRST")
+        while resp and not resp.startswith("FAIL"):
+            mac = resp.split("\n", 1)[0].strip()
+            if mac and ":" in mac:
+                macs.append(mac)
+            resp = self.send_command(f"STA-NEXT {mac}")
+        return macs
+
+    def station_info(self, mac: str) -> StationInfo:
+        """Fetch per-station details as StationInfo object."""
+        info = self.send_command(f"STA {mac}")
+        if not info:
+            return None
+        d = {}
+        for line in info.splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                d[k.strip()] = v.strip()
+        d["mac"] = mac
+        return StationInfo.from_raw(d)
+
+    def all_station_info(self):
+        """Return dict of MAC → StationInfo."""
+        data = {}
+        for mac in self.get_stations():
+            try:
+                data[mac] = self.station_info(mac)
+            except Exception:
+                continue
+        return data
+
+    def get_channel_utilization(self):
+        """Return current channel utilization (%)"""
+        resp = self.send_command("CHAN_UTIL")
+        if not resp:
+            return None
+        # Expected: "CHAN_UTIL=42"
+        m = re.search(r"(\d+)", resp)
+        return int(m.group(1)) if m else None
+
+
+    def get_status(self):
+        """Return AP status info (channel, freq, num_sta, etc.)"""
+        out = self.send_command("STATUS")
+        d = {}
+        for line in out.splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                d[k.strip()] = v.strip()
+        return d
+
+    def get_ap_config(self):
+        """Return current hostapd runtime config."""
+        out = self.send_command("GET_CONFIG")
+        cfg = {}
+        for line in out.splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                cfg[k.strip()] = v.strip()
+        return cfg
+
+    def add_neighbor(self, bssid: str, ssid: str, nr_hex: str,
+                     lci_hex: str = None, civic_hex: str = None,
+                     stat: bool = False, bss_params: int = None):
+        """
+        Add a neighbor entry to hostapd via SET_NEIGHBOR.
+
+        bssid:      AA:BB:CC:DD:EE:FF
+        ssid:       ASCII SSID (will be converted to hex)
+        nr_hex:     Full NR element in hex (including IE header)
+        lci_hex:    Optional LCI subelement hex
+        civic_hex:  Optional civic subelement hex
+        stat:       Boolean, adds 'stat'
+        bss_params: Optional 0–255 integer
+        """
+
+        # hostapd requires hex ssid; no ASCII allowed
+        ssid_hex = self.str_to_hex(ssid)
+
+        args = f"{bssid} ssid={ssid_hex} nr={nr_hex}"
+
+        if lci_hex:
+            args += f" lci={lci_hex}"
+
+        if civic_hex:
+            args += f" civic={civic_hex}"
+
+        if stat:
+            args += " stat"
+
+        if bss_params is not None:
+        args += f" bss_parameter={bss_params}"
+
+    return self.send_command(f"SET_NEIGHBOR {args}")
+
+
+    def show_neighbors(self):
+        """Show all neighbor database entries."""
+        resp = self.send_command("SHOW_NEIGHBOR")
+        neighbors = []
+        if not resp or resp.startswith("FAIL"):
+            return neighbors
+        block = {}
+        for line in resp.splitlines():
+            if line.strip() == "":
+                if block:
+                    neighbors.append(block)
+                    block = {}
+                continue
+            if "=" in line:
+                k, v = line.split("=", 1)
+                block[k.strip()] = v.strip()
+        if block:
+            neighbors.append(block)
+        return neighbors
+
+    def remove_neighbor(self, bssid: str, ssid=None):
+        cmd = f"REMOVE_NEIGHBOR {bssid}"
+        if ssid:
+            cmd += f" {self.str_to_hex(ssid)}"
+        return self.send_command(cmd)
+
+    # --- Measurement Requests ---
+    def send_link_measurement_request(self, mac: str):
+        """Trigger link measurement (RSSI, Tx power, etc.)."""
+        return self.send_command(f"REQ_LINK_MEASUREMENT {mac}")
+
+    def send_beacon_measurement_request(self, mac: str, req_hex: str):
+        """
+        Send raw beacon measurement request (already hex-formatted body).
+        """
+        return self.send_command(f"REQ_BEACON {mac} {req_hex}")
+
+    # --- Event Receiver ---
+    def receive_events(self, timeout=1.0):
+        """Poll async hostapd events."""
+        events = []
+        ready = select.select([self.sock], [], [], timeout)
+        while ready[0]:
+            try:
+                data = self.sock.recv(4096).decode("utf-8", errors="ignore")
+                if data and data.startswith("<"):
+                    events.append(data.strip())
+            except Exception:
+                break
+            ready = select.select([self.sock], [], [], 0.05)
+        return events
+
+
+    @staticmethod
+    def build_beacon_req(
+            op_class: int,
+            channel: int,
+            rand_interval_ms: int,
+            duration_ms: int,
+            meas_mode: int,
+            bssid: str,
+            subelements: bytes = b""
+    ) -> str:
+        """
+        Build binary beacon request body (hex encoded) matching hostapd expectations.
+        """
+        bssid_bytes = bytes.fromhex(bssid.replace(":", ""))
+        base = struct.pack(
+            "<BBHHB6s",  # little endian
+            op_class,
+            channel,
+            rand_interval_ms,
+            duration_ms,
+            meas_mode,
+            bssid_bytes
+        )
+        full = base + subelements
+        return binascii.hexlify(full).decode()
+
+    # --- Binary / Hex Utility ---
+    @staticmethod
+    def str_to_hex(s: str):
+        return s.encode("utf-8").hex()
+
+    @staticmethod
+    def hex_to_str(h: str):
+        try:
+            return bytes.fromhex(h).decode("utf-8", errors="ignore")
+        except Exception:
+            return h
+
+    @staticmethod
+    def bytes_to_hex(b: bytes):
+        return b.hex()
+
+    @staticmethod
+    def hex_to_bytes(h: str):
+        return bytes.fromhex(h)
+
+
+# Example usage
+if __name__ == "__main__":
+    ap = HostapdControl("/var/run/hostapd/wlan0")
+    ap.connect()
+
+    print("[*] AP status:", ap.get_status())
+    print("[*] Channel Utilization:", ap.get_channel_utilization())
+    print("[*] Connected Stations:", ap.get_stations())
+
+    for mac, sta in ap.all_station_info().items():
+        print(sta)
+        ap.send_beacon_measurement_request(mac, HostapdControl.build_beacon_req(81, 1, 0, 100, 1, f"00:00:00:00:00:00"))
+
+    ap.add_neighbor("00:00:00:00:00:00", "hello-there", )
+    print("[*] Neighbors:", ap.show_neighbors())
+    ap.disconnect()
