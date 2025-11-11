@@ -1,0 +1,18 @@
+Tue Nov 11 10:31:05 AM IST 2025
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RX ctrl_iface - hexdump_ascii(len=18):
+     43 48 41 4e 5f 53 57 49 54 43 48 20 31 20 32 34   CHAN_SWITCH 1 24
+     31 32                                             12              
+wlan0: IEEE 802.11 CHAN_SWITCH EHT config 0x2 HE config 0x2 VHT config 0x2
+hostapd_change_config_freq:Update op_class 81->81 and channel=1 based on freq=2412
+hostapd_change_config_freq:Update op_class 81->81 and channel=6 based on freq=2437
+nl80211: Channel switch request (cs_count=1 block_tx=0 freq=2412 channel=1 sec_channel_offset=0 width=0 cf1=0 cf2=0 puncturing_bitmap=0x0000 link_id=-1)
+  * freq=2412
+  * eht_enabled=0
+  * he_enabled=0
+  * vht_enabled=0
+  * ht_enabled=0
+  * radar_background=0
+  * channel_type=0
+nl80211: switch_channel failed err=-16 (Device or resource busy)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------

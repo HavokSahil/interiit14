@@ -1,4 +1,3 @@
-from control.controller import Controller
 from enum import Enum
 
 class LogLevel(Enum):
@@ -28,8 +27,32 @@ class LogLevel(Enum):
 
 
 class Logger:
+    
+    # State variable for current allowed log level
+    _current_log_level: LogLevel = LogLevel.INFO
+
+    @classmethod
+    def set_current_log_level(cls, level: LogLevel):
+        cls._current_log_level = level
+
+    @classmethod
+    def get_current_log_level(cls) -> LogLevel:
+        return cls._current_log_level
+
     @staticmethod
-    def set_log_level(controller: Controller, level: LogLevel):
-        return controller.send_command(f"LOG_LEVEL {level.name}")
+    def log(level: LogLevel, msg: str) -> None:
+        if level.value >= Logger._current_log_level.value:
+            print(f"[{level.name}] {msg}")
+
+    @staticmethod
+    def log_err(msg: str) -> None:
+        Logger.log(LogLevel.ERROR, msg)
     
+    @staticmethod
+    def log_debug(msg: str) -> None:
+        Logger.log(LogLevel.DEBUG, msg)
     
+    @staticmethod
+    def log_info(msg: str) -> None:
+        Logger.log(LogLevel.INFO, msg)
+

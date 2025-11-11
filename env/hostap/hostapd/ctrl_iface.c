@@ -3894,6 +3894,8 @@ static int hostapd_ctrl_iface_receive_process(struct hostapd_data *hapd,
 {
 	int reply_len, res;
 
+    printf("FUNNY_LOG: %s\n", buf);
+
 	os_memcpy(reply, "OK\n", 3);
 	reply_len = 3;
 

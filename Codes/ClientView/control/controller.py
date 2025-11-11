@@ -8,13 +8,15 @@ import time
 import re
 import threading
 import queue
+from control.logger import Logger
 
 class Controller:
     def __init__(self, ctrl_path="/var/run/hostapd/wlan0"):
         self.ctrl_path = ctrl_path
         self.sock = None
         self.local_path = f"/tmp/hostapd_ctrl_{os.getpid()}"
-        self._recv_queue: "queue.Queue[str]" = queue.Queue()
+        self._event_queue: "queue.Queue[str]" = queue.Queue()
+        self._reply_queue: "queue.Queue[str]" = queue.Queue()
         self._reader_thread: "threading.Thread | None" = None
         self._running = False
 
@@ -28,6 +30,11 @@ class Controller:
         # Attach and start background reader
         self.send_command("ATTACH")
         self.start_read()
+
+        # just as a safety measure
+        self.clear_events()
+        self.clear_reply()
+
         print(f"[+] Connected to hostapd: {self.ctrl_path}")
 
     def start_read(self):
@@ -51,7 +58,7 @@ class Controller:
                 self.send_command("DETACH")
             except Exception:
                 pass
-            
+
             self.stop_read()
             self.sock.close()
             if os.path.exists(self.local_path):
@@ -59,54 +66,102 @@ class Controller:
         print("[+] Disconnected from hostapd")
 
     def send_command(self, cmd, timeout=3.0) -> bool:
-        """Send a command to the controller without reading a response."""
-        if not self.sock:
-            raise RuntimeError("Controller is not connected")
-        self.sock.send(cmd.encode())
-        print(f"SENT: {cmd}")
-        resp = self.receive(timeout=1.0)
-        print(f"Response: {resp}")
-        return resp == "OK"
+        # by default clear the reply queue
+        self.clear_reply()
 
-    def receive(self, timeout: float | None = None) -> str | None:
-        """Receive the next message from the background reader queue."""
         try:
-            return self._recv_queue.get(timeout=timeout)
+            sent = self.sock.send(cmd.encode())
+            if sent == 0:
+                Logger.log_err("Socket connection broken")
+                return False
+            return True
+        except Exception as e:
+            Logger.log_err(f"Error sending command: {e}")
+            return False
+
+    def receive(self, timeout=3.0) -> str | None:
+        """Retrieve a reply from _reply_queue, waiting up to timeout seconds."""
+        try:
+            return self._reply_queue.get(timeout=timeout)
+        except queue.Empty:
+            return None
+
+    def receive_event(self, timeout=3.0) -> str | None:
+        """Retrieve an event from _event_queue, waiting up to timeout seconds."""
+        try:
+            return self._event_queue.get(timeout=timeout)
         except queue.Empty:
             return None
 
     def _reader_loop(self):
-        """Continuously read from socket and enqueue messages."""
-        while self._running and self.sock:
+        """Background thread to read from the socket and separate replies and events."""
+        while self._running:
             try:
-                ready = select.select([self.sock], [], [], 0.5)
-                if not ready[0]:
-                    continue
-                resp = self.sock.recv(8192).decode("utf-8", errors="ignore")
-                if not resp:
-                    continue
-                message = resp.strip()
-                if message:
-                    self._recv_queue.put(message)
-                    #print(f"INCOMING: {message}")
-            except (OSError, ValueError):
-                # Socket might be closed during shutdown; exit loop
+                ready = select.select([self.sock], [], [], 0.2)
+                if ready[0]:
+                    data = self.sock.recv(4096)
+                    if not data:
+                        continue
+                    msg = data.decode(errors="ignore")
+                    if msg.startswith('<'):
+                        # print(f"EVENT: {"".join(msg.splitlines())}")
+                        self._event_queue.put(msg)
+                    else:
+                        # print(f"REPLY: {"".join(msg.splitlines())}")
+                        self._reply_queue.put(msg)
+            except Exception as e:
+                Logger.log_err(f"Error in controller reader loop: {e}")
+                time.sleep(0.1)
+
+    def clear_reply(self):
+        while not self._reply_queue.empty():
+            try:
+                self._reply_queue.get_nowait()
+            except queue.Empty:
                 break
 
-    def shell(self):
-        """ Run the Controller as a shell. """
-        print("Welcome to the Controller shell. Type 'exit' or 'quit' to quit.")
+    def clear_events(self):
+        while not self._event_queue.empty():
+            try:
+                self._event_queue.get_nowait()
+            except queue.Empty:
+                break
+
+    def repl(self):
+        """
+        Simple REPL shell for interacting with the controller.
+        Type 'exit' or 'quit' to exit.
+        """
+        print("Controller REPL started. Type 'exit' or 'quit' to exit.")
         while True:
-            cmd = input("> ")
-            if cmd == "exit" or cmd == "quit":
+            try:
+                cmd = input("controller> ").strip()
+                print(f"Command: `{cmd}`")
+                if not cmd:
+                    continue
+                if cmd.lower() in ("exit", "quit"):
+                    print("Exiting controller REPL.")
+                    break
+                if cmd.startswith("#"):  # allow shell comments
+                    continue
+                sent = self.send_command(cmd)
+                if sent:
+                    reply = self.receive()
+                    if reply is not None:
+                        print(f"Reply: {reply}")
+                    else:
+                        print("No reply received (timeout).")
+                else:
+                    print("Failed to send command or command not accepted.")
+            except (KeyboardInterrupt, EOFError):
+                print("\nExiting controller REPL.")
                 break
-            self.send_command(cmd)
-            print(self.receive(timeout=3.0))
+            except Exception as e:
+                Logger.log_err(f"REPL error: {e}")
 
 
-# The main function to run the Controller as a shell.
 if __name__ == "__main__":
     controller = Controller()
     controller.connect()
-    controller.shell()
+    controller.repl()
     controller.disconnect()
