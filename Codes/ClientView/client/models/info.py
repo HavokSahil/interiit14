@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 
-class StaInfo:
+class StationBasicInfo:
     """Represents the status information of an associated station."""
 
     def __init__(self):
@@ -35,8 +35,8 @@ class StaInfo:
         self.ext_capab: str | None = None
 
     @staticmethod
-    def from_content(content: str) -> "StaInfo":
-        info = StaInfo()
+    def from_content(content: str) -> "StationBasicInfo":
+        info = StationBasicInfo()
         info.parse_content(content)
         return info
 

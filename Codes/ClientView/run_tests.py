@@ -1,6 +1,7 @@
 from tests.test_models import *
 from tests.test_ap_controller import *
 from tests.test_logger import *
+from tests.test_sta_controller import *
 
 def main():
     print("\nRunning all model tests...")
@@ -11,6 +12,9 @@ def main():
 
     print("\nRunning the tests for Logger")
     test_all_logger()
+
+    print("\n Running all Station Control tests...")
+    test_all_sta_control()
 
     print("All tests completed")
 

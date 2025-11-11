@@ -1,5 +1,5 @@
 from ap.models.status import ApStatus
-from client.models.info import StaInfo
+from client.models.info import StationBasicInfo
 
 def test_model_ApStatus():
     content = """state=ENABLED
@@ -63,7 +63,7 @@ min_txpower=8
 max_txpower=19
 ext_capab=040008020140
 """
-    info = StaInfo.from_content(info_str)
+    info = StationBasicInfo.from_content(info_str)
     print(info)
 
 

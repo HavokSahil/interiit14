@@ -1,14 +1,11 @@
 import socket
-import struct
 import os
-import binascii
 import select
-import subprocess
 import time
-import re
 import threading
 import queue
 from control.logger import Logger
+from time import sleep
 
 class Controller:
     def __init__(self, ctrl_path="/var/run/hostapd/wlan0"):
@@ -30,6 +27,8 @@ class Controller:
         # Attach and start background reader
         self.send_command("ATTACH")
         self.start_read()
+
+        sleep(1) # wait for stablization: TODO: see if its required
 
         # just as a safety measure
         self.clear_events()
@@ -70,6 +69,8 @@ class Controller:
         self.clear_reply()
 
         try:
+            # TODO: remember this debug message
+            print(f"SENT: {cmd}")
             sent = self.sock.send(cmd.encode())
             if sent == 0:
                 Logger.log_err("Socket connection broken")
@@ -104,10 +105,12 @@ class Controller:
                         continue
                     msg = data.decode(errors="ignore")
                     if msg.startswith('<'):
-                        # print(f"EVENT: {"".join(msg.splitlines())}")
+                        # NOTE: remember this debug
+                        print(f"EVENT: {"".join(msg.splitlines())}")
                         self._event_queue.put(msg)
                     else:
-                        # print(f"REPLY: {"".join(msg.splitlines())}")
+                        # NOTE: remember this debug
+                        print(f"REPLY: {"".join(msg.splitlines())}")
                         self._reply_queue.put(msg)
             except Exception as e:
                 Logger.log_err(f"Error in controller reader loop: {e}")

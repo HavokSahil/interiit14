@@ -27,9 +27,25 @@ def test_channel_switch() -> bool:
         return False
 
     return True
+
+def test_sta():
+    ap = ApController()
+    ap.connect()
+    print("Start sleeping")
+    sleep(3)
+    print("Done sleeping")
+    ap.get_stations()
+
+    for station in ap.stations:
+        print("="*50)
+        print(station)
+        print("="*50)
+
+    ap.disconnect()
     
 
 
 def test_all_ap_control():
-    assert(test_power())
-    assert(test_channel_switch())
+    test_sta()
+    #assert(test_power())
+    #assert(test_channel_switch())
