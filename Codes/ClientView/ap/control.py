@@ -1,6 +1,7 @@
 from ap.standard import WiFi24GHZChannels
 from control.controller import Controller
 from ap.models.status import ApStatus, ApStatusIndicator
+from ap.models.info import NeighborInfo
 from control.logger import *
 from time import sleep
 from client.models.datatype import *
@@ -13,6 +14,7 @@ class ApController(Controller):
         self.nsta = 0          # number of connected STA
         self.status: ApStatus | None = None
         self.stations: list[MacAddress] = list[MacAddress]()
+        self.neighbors: list[NeighborInfo] = list[NeighborInfo]()
 
         self.connect()
         self._load_status()
@@ -57,6 +59,7 @@ class ApController(Controller):
             return self.status.state == ApStatusIndicator.AP_DISABLED
         return False
 
+
     def get_stations(self) -> int:
 
         self.nsta = 0
@@ -77,6 +80,7 @@ class ApController(Controller):
                 self.stations.append(stainfo)
 
         self.nsta = len(self.stations)
+        return self.nsta
 
     def poll_station(self, mac: MacAddress) -> bool:
         if self.send_command(f"POLL_STA {mac.raw}"):
@@ -98,7 +102,6 @@ class ApController(Controller):
 
         return True
 
-
     def switch_channel(self, freq: WiFi24GHZChannels, beacon_int: int = 10) -> bool:
 
         # TODO: fix this mess
@@ -119,6 +122,18 @@ class ApController(Controller):
                 Logger.log_err(f"The frequencies doesn't match after the command. ({freq.value} != {self.status.freq})")
         return False
 
+    def get_neighbor(self) -> int:
+        print("Hello there")
+        self.neighbors = []
+        if not self.send_command("SHOW_NEIGHBOR"):
+            return 0
+        content = self.receive()
+        print(f"Content was {content}")
+        if not content: return 0
+        for line in content.splitlines():
+            self.neighbors.append(NeighborInfo.from_line(line))
+        return len(self.neighbors)
+        
 
     def reload_config(self):
         return self.send_command("RELOAD_CONFIG")

@@ -42,10 +42,24 @@ def test_sta():
         print("="*50)
 
     ap.disconnect()
+
+def test_neighbors():
+    ap = ApController()
+    ap.connect()
+    print("test_neighbors: sleep_begin")
+    sleep(3)
+    print("test_neighbors: sleep_end")
+    nneib = ap.get_neighbor()
+    print(f"Number of neighbors: {nneib}")
+
+    for neib in ap.neighbors:
+        print(neib)
+
+    ap.disconnect()
     
 
 
 def test_all_ap_control():
-    test_sta()
+    test_neighbors()
     #assert(test_power())
     #assert(test_channel_switch())

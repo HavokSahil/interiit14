@@ -8,8 +8,9 @@ from control.logger import Logger
 from time import sleep
 
 class Controller:
-    def __init__(self, ctrl_path="/var/run/hostapd/wlan0"):
+    def __init__(self, ctrl_path="/var/run/hostapd/wlan0", iface="wlan0"):
         self.ctrl_path = ctrl_path
+        self.iface = iface # by default the interface is `wlan0`
         self.sock = None
         self.local_path = f"/tmp/hostapd_ctrl_{os.getpid()}"
         self._event_queue: "queue.Queue[str]" = queue.Queue()
@@ -106,11 +107,11 @@ class Controller:
                     msg = data.decode(errors="ignore")
                     if msg.startswith('<'):
                         # NOTE: remember this debug
-                        print(f"EVENT: {"".join(msg.splitlines())}")
+                        print(f"EVENT: {" ".join(msg.splitlines())}")
                         self._event_queue.put(msg)
                     else:
                         # NOTE: remember this debug
-                        print(f"REPLY: {"".join(msg.splitlines())}")
+                        print(f"REPLY: {" ".join(msg.splitlines())}")
                         self._reply_queue.put(msg)
             except Exception as e:
                 Logger.log_err(f"Error in controller reader loop: {e}")

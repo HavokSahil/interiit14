@@ -89,15 +89,87 @@ static int hostapd_get_sta_info(struct hostapd_data *hapd,
 	if (hostapd_drv_read_sta_data(hapd, &data, sta->addr) < 0)
 		return 0;
 
-	ret = os_snprintf(buf, buflen, "rx_packets=%lu\ntx_packets=%lu\n"
-			  "rx_bytes=%llu\ntx_bytes=%llu\ninactive_msec=%lu\n"
-			  "signal=%d\n",
-			  data.rx_packets, data.tx_packets,
-			  data.rx_bytes, data.tx_bytes, data.inactive_msec,
-			  data.signal);
-	if (os_snprintf_error(buflen, ret))
-		return 0;
-	len += ret;
+    ret = os_snprintf(buf + len, buflen - len,
+         "rx_packets=%lu\n"
+         "tx_packets=%lu\n"
+         "rx_bytes=%llu\n"
+         "tx_bytes=%llu\n"
+         "rx_airtime=%llu\n"
+         "tx_airtime=%llu\n"
+         "beacons_count=%llu\n"
+         "inactive_msec=%lu\n"
+         "connected_sec=%lu\n"
+         "signal=%d\n"
+         "avg_signal=%d\n"
+         "avg_beacon_signal=%d\n"
+         "avg_ack_signal=%d\n"
+         "tx_retries=%lu\n"
+         "tx_failed=%lu\n"
+         "rx_drop_misc=%lu\n"
+         "backlog_packets=%lu\n"
+         "backlog_bytes=%lu\n"
+         "fcs_error_count=%lu\n"
+         "beacon_loss_count=%lu\n"
+         "expected_throughput=%lu\n"
+         "tx_bitrate=%lu\n"
+         "rx_bitrate=%lu\n"
+         "tx_duration=%lu\n"
+         "rx_duration=%lu\n"
+         "rx_mcs=%u\n"
+         "tx_mcs=%u\n"
+         "rx_vhtmcs=%u\n"
+         "tx_vhtmcs=%u\n"
+         "rx_he_nss=%u\n"
+         "tx_he_nss=%u\n"
+         "rx_vht_nss=%u\n"
+         "tx_vht_nss=%u\n"
+         "rx_dcm=%u\n"
+         "tx_dcm=%u\n"
+         "rx_guard_interval=%d\n"
+         "tx_guard_interval=%d\n",
+        data.rx_packets,
+        data.tx_packets,
+        data.rx_bytes,
+        data.tx_bytes,
+        data.rx_airtime,
+        data.tx_airtime,
+        data.beacons_count,
+        data.inactive_msec,
+        data.connected_sec,
+        data.signal,
+        data.avg_signal,
+        data.avg_beacon_signal,
+        data.avg_ack_signal,
+        data.tx_retry_count,
+        data.tx_retry_failed,
+        data.rx_drop_misc,
+        data.backlog_packets,
+        data.backlog_bytes,
+        data.fcs_error_count,
+        data.beacon_loss_count,
+        data.expected_throughput / 1000, /* kbps -> Mbps */
+        data.current_tx_rate / 1000,     /* kbps -> Mbps */
+        data.current_rx_rate / 1000,     /* kbps -> Mbps */
+        data.tx_airtime / 1000,          /* µs -> ms (if supported) */
+        data.rx_airtime / 1000,
+        data.rx_mcs,
+        data.tx_mcs,
+        data.rx_vhtmcs,
+        data.tx_vhtmcs,
+        data.rx_he_nss,
+        data.tx_he_nss,
+        data.rx_vht_nss,
+        data.tx_vht_nss,
+        data.rx_dcm,
+        data.tx_dcm,
+        data.rx_guard_interval,
+        data.tx_guard_interval);
+
+    if (os_snprintf_error(buflen - len, ret))
+        return 0;
+
+    len += ret;
+
 
 	ret = os_snprintf(buf + len, buflen - len, "rx_rate_info=%lu",
 			  data.current_rx_rate / 100);
