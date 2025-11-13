@@ -107,8 +107,9 @@ class Controller:
                     msg = data.decode(errors="ignore")
                     if msg.startswith('<'):
                         # NOTE: remember this debug
-                        print(f"EVENT: {" ".join(msg.splitlines())}")
-                        self._event_queue.put(msg)
+                        if "AP-MGMT-FRAME-RECEIVED" in msg or "TX-STATUS" in msg: # NOTE: ignoring the raw management frame for now
+                            print(f"EVENT: {" ".join(msg.splitlines())}")
+                            self._event_queue.put(msg)
                     else:
                         # NOTE: remember this debug
                         print(f"REPLY: {" ".join(msg.splitlines())}")

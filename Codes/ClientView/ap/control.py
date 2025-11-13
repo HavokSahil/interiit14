@@ -1,3 +1,4 @@
+from ap.models.builder import NeighborRequestBuilder
 from ap.standard import WiFi24GHZChannels
 from control.controller import Controller
 from ap.models.status import ApStatus, ApStatusIndicator
@@ -122,6 +123,15 @@ class ApController(Controller):
                 Logger.log_err(f"The frequencies doesn't match after the command. ({freq.value} != {self.status.freq})")
         return False
 
+    def add_neighbor(self, neib: NeighborRequestBuilder) -> bool:
+        """Function to add neighbor report to the database"""
+        cmd = neib.build()
+        if self.send_command(f"{cmd}"):
+            reply = self.receive().strip()
+            print(f"REPLY_WAS: {reply}")
+            return reply == "OK"
+        return False
+
     def get_neighbor(self) -> int:
         print("Hello there")
         self.neighbors = []
@@ -133,16 +143,12 @@ class ApController(Controller):
         for line in content.splitlines():
             self.neighbors.append(NeighborInfo.from_line(line))
         return len(self.neighbors)
-        
 
     def reload_config(self):
         return self.send_command("RELOAD_CONFIG")
 
-
-
     def reload(self):
         return self.send_command("RELOAD")
-
 
     def __str__(self):
         if not self.status:

@@ -1,7 +1,8 @@
 import binascii
 import re
-from typing import Any
 from client.models.format import *
+import struct
+from typing import Optional, Dict, Any
 
 
 class NeighborInfo:
@@ -111,6 +112,33 @@ class NeighborInfo:
             "phy_type_desc": self.phy_type_desc,
             "subelements": self.subelements,
         }
+    
+    def to_nr_hex(self) -> str:
+        """
+        Convert this NeighborInfo to a hex string suitable for SET_NEIGHBOR command.
+        Returns the hex-encoded NR (Neighbor Report) field.
+        """
+        if not all([self.bssid, self.bssid_info is not None, 
+                   self.oper_class is not None, self.channel is not None, 
+                   self.phy_type is not None]):
+            raise ValueError("NeighborInfo missing required fields for NR encoding")
+        
+        subelements_bytes = b""
+        if self.subelements:
+            try:
+                subelements_bytes = bytes.fromhex(self.subelements)
+            except (ValueError, binascii.Error):
+                pass  # If subelements can't be parsed, use empty bytes
+        
+        nr_bytes = self.make_nr(
+            bssid=self.bssid,
+            bssid_info=self.bssid_info,
+            oper_class=self.oper_class,
+            channel=self.channel,
+            phy_type=self.phy_type,
+            subelements=subelements_bytes
+        )
+        return nr_bytes.hex()
     
     def __str__(self):
         return (f"<Neighbor bssid={self.bssid} ssid={self.ssid} "

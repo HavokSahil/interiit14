@@ -53,7 +53,6 @@ class ApStatus:
             rates.append(rate_map[rate]) # convert hex to Mbps
         return rates
 
-
     def parse_status(self, content: str):
         """Parse status content from hostapd in key=value format."""
         self.raw = content
