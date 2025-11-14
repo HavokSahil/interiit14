@@ -6,6 +6,9 @@ from enum import Enum
 from db.lmrep_db import LinkMeasurementDB
 from db.bmrep_db import BeaconMeasurementDB
 from db.bsstm_db import BSSTransitionResponseDB
+from db.nbrank_db import NeighborRankingDB
+from db.qoe_db import QoEDB
+from db.station_db import StationDB
 from parser.measurement_parser import parse_beacon_measurement, parse_link_measurement, parse_bss_tm_response
 from logger import Logger
 
@@ -13,7 +16,7 @@ from logger import Logger
 class MgmtType(Enum):
     LM_RESPONSE     = 3
     BM_RESPONSE     = 1
-    BSS_TM_RESPONSE = 10
+    BSS_TM_RESPONSE = 8
     UNKNOWN         = -1
 
 class RxMux:
@@ -23,6 +26,9 @@ class RxMux:
         self.lm_db = LinkMeasurementDB()
         self.bm_db = BeaconMeasurementDB()
         self.bss_tm_db = BSSTransitionResponseDB()
+        self.st_db = StationDB()
+        self.qe_db = QoEDB()
+        self.nr_db = NeighborRankingDB()
         Logger.log_info(f"{self.lm_db} {self.bm_db} {self.bss_tm_db}")
 
     @staticmethod
@@ -33,6 +39,14 @@ class RxMux:
             Logger.log_err("No buf=hex_string found in input")
             raise ValueError("No buf=hex_string found in input")
         return bytes.fromhex(match.group(1))
+
+    def cleardb(self, mac: str):
+        self.lm_db.remove(mac)
+        self.bm_db.remove(mac)
+        self.st_db.remove(mac)
+        self.qe_db.remove(mac)
+        self.nr_db.remove(mac)
+
 
     def mux(self, frame_bytes: bytes) -> Optional[Tuple[MgmtType, RadioTap]]:
         """Parse a raw 802.11 frame and store in the appropriate DB."""
@@ -50,6 +64,10 @@ class RxMux:
 
         category = payload[0]
         action = payload[1]
+
+        if category != 5 and category != 10:
+            Logger.log_info("Frame is not of Radio measurement Report and not WNM report")
+            return
 
         if category != 5:
             Logger.log_info("Frame is not of Radio measurement Report")
@@ -81,8 +99,8 @@ class RxMux:
         # BSS Transition Management Response
         elif action == MgmtType.BSS_TM_RESPONSE.value:
             Logger.log_info(f"BSS Transition Response from {sta_mac}")
-            if self.bss_tm_db:
-                bss_tm_obj = parse_bss_tm_response(dot11, sta_mac)
+            if self.bss_tm_db is not None:
+                bss_tm_obj = parse_bss_tm_response(dot11)
                 self.bss_tm_db.add(bss_tm_obj, sta_mac)
             else:
                 Logger.log_info("mux: self.bss_tm_db was None")

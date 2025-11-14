@@ -13,6 +13,10 @@ class Neighbor:
         self.phy_type_desc: str | None = None
         self.subelements: str | None = None
 
+        # NOTE: these are optional fields and are not included in nr report
+        self.rcpi: int | None = None
+        self.rsni: int | None = None
+
     def to_dict(self) -> dict:
         """Return a dictionary representation (clean and JSON-serializable)."""
         return {

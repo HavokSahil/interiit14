@@ -1,3 +1,5 @@
+from db.neighbor_db import NeighborDB
+from model.measurement import BeaconReport
 from model.neighbor import Neighbor
 import re
 from typing import Any
@@ -118,7 +120,7 @@ class NeighborParser:
             except (ValueError, binascii.Error):
                 pass  # If subelements can't be parsed, use empty bytes
         
-        nr_bytes = neib.make_nr(
+        nr_bytes = NeighborParser.make_nr(
             bssid=neib.bssid,
             bssid_info=neib.bssid_info,
             oper_class=neib.oper_class,
@@ -127,3 +129,37 @@ class NeighborParser:
             subelements=subelements_bytes
         )
         return nr_bytes.hex()
+
+
+def neighbor_from_beacon_report(br: BeaconReport) -> Neighbor:
+    """
+    Convert a BeaconReport into a Neighbor object.
+    Only fields available from BeaconReport are filled.
+    """
+    n = Neighbor()
+    # obtain the neighbor database
+    nbdb = NeighborDB()
+    nbrep = nbdb.get(br.ssid)
+
+    if nbrep:
+        nbrep.rcpi = br.rcpi
+        nbrep.rsni = br.rsni
+        return nbrep
+
+    n.bssid = br.bssid
+    n.ssid = br.parse_ssid()
+    n.channel = br.channel_number
+    n.oper_class = br.operating_class
+
+    n.oper_class_desc = br.operating_class
+    n.phy_type_desc = 0
+
+    n.subelements = None # NOTE: this is optional
+    n.bssid_info = 0 # TODO: put something here too
+    n.phy_type = 0 # TODO: put something here (0 means unknown)
+
+    n.rsni = br.rsni
+    n.rcpi = br.rcpi
+
+    n.nr_raw = NeighborParser.to_nr_hex(n)
+    return n

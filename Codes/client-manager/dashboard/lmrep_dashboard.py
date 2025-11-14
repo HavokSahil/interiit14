@@ -12,11 +12,13 @@ class LinkMeasurementDashboard:
     def as_table(self, sort_by: Optional[str] = "measurement_token", limit: Optional[int] = None) -> str:
         """Return formatted table string of all LinkMeasurements."""
         measurements = []
-        for sta_mac, lms in self.db.all().items():  # Flatten by station
+        for sta_mac, lms in self.db.raw().items():  # Flatten by station
             measurements.append(lms)
 
+        title_line = "Link Measurement Dashboard\n-----------------------------------"
+
         if not measurements:
-            return "No Link Measurement reports."
+            return f"{title_line}\nNo Link Measurement reports."
 
         # Sort by attribute if valid
         if sort_by and hasattr(LinkMeasurement, sort_by):
@@ -52,7 +54,7 @@ class LinkMeasurementDashboard:
             for row in rows
         ]
 
-        return "\n".join([header_line, sep_line] + body_lines)
+        return "\n".join([title_line, header_line, sep_line] + body_lines)
 
     def show(
         self,

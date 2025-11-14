@@ -1,15 +1,21 @@
+import time
 from threading import RLock
 from typing import Optional, Dict
-from dataclasses import dataclass, field
 from model.measurement import LinkMeasurement
 
-DEFAULT_STA_MAC = "00:00:00:00:00:00"  # Default for AP-associated measurements
+DEFAULT_STA_MAC = "00:00:00:00:00:00"
+
 
 class LinkMeasurementDB:
-    """Database for storing LinkMeasurement reports per station (STA MAC)."""
+    """Thread-safe DB storing exactly one LinkMeasurement per station,
+    with soft TTL expiration that applies ONLY on reads.
+    Internally stores timestamps but NEVER exposes them.
+    """
 
     _instance = None
     _lock = RLock()
+
+    expiration_sec = 30  # configurable TTL
 
     def __new__(cls):
         with cls._lock:
@@ -21,78 +27,104 @@ class LinkMeasurementDB:
     def __init__(self):
         if getattr(self, "_initialized", False):
             return
-        self._db: Dict[str, "LinkMeasurement"] = {}  # sta_mac -> token -> LinkMeasurement
+        # sta_mac -> (timestamp, LinkMeasurement)
+        self._store: Dict[str, tuple[float, LinkMeasurement]] = {}
         self._initialized = True
 
-    # -----------------------------
-    # CRUD
-    # -----------------------------
-    def add(self, lm: "LinkMeasurement", sta_mac: Optional[str] = None):
-        """Add a LinkMeasurement for a given station MAC."""
+    # ------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------
+    def _is_expired(self, ts: float) -> bool:
+        return (time.time() - ts) > self.expiration_sec
+
+    # ------------------------------------------------------------
+    # Add
+    # ------------------------------------------------------------
+    def add(self, lm: LinkMeasurement, sta_mac: Optional[str] = None):
         if sta_mac is None:
             sta_mac = DEFAULT_STA_MAC
-        with self._lock:
-            if sta_mac not in self._db:
-                self._db[sta_mac] = {}
-            self._db[sta_mac] = lm
 
-    def remove(self, sta_mac: Optional[str] = None):
-        """Remove a LinkMeasurement by token for a station."""
+        with self._lock:
+            self._store[sta_mac] = (time.time(), lm)
+
+    # ------------------------------------------------------------
+    # Get (filters expired)
+    # ------------------------------------------------------------
+    def get(self, sta_mac: Optional[str] = None) -> Optional[LinkMeasurement]:
         if sta_mac is None:
             sta_mac = DEFAULT_STA_MAC
+
         with self._lock:
-            if sta_mac in self._db:
-                self._db.pop(sta_mac)
+            item = self._store.get(sta_mac)
+            if not item:
+                return None
 
-    def get(self, sta_mac: Optional[str] = None) -> Optional["LinkMeasurement"]:
-        if sta_mac is None:
-            sta_mac = DEFAULT_STA_MAC
-        with self._lock:
-            return self._db.get(sta_mac, {})
+            ts, lm = item
+            if self._is_expired(ts):
+                return None
 
-    def all(self) -> Dict[str, list["LinkMeasurement"]]:
-        with self._lock:
-            return {sta_mac: lms for sta_mac, lms in self._db.items()}
+            return lm
 
-    def count(self) -> int:
-        if sta_mac is None:
-            sta_mac = DEFAULT_STA_MAC
-        with self._lock:
-            return len(self._db.items())
+    # ------------------------------------------------------------
+    # All (filters expired)
+    # ------------------------------------------------------------
+    def all(self) -> Dict[str, LinkMeasurement]:
+        now = time.time()
+        ttl = self.expiration_sec
 
-    def clear(self, sta_mac: Optional[str] = None):
-        if sta_mac is None:
-            with self._lock:
-                self._db.clear()
-        else:
-            with self._lock:
-                self._db.pop(sta_mac, None)
-
-    # -----------------------------
-    # Utilities
-    # -----------------------------
-    def __contains__(self, sta_mac: str) -> bool:
-        return sta_mac in self._db
-
-    def __len__(self):
-        with self._lock:
-            return sum(len(lms) for lms in self._db.values())
-
-    def __iter__(self):
-        """Iterate over all LinkMeasurements (flattened)."""
-        with self._lock:
-            for lms in self._db.values():
-                for lm in lms.values():
-                    yield lm
-
-    def to_dict(self):
-        """Export as nested dict: sta_mac -> token -> dict."""
         with self._lock:
             return {
-                sta_mac: {token: vars(lm) for token, lm in lms.items()}
-                for sta_mac, lms in self._db.items()
+                mac: lm
+                for mac, (ts, lm) in self._store.items()
+                if now - ts <= ttl
             }
 
-    def __repr__(self):
+    # ------------------------------------------------------------
+    # Raw (no filtering, no timestamps, backward compatible)
+    # ------------------------------------------------------------
+    def raw(self) -> Dict[str, LinkMeasurement]:
         with self._lock:
-            return f"<LinkMeasurementDB stations={len(self._db)} total_measurements={len(self)}>"
+            return {mac: lm for mac, (_, lm) in self._store.items()}
+
+    # ------------------------------------------------------------
+    # Count (expired filtered)
+    # ------------------------------------------------------------
+    def count(self) -> int:
+        now = time.time()
+        ttl = self.expiration_sec
+
+        with self._lock:
+            return sum(1 for ts, _ in self._store.values() if now - ts <= ttl)
+
+    # ------------------------------------------------------------
+    # Clears
+    # ------------------------------------------------------------
+    def clear(self, sta_mac: Optional[str] = None):
+        with self._lock:
+            if sta_mac:
+                self._store.pop(sta_mac, None)
+            else:
+                self._store.clear()
+
+    def remove(self, sta_mac: Optional[str] = None):
+        self.clear(sta_mac)
+
+    # ------------------------------------------------------------
+    # Magic methods (all must respect expiration)
+    # ------------------------------------------------------------
+    def __contains__(self, sta_mac: str) -> bool:
+        return self.get(sta_mac) is not None
+
+    def __len__(self):
+        return self.count()
+
+    def __iter__(self):
+        with self._lock:
+            now = time.time()
+            ttl = self.expiration_sec
+            for ts, lm in self._store.values():
+                if now - ts <= ttl:
+                    yield lm
+
+    def __repr__(self):
+        return f"<LinkMeasurementDB stations={len(self._store)}>"

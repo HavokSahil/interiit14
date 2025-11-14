@@ -13,9 +13,12 @@ class NeighborDashboard:
 
     def as_table(self, sort_by: Optional[str] = "channel", limit: Optional[int] = None) -> str:
         """Return formatted table string of all neighbors grouped by STA MAC."""
+
+        title_line = "Neighbor Dashboard\n------------------------------"
+    
         all_neighbors = self.db.all()  # Dict[str, list[Neighbor]]
         if not all_neighbors:
-            return "No neighbors in database."
+            return f"{title_line}\nNo neighbors in database."
 
         sections = []
         for sta_mac, neighbors in all_neighbors.items():
@@ -44,12 +47,13 @@ class NeighborDashboard:
                     n.phy_type_desc or "-",
                 ])
 
+            
             col_widths = [max(len(str(cell)) for cell in col) for col in zip(table_headers, *rows)]
             header_line = " | ".join(h.ljust(w) for h, w in zip(table_headers, col_widths))
             sep_line = "-+-".join("-" * w for w in col_widths)
             body_lines = [" | ".join(str(cell).ljust(w) for cell, w in zip(row, col_widths)) for row in rows]
 
-            sections.append("\n".join([header, header_line, sep_line] + body_lines))
+            sections.append("\n".join([title_line, header, header_line, sep_line] + body_lines))
 
         return "\n\n".join(sections)
 

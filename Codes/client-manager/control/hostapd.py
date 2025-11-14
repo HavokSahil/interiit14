@@ -113,9 +113,15 @@ class HostapdController:
             Logger.log_info(f"handle_rx_msg: buf was {buf}")
             self.rxmux.mux(buf)
 
+        if "AP-STA-DISCONNECTED" in msg:
+            mac = msg.split(' ')[1].strip()
+            self.rxmux.cleardb(mac)
+            # clear the databases
+
         #TODO: don't do much experiment now
         if "AP-STA-CONNECTED" in msg or "AP-STA-DISCONNECTED" in msg:
             return True
+        
         return False
             
 

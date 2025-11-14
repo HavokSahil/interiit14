@@ -14,8 +14,10 @@ class StationDashboard:
         """Return formatted table string of all stations."""
         stations = self.db.all()
 
+        title_line = "Stations Dashboard\n---------------------------"
+
         if not stations:
-            return "No stations connected."
+            return f"{title_line}\nNo stations connected."
 
         # Sort stations if requested and attribute exists
         if sort_by and hasattr(Station, sort_by):
@@ -53,7 +55,7 @@ class StationDashboard:
             for row in rows
         ]
 
-        return "\n".join([header_line, sep_line] + body_lines)
+        return "\n".join([title_line, header_line, sep_line] + body_lines)
 
     def show(
         self,

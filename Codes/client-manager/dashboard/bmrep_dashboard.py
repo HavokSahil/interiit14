@@ -13,25 +13,28 @@ class BeaconMeasurementDashboard:
         """Return formatted table string of all BeaconReports in the database."""
         rows = []
 
+        title_line = "Beacon Measurement Dashboard\n----------------------------------"
+
         # Flatten all BeaconReports from all measurements
-        for sta_mac, bms in self.db.all().items():
+        for sta_mac, bms in self.db.raw().items():
             for bm in bms:
                 for report in bm.beacon_reports:
-                    rows.append({
-                        "STA MAC": sta_mac,
-                        "Token": bm.measurement_token,
-                        "SSID": report.parse_ssid(),
-                        "BSSID": report.bssid,
-                        "Channel": report.channel_number,
-                        "RCPI": report.rssi_dbm,
-                        "RSNI": report.snr_db,
-                        "Start TSF": report.measurement_start_time,
-                        "Duration TU": report.measurement_duration,
-                        "Antenna": report.antenna_id
-                    })
+                    if report.parse_ssid() != "N/A" and report.parse_ssid().isprintable():
+                        rows.append({
+                            "STA MAC": sta_mac,
+                            "Token": bm.measurement_token,
+                            "SSID": report.parse_ssid()[:16],
+                            "BSSID": report.bssid,
+                            "Channel": report.channel_number,
+                            "RCPI": report.rssi_dbm,
+                            "RSNI": report.snr_db,
+                            "Start TSF": report.measurement_start_time,
+                            "Duration TU": report.measurement_duration,
+                            "Antenna": report.antenna_id
+                        })
 
         if not rows:
-            return "No beacon measurements."
+            return f"{title_line}\nNo beacon measurements."
 
         # Sort by a valid column
         if sort_by and sort_by in rows[0]:
@@ -51,7 +54,7 @@ class BeaconMeasurementDashboard:
             for row in rows
         ]
 
-        return "\n".join([header_line, sep_line] + body_lines)
+        return "\n".join([title_line, header_line, sep_line] + body_lines)
 
     def show(
         self,

@@ -93,64 +93,119 @@ def parse_link_measurement(dot11) -> Optional[LinkMeasurement]:
 
 def parse_bss_tm_response(dot11) -> Optional[BSSTransitionResponse]:
     """
-    Convert a Scapy 802.11v BSS Transition Management Response into a BSSTransitionResponse object.
-    Returns None if the frame is not a BSS TM Response.
-    Logs each step for debugging.
+    Parse an 802.11v BSS Transition Management Response.
+    Keeps Logger.log_info() calls for full traceability.
     """
+
     Logger.log_info("Starting parse_bss_tm_response")
 
-    # Check for Dot11 layer
+    # -------------------------------------------------------------
+    # Validate Action frame
+    # -------------------------------------------------------------
     if not dot11.haslayer(Dot11):
-        Logger.log_info("No Dot11 layer found")
+        Logger.log_info("No Dot11 layer found → abort")
         return None
 
-    # Only management action frames
     if dot11.type != 0 or dot11.subtype != 13:
-        Logger.log_info(f"Not a management action frame: type={dot11.type}, subtype={dot11.subtype}")
+        Logger.log_info(f"Not mgmt-action: type={dot11.type}, subtype={dot11.subtype}")
         return None
-    Logger.log_info("Confirmed management action frame")
 
-    # Ensure Dot11Action layer exists
     action = dot11.getlayer(Dot11Action)
     if not action:
-        Logger.log_info("No Dot11Action layer found")
+        Logger.log_info("Dot11Action layer missing")
         return None
-    Logger.log_info("Found Dot11Action layer")
 
-    # Radio Management category (10) for WNM / BSS Transition Response
     category = getattr(action, "category", None)
     act = getattr(action, "action", None)
-    Logger.log_info(f"Action layer category={category}, action={act}")
-    if category != 10 or act != 1:
+    Logger.log_info(f"Action category={category}, action={act}")
+
+    # WNM = 10, BSS TM Response = 8
+    if category != 10 or act != 8:
         Logger.log_info("Not a BSS Transition Management Response")
         return None
 
-    # Extract fields
-    dialog_token = getattr(action, "dialog_token", 0)
-    status_code = getattr(action, "status_code", 1)  # default failure
+    # -------------------------------------------------------------
+    # Extract raw payload
+    # -------------------------------------------------------------
+    raw = bytes(action.payload)
+    Logger.log_info(f"Raw BSS TM Response payload: {raw.hex()}")
 
-    bss_termination_delay = getattr(action, "bss_term_delay", None)
-    disassoc_timer = getattr(action, "disassoc_timer", None)
-    target_bssid = getattr(action, "target_bssid", None)
-    preference = getattr(action, "bss_preference", None)
-    abridged = getattr(action, "abridged", None)
-    recomm_bss_list = getattr(action, "recomm_bss_list", [])
+    if len(raw) < 3:
+        Logger.log_info("Payload too short (<3 bytes)")
+        return None
 
+    dialog_token = raw[0]
+    status_code = raw[1]
+    bss_term_delay = raw[2]
     Logger.log_info(
-        f"Extracted BSS TM Response fields: dialog_token={dialog_token}, status_code={status_code}, "
-        f"bss_term_delay={bss_termination_delay}, disassoc_timer={disassoc_timer}, "
-        f"target_bssid={target_bssid}, preference={preference}, abridged={abridged}, "
-        f"recomm_bss_list={recomm_bss_list}"
+        f"Parsed fixed fields → dialog_token={dialog_token}, "
+        f"status_code={status_code}, bss_term_delay={bss_term_delay}"
     )
 
-    Logger.log_info("Completed parse_bss_tm_response")
-    return BSSTransitionResponse(
+    idx = 3  # cursor
+
+    # -------------------------------------------------------------
+    # Optional Target BSSID (exists only if status_code == 0)
+    # -------------------------------------------------------------
+    target_bssid = None
+
+    if status_code == 0:
+        if len(raw) >= idx + 6:
+            target_bssid = ":".join(f"{b:02x}" for b in raw[idx:idx+6])
+            Logger.log_info(f"Found Target BSSID: {target_bssid}")
+            idx += 6
+        else:
+            Logger.log_info("Status=0 but frame too short for target BSSID")
+
+    # -------------------------------------------------------------
+    # Parse remaining IEs
+    # -------------------------------------------------------------
+    neighbor_reports = []
+    vendor_ies = []
+    extra_ies = []
+
+    Logger.log_info("Beginning IE parsing loop")
+
+    while idx + 2 <= len(raw):
+        eid = raw[idx]
+        length = raw[idx+1]
+        ie_data = raw[idx+2:idx+2+length]
+
+        if len(ie_data) != length:
+            Logger.log_info(f"Malformed IE at idx={idx}, break")
+            break
+
+        Logger.log_info(f"IE: eid={eid}, len={length}, data={ie_data.hex()}")
+
+        if eid == 52:  # Neighbor Report IE
+            Logger.log_info(" → Neighbor Report IE found")
+            neighbor_reports.append({"raw": ie_data})
+
+        elif eid == 221:  # Vendor Specific IE
+            Logger.log_info(" → Vendor Specific IE found")
+            vendor_ies.append({
+                "oui": ie_data[:3].hex(),
+                "subtype": ie_data[3] if len(ie_data) > 3 else None,
+                "data": ie_data
+            })
+
+        else:
+            extra_ies.append({"eid": eid, "data": ie_data})
+
+        idx += 2 + length
+
+    Logger.log_info("Completed IE parsing")
+
+    result = BSSTransitionResponse(
         dialog_token=dialog_token,
         status_code=status_code,
-        bss_termination_delay=bss_termination_delay,
-        disassoc_timer=disassoc_timer,
+        bss_termination_delay=bss_term_delay,
         target_bssid=target_bssid,
-        preference=preference,
-        abridged=abridged,
-        recomm_bss_list=recomm_bss_list
+        neighbor_reports=neighbor_reports,
+        vendor_ies=vendor_ies,
+        extra_ies=extra_ies
     )
+
+    Logger.log_info(f"Completed parse_bss_tm_response → {result}")
+
+    return result

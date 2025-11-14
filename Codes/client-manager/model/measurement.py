@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List
-from scapy.all import Packet, ByteField, StrLenField
 from logger import Logger
 
 @dataclass
@@ -27,12 +26,13 @@ class BeaconReport:
         return self.rsni / 2 - 10
 
     def parse_ssid(self) -> Optional[str]:
-        if self.ssid:
+        if self.ssid is not None:
             return self.ssid
-            
+
         if not self.reported_frame_body:
             Logger.log_info("parse_ssid: reported_frame_body is None")
-            return None
+            self.ssid = "N/A"
+            return self.ssid
 
         # Skip fixed fields: Timestamp (8) + Beacon Interval (2) + Capabilities (2)
         idx = 12
@@ -45,6 +45,7 @@ class BeaconReport:
 
             if idx + 2 + ie_len > len(self.reported_frame_body):
                 Logger.log_info("parse_ssid: IE length exceeds buffer, stopping parse")
+                self.ssid = "N/A"
                 break
 
             if ie_id == 0:  # SSID IE
@@ -53,13 +54,14 @@ class BeaconReport:
                     Logger.log_info(f"parse_ssid: Found SSID='{self.ssid}'")
                 except Exception as e:
                     Logger.log_info(f"parse_ssid: Failed to decode SSID: {e}")
-                    self.ssid = None
+                    self.ssid = "N/A"
                 return self.ssid
 
             idx += 2 + ie_len
 
         Logger.log_info("parse_ssid: No SSID IE found")
-        return None
+        self.ssid = "N/A"
+        return "N/A"
 
 
 
@@ -169,8 +171,6 @@ class BeaconMeasurement:
             beacon_reports=beacon_reports
         )
 
-
-
 @dataclass
 class LinkMeasurement:
     """802.11k Link Measurement Report"""
@@ -241,27 +241,63 @@ class LinkMeasurement:
         )
 
 
+from dataclasses import dataclass, field
+from typing import Optional, List, Dict
+
+
 @dataclass
 class BSSTransitionResponse:
-    """802.11v BSS Transition Management Response"""
+    """
+    Parsed representation of an 802.11v BSS Transition Management Response
+    (Action Code = 8 under WNM category 10).
+    """
 
-    dialog_token: int                         # matches request token
-    status_code: int                          # 0=accept, non-zero=reject reason
-    bssid: Optional[str] = None               # AP responding
-    disassoc_timer: Optional[int] = None      # time until disassociation (TU)
-    validity_interval: Optional[int] = None   # seconds
-    target_bss: Optional[List[str]] = field(default_factory=list)  # suggested BSSIDs
+    dialog_token: int                      # must match the Request’s token
+    status_code: int                       # 0 = accept, >0 = reject (802.11v Table 9-348)
+    bss_termination_delay: int = 0         # always present (1 byte)
 
-    neighbor_report: Optional[Dict[str, Dict]] = field(default_factory=dict)
-    cab_mgmt_info: Optional[Dict[str, bytes]] = field(default_factory=dict)  # CAP/management info
-    vendor_info: Optional[Dict[str, bytes]] = field(default_factory=dict)
+    # Optional fields depending on AP implementation
+    target_bssid: Optional[str] = None     # Only present if STA accepted transition
+    candidate_list: List[Dict] = field(default_factory=list)
+    neighbor_reports: List[Dict] = field(default_factory=list)
+
+    # Vendor-specific tags (MBO, OCE, proprietary)
+    vendor_ies: List[Dict[str, bytes]] = field(default_factory=list)
+
+    # Raw unknown IEs for forward compatibility
+    extra_ies: List[Dict[str, bytes]] = field(default_factory=list)
+
+    # ----------------------------------------------------
+    # Convenience properties
+    # ----------------------------------------------------
+    @property
+    def accepted(self) -> bool:
+        """True if the STA accepted the BSS transition suggestion."""
+        return self.status_code == 0
 
     @property
-    def will_disassociate(self) -> bool:
-        """Check if AP plans to disassociate this STA soon."""
-        return self.disassoc_timer is not None and self.disassoc_timer > 0
+    def rejected(self) -> bool:
+        return not self.accepted
 
     @property
-    def num_targets(self) -> int:
-        """Number of suggested target BSSs."""
-        return len(self.target_bss)
+    def has_candidates(self) -> bool:
+        """Whether the response contains any candidate BSS entries."""
+        return len(self.candidate_list) > 0
+
+    @property
+    def has_vendor_extensions(self) -> bool:
+        return len(self.vendor_ies) > 0
+
+    @property
+    def termination_imminent(self) -> bool:
+        """Non-zero termination delay means AP plans to disassociate soon."""
+        return self.bss_termination_delay > 0
+
+    def __repr__(self):
+        return (
+            f"<BSSTransitionResponse token={self.dialog_token} "
+            f"status={self.status_code} "
+            f"target={self.target_bssid} "
+            f"candidates={len(self.candidate_list)} "
+            f"vendorIEs={len(self.vendor_ies)}>"
+        )

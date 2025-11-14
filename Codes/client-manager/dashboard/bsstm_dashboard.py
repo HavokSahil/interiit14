@@ -15,8 +15,10 @@ class BSSTransitionResponseDashboard:
         for resps in self.db.all().values():  # Flatten by station
             responses.extend(resps)
 
+        title_line = "BSS Transition Reports Dashboard\n----------------------------------"
+
         if not responses:
-            return "No BSS Transition responses."
+            return f"{title_line}\nNo BSS Transition responses."
 
         # Sort by attribute if valid
         if sort_by and hasattr(BSSTransitionResponse, sort_by):
@@ -57,7 +59,7 @@ class BSSTransitionResponseDashboard:
             for row in rows
         ]
 
-        return "\n".join([header_line, sep_line] + body_lines)
+        return "\n".join([title_line, header_line, sep_line] + body_lines)
 
     def show(
         self,
