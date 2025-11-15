@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "db_name": "bsstmdb",
+    "db_type": "BSSTransitionResponseDB",
+    "session_id": "20251115_075751",
+    "batch_number": 6,
+    "timestamp": "2025-11-15T08:00:52.008962",
+    "unix_timestamp": 1763173852,
+    "record_count": 1,
+    "data_size_bytes": null,
+    "version": "1.0"
+  },
+  "data": {
+    "8e:bd:eb:c7:b9:38": {
+      "1": {
+        "dialog_token": 1,
+        "status_code": 1,
+        "bss_termination_delay": 0,
+        "target_bssid": null,
+        "candidate_list": [],
+        "neighbor_reports": [],
+        "vendor_ies": [
+          {
+            "oui": "506f9a",
+            "subtype": 22,
+            "data": 
