@@ -44,7 +44,7 @@ class BeaconMeasurementDashboard:
                         rows.append({
                             "STA MAC": sta_mac,
                             "Token": bm.measurement_token,
-                            "SSID": ssid[:16],
+                            "SSID": ssid.replace("IITP", "Campus")[:16],
                             "BSSID": report.bssid,
                             "Channel": report.channel_number,
                             "RCPI": report.rssi_dbm,

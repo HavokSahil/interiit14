@@ -60,7 +60,7 @@ class NeighborRankingDashboard:
                         "STA MAC": sta_mac,
                         "Rank": rank,
                         "BSSID": neighbor.bssid,
-                        "SSID": neighbor.ssid[:18],
+                        "SSID": neighbor.ssid.replace("IITP", "Campus")[:18],
                         "RCPI": rcpi_to_db(rcpi_val),
                         "RSNI": rsni_to_db(rsni_val),
                         "Channel": getattr(neighbor, "channel", "N/A"),
