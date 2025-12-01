@@ -18,5 +18,4 @@ networkx>=3.0
 # Utilities
 scikit-learn>=1.2.0
 
-# Already available (from main simulation)
-# pygame (for visualization)
+pygame

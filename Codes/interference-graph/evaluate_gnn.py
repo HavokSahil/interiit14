@@ -25,7 +25,7 @@ def load_trained_model(model_path: str, device: str = 'cpu') -> InterferenceGNN:
     Returns:
         Loaded model
     """
-    checkpoint = torch.load(model_path, map_location=device)
+    checkpoint = torch.load(model_path, map_location=device, weights_only=False)
     
     model = InterferenceGNN(
         in_channels=9,
@@ -235,7 +235,9 @@ def compute_metrics(data: Data, predicted_edges: np.ndarray, edge_probs: np.ndar
         'mae': mae,
         'precision': precision,
         'recall': recall,
-        'f1': f1
+        'f1': f1,
+        'num_true_edges': len(true_edge_dict),
+        'num_pred_edges': len(pred_edge_dict)
     }
 
 
@@ -249,7 +251,7 @@ def main():
     model_path = 'models/best_model.pt'
     log_dir = 'logs'
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    threshold = 0.5
+    threshold = 0.2
     
     # Load model
     print("\n[1/4] Loading trained model...")
@@ -272,7 +274,7 @@ def main():
     
     for i, data in enumerate(test_data):
         pred_edges, edge_probs = predict_graph(model, data, threshold, device)
-        metrics = compute_metrics(data, pred_edges)
+        metrics = compute_metrics(data, pred_edges, edge_probs)
         all_metrics.append(metrics)
         
         if i < 3:  # Visualize first 3 samples

@@ -208,9 +208,9 @@ class SimulationDataLoader:
     def load_normalization_stats(self, path: str) -> None:
         """Load normalization statistics from file."""
         if not os.path.exists(path):
-            raise FileNotFoundError(f"Stats file not found: {path}")
+            raise FileNotFoundError(f"Normalization stats not found at {path}")
             
-        stats = torch.load(path)
+        stats = torch.load(path, weights_only=False)
         self.feature_mean = stats['mean']
         self.feature_std = stats['std']
         print(f"Loaded normalization stats from {path}")
