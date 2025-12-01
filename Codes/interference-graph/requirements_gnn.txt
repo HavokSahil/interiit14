@@ -1,0 +1,22 @@
+# Requirements for GNN-based interference graph prediction
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+--find-links https://data.pyg.org/whl/torch-2.9.1+cpu.html
+
+# Core dependencies
+torch==2.9.1
+torch-geometric==2.5.0
+
+# Data processing
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Visualization
+matplotlib>=3.7.0
+networkx>=3.0
+
+# Utilities
+scikit-learn>=1.2.0
+
+# Already available (from main simulation)
+# pygame (for visualization)
