@@ -17,7 +17,7 @@ class InterferenceGNN(nn.Module):
     Graph Neural Network for predicting interference edge weights between APs.
     
     Architecture:
-        - Input: Node features (6D: energy, throughput, clients, duty_cycle, roam_in, roam_out)
+        - Input: Node features (11D: ch1_energy, ch6_energy, ch11_energy, throughput, clients, duty_cycle, roam_in, roam_out, channel, bandwidth, tx_power)
         - EdgeConv layers for edge-aware message passing
         - Edge predictor for weight regression
         
@@ -28,7 +28,7 @@ class InterferenceGNN(nn.Module):
     """
     
     def __init__(self, 
-                 in_channels: int = 6,
+                 in_channels: int = 11,
                  hidden_channels: int = 32,
                  num_layers: int = 3,
                  dropout: float = 0.2,
@@ -373,7 +373,7 @@ if __name__ == "__main__":
     
     print("\nInitializing model...")
     model = InterferenceGNN(
-        in_channels=9,  # 9 node features (added channel, bandwidth, tx_power)
+        in_channels=11,  # 11 node features (3 channel energies + 8 other features)
         hidden_channels=32,
         num_layers=3,  # EdgeConv typically uses more layers
         dropout=0.2

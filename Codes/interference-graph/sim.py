@@ -122,11 +122,14 @@ class WirelessSimulation:
         
         print("\nAP Status:")
         for ap in self.access_points:
-            energy_str = f"{ap.inc_energy:.1f}" if ap.inc_energy != float('-inf') else "-inf"
+            # Format energy for display: show per-channel or aggregate
+            ch1_str = f"{ap.inc_energy_ch1:.1f}" if ap.inc_energy_ch1 != float('-inf') else "-inf"
+            ch6_str = f"{ap.inc_energy_ch6:.1f}" if ap.inc_energy_ch6 != float('-inf') else "-inf"
+            ch11_str = f"{ap.inc_energy_ch11:.1f}" if ap.inc_energy_ch11 != float('-inf') else "-inf"
             print(f"  AP {ap.id}: DT={APMetricsManager.ap_duty(ap):.2f}, "
                   f"Clients={len(ap.connected_clients)}, "
                   f"Channel={ap.channel}, "
-                  f"IncEnergy={energy_str}dBm, "
+                  f"Energy=[Ch1:{ch1_str}, Ch6:{ch6_str}, Ch11:{ch11_str}]dBm, "
                   f"Position=({ap.x:.1f}, {ap.y:.1f})")
         
         print("\nClient Status:")
@@ -224,7 +227,7 @@ class SimulationVisualizer:
             # Load model
             checkpoint = torch.load(model_path, map_location=self.gnn_device, weights_only=False)
             self.gnn_model = InterferenceGNN(
-                in_channels=9,  # 9 node features
+                in_channels=11,  # 11 node features (3 channel energies + 8 other features)
                 hidden_channels=32,
                 num_layers=3,  # EdgeConv
                 dropout=0.2
@@ -249,8 +252,10 @@ class SimulationVisualizer:
         # Extract features for each AP
         ap_features = []
         for ap in self.sim.access_points:
-            # 1. Incoming energy (raw)
-            inc_energy = ap.inc_energy if ap.inc_energy != float('-inf') else -100.0
+            # 1-3. Incoming energy (raw) for each channel
+            inc_energy_ch1 = ap.inc_energy_ch1 if ap.inc_energy_ch1 != float('-inf') else -100.0
+            inc_energy_ch6 = ap.inc_energy_ch6 if ap.inc_energy_ch6 != float('-inf') else -100.0
+            inc_energy_ch11 = ap.inc_energy_ch11 if ap.inc_energy_ch11 != float('-inf') else -100.0
             
             # 2. Throughput
             # connected_clients contains IDs, so we look up the objects
@@ -280,7 +285,9 @@ class SimulationVisualizer:
             tx_power = float(ap.tx_power)
             
             ap_features.append([
-                inc_energy,
+                inc_energy_ch1,
+                inc_energy_ch6,
+                inc_energy_ch11,
                 total_throughput,
                 float(num_clients),
                 duty_cycle,
@@ -361,7 +368,10 @@ class SimulationVisualizer:
             # Create NetworkX graph
             G = nx.DiGraph()
             for i, ap in enumerate(self.sim.access_points):
-                G.add_node(ap.id)
+                G.add_node(ap.id, x=ap.x, y=ap.y, tx_power=ap.tx_power, 
+                          load=APMetricsManager.ap_duty(ap), num_clients=len(ap.connected_clients),
+                          channel=ap.channel, max_throughput=ap.max_throughput,
+                          airtime_utilization=APMetricsManager.ap_duty(ap))
             
             for (src, dst), prob in zip(predicted_edges.T, filtered_probs):
                 src_id = self.sim.access_points[src].id
@@ -469,8 +479,18 @@ class SimulationVisualizer:
             id_text = self.small_font.render(str(ap.id), True, self.TEXT_COLOR)
             self.screen.blit(id_text, (pos[0] - 4, pos[1] - 5))
             
-            # Draw AP info
-            energy_str = f"{ap.inc_energy:.1f}" if ap.inc_energy != float('-inf') else "-inf"
+            # Show aggregate energy for display (sum across channels)
+            energies = [ap.inc_energy_ch1, ap.inc_energy_ch6, ap.inc_energy_ch11]
+            valid_energies = [e for e in energies if e != float('-inf')]
+            if valid_energies:
+                # Convert dBm to mW, sum, convert back to dBm
+                from utils import dbm_to_mw
+                total_mw = sum(dbm_to_mw(e) for e in valid_energies)
+                import math
+                energy_str = f"{10 * math.log10(total_mw):.1f}"
+            else:
+                energy_str = "-inf"
+            
             info_text = self.small_font.render(
                 f"Ch{ap.channel} DUTY:{APMetricsManager.ap_duty(ap):.2f} C:{len(ap.connected_clients)} E:{energy_str}",
                 True, self.TEXT_COLOR

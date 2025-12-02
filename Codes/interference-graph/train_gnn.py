@@ -381,7 +381,7 @@ def main():
     # Initialize model
     print("\n[3/4] Initializing model...")
     model = InterferenceGNN(
-        in_channels=9,  # 9 node features (energy, throughput, clients, duty, roam_in, roam_out, channel, bw, tx_power)
+        in_channels=11,  # 11 node features (3 channel energies: ch1, ch6, ch11 + 8 other features)
         hidden_channels=config['hidden_channels'],
         num_layers=config['num_layers'],
         dropout=config['dropout']
@@ -389,7 +389,7 @@ def main():
     
     print(f"Model architecture:")
     print(f"  Type: EdgeConv (Edge-Aware Message Passing)")
-    print(f"  Input features: 9 (added channel, bandwidth, tx_power)")
+    print(f"  Input features: 11 (3 channel energies + throughput, clients, duty, roam_in, roam_out, channel, bw, tx_power)")
     print(f"  Hidden channels: {config['hidden_channels']}")
     print(f"  EdgeConv layers: {config['num_layers']}")
     print(f"  Dropout: {config['dropout']}")

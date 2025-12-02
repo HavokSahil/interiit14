@@ -12,7 +12,9 @@ class AccessPoint:
     bandwidth: float = 20.0
     noise_floor: float = -95.0 # in dBm
     max_throughput: float = 100.0
-    inc_energy: float = 0.0 # in mW
+    inc_energy_ch1: float = float('-inf') # Incident energy on channel 1 in dBm
+    inc_energy_ch6: float = float('-inf') # Incident energy on channel 6 in dBm
+    inc_energy_ch11: float = float('-inf') # Incident energy on channel 11 in dBm
     total_allocated_throughput: float = 0.0
     connected_clients: List[int] = field(default_factory=list)
     roam_in: int = 0 # number of clients currently roaming into the AP

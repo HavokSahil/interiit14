@@ -45,7 +45,7 @@ class SimulationLogger:
             writer.writerow([
                 'step', 'ap_id', 'x', 'y', 'tx_power', 'channel', 'bandwidth',
                 'noise_floor', 'max_throughput', 'allocated_throughput',
-                'duty_cycle', 'num_clients', 'inc_energy_dbm'
+                'duty_cycle', 'num_clients', 'inc_energy_ch1_dbm', 'inc_energy_ch6_dbm', 'inc_energy_ch11_dbm'
             ])
     
     def _init_client_log(self):
@@ -86,13 +86,17 @@ class SimulationLogger:
             writer = csv.writer(f)
             for ap in access_points:
                 duty_cycle = APMetricsManager.ap_duty(ap)
-                inc_energy = ap.inc_energy if ap.inc_energy != float('-inf') else None
+                inc_energy_ch1 = ap.inc_energy_ch1 if ap.inc_energy_ch1 != float('-inf') else None
+                inc_energy_ch6 = ap.inc_energy_ch6 if ap.inc_energy_ch6 != float('-inf') else None
+                inc_energy_ch11 = ap.inc_energy_ch11 if ap.inc_energy_ch11 != float('-inf') else None
                 
                 writer.writerow([
                     step, ap.id, ap.x, ap.y, ap.tx_power, ap.channel, ap.bandwidth,
                     ap.noise_floor, ap.max_throughput, ap.total_allocated_throughput,
                     f"{duty_cycle:.4f}", len(ap.connected_clients), 
-                    f"{inc_energy:.2f}" if inc_energy is not None else "N/A"
+                    f"{inc_energy_ch1:.2f}" if inc_energy_ch1 is not None else "N/A",
+                    f"{inc_energy_ch6:.2f}" if inc_energy_ch6 is not None else "N/A",
+                    f"{inc_energy_ch11:.2f}" if inc_energy_ch11 is not None else "N/A"
                 ])
     
     def log_client_state(self, step: int, clients: List[Client]):

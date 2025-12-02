@@ -96,16 +96,23 @@ class APMetricsManager:
 
     def compute_ap_incoming_energy(self) -> None:
         """
-        Compute the incoming received signal energy at each AP from all other APs and clients.
-        This represents the total energy detected by the AP's additional sensing radio.
+        Compute the incoming received signal energy at each AP from all other APs and clients,
+        separated by channel (1, 6, 11).
+        This represents the energy detected by the AP's additional sensing radio on each channel.
         Energy is measured in dBm.
         """
-        # Reset incoming energy for all APs
+        # Channels to track
+        CHANNELS = [1, 6, 11]
+        
+        # Reset incoming energy for all APs and all channels
         for ap in self.access_points:
-            ap.inc_energy = float('-inf')  # -inf dBm means no energy
+            ap.inc_energy_ch1 = float('-inf')
+            ap.inc_energy_ch6 = float('-inf')
+            ap.inc_energy_ch11 = float('-inf')
         
         for rx_ap in self.access_points:
-            total_energy_mw = 0.0
+            # Track energy per channel in milliwatts
+            channel_energy_mw = {ch: 0.0 for ch in CHANNELS}
             
             # 1. Energy from all other APs (downlink transmissions)
             for tx_ap in self.access_points:
@@ -117,32 +124,55 @@ class APMetricsManager:
                 
                 # Compute received power at rx_ap from tx_ap using propagation model
                 received_power_dbm = self.model.compute_received_power(tx_ap.tx_power, dist)
-                
-                # Convert to milliwatts and accumulate
                 received_power_mw = dbm_to_mw(received_power_dbm)
-                total_energy_mw += received_power_mw
+                
+                # Add energy to each channel bucket based on overlap with tx_ap's channel
+                for sense_ch in CHANNELS:
+                    # Create temporary AP objects to compute overlap
+                    # We check if tx_ap's transmission overlaps with the sensing channel
+                    overlap = compute_channel_overlap(
+                        tx_ap.channel, sense_ch, 
+                        tx_ap.bandwidth, 20.0  # Assume 20 MHz sensing bandwidth
+                    )
+                    if overlap > 0.01:  # Only add if there's meaningful overlap
+                        channel_energy_mw[sense_ch] += received_power_mw * overlap
             
             # 2. Energy from all clients (uplink transmissions)
             # Assuming clients transmit with a typical uplink power (e.g., 15 dBm)
-            # You can make this configurable or add a tx_power field to Client dataclass
             client_tx_power_dbm = 15.0  # Typical client uplink power
             
             for client in self.clients:
+                if client.associated_ap is None:
+                    continue
+                
+                # Get the AP the client is associated with to know which channel it's using
+                client_ap = next((ap for ap in self.access_points if ap.id == client.associated_ap), None)
+                if client_ap is None:
+                    continue
+                
                 # Compute distance between AP and client
                 dist = compute_distance(rx_ap.x, rx_ap.y, client.x, client.y)
                 
                 # Compute received power at rx_ap from client
                 received_power_dbm = self.model.compute_received_power(client_tx_power_dbm, dist)
-                
-                # Convert to milliwatts and accumulate
                 received_power_mw = dbm_to_mw(received_power_dbm)
-                total_energy_mw += received_power_mw
+                
+                # Add energy to each channel bucket based on overlap
+                for sense_ch in CHANNELS:
+                    overlap = compute_channel_overlap(
+                        client_ap.channel, sense_ch,
+                        client_ap.bandwidth, 20.0
+                    )
+                    if overlap > 0.01:
+                        channel_energy_mw[sense_ch] += received_power_mw * overlap
             
-            # Convert total energy from milliwatts to dBm
-            if total_energy_mw > 0:
-                rx_ap.inc_energy = 10 * math.log10(total_energy_mw)
-            else:
-                rx_ap.inc_energy = float('-inf')  # No energy detected
+            # Convert channel energies from milliwatts to dBm
+            if channel_energy_mw[1] > 0:
+                rx_ap.inc_energy_ch1 = 10 * math.log10(channel_energy_mw[1])
+            if channel_energy_mw[6] > 0:
+                rx_ap.inc_energy_ch6 = 10 * math.log10(channel_energy_mw[6])
+            if channel_energy_mw[11] > 0:
+                rx_ap.inc_energy_ch11 = 10 * math.log10(channel_energy_mw[11])
             
     def allocate_airtime(self) -> None:
         """Allocate airtime and throughput to each associated client."""

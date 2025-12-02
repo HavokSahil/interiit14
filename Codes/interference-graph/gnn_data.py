@@ -75,30 +75,33 @@ class SimulationDataLoader:
         """
         Extract features for a single AP.
         
-        Features (9D):
-            1. inc_energy_dbm: Incoming energy/interference (raw values)
-            2. total_allocated_throughput: Sum of allocated throughput to connected clients
-            3. num_connected_clients: Number of connected clients
-            4. duty_cycle: AP airtime utilization
-            5. roam_in: Number of clients roamed in
-            6. roam_out: Number of clients roamed out
-            7. channel: Operating channel number
-            8. bandwidth: Channel bandwidth (MHz)
-            9. tx_power: Transmission power (dBm)
+        Features (11D):
+            1. inc_energy_ch1_dbm: Incoming energy on channel 1 (raw values)
+            2. inc_energy_ch6_dbm: Incoming energy on channel 6 (raw values)
+            3. inc_energy_ch11_dbm: Incoming energy on channel 11 (raw values)
+            4. total_allocated_throughput: Sum of allocated throughput to connected clients
+            5. num_connected_clients: Number of connected clients
+            6. duty_cycle: AP airtime utilization
+            7. roam_in: Number of clients roamed in
+            8. roam_out: Number of clients roamed out
+            9. channel: Operating channel number
+            10. bandwidth: Channel bandwidth (MHz)
+            11. tx_power: Transmission power (dBm)
         
         Args:
             ap: AP state dictionary
             
         Returns:
-            List of 9 feature values
+            List of 11 feature values
         """
-        # Raw inc_energy (will be z-score normalized later)
-        inc_energy = float(ap['inc_energy_dbm']) if ap['inc_energy_dbm'] != 'N/A' else -100.0
+        # Raw inc_energy for each channel (will be z-score normalized later)
+        inc_energy_ch1 = float(ap['inc_energy_ch1_dbm']) if ap['inc_energy_ch1_dbm'] != 'N/A' else -100.0
+        inc_energy_ch6 = float(ap['inc_energy_ch6_dbm']) if ap['inc_energy_ch6_dbm'] != 'N/A' else -100.0
+        inc_energy_ch11 = float(ap['inc_energy_ch11_dbm']) if ap['inc_energy_ch11_dbm'] != 'N/A' else -100.0
         
         # Client and traffic features
-        # Corrected column name: 'allocated_throughput' instead of 'total_allocated_throughput'
         total_throughput = float(ap['allocated_throughput'])
-        num_clients = int(ap['num_clients']) # Corrected from num_connected_clients if needed, but logs say num_clients
+        num_clients = int(ap['num_clients'])
         
         # Airtime duty cycle
         duty_cycle = float(ap['duty_cycle']) if 'duty_cycle' in ap else 0.0
@@ -107,14 +110,15 @@ class SimulationDataLoader:
         roam_in = int(ap.get('roam_in', 0))
         roam_out = int(ap.get('roam_out', 0))
         
-        # RF parameters (new features)
+        # RF parameters
         channel = int(ap.get('channel', 0))
         bandwidth = int(ap.get('bandwidth', 20))  # Default 20 MHz
-        # Corrected column name: 'tx_power' instead of 'tx_power_dbm'
-        tx_power = float(ap.get('tx_power', 20.0)) 
+        tx_power = float(ap.get('tx_power', 20.0))
         
         return [
-            inc_energy,
+            inc_energy_ch1,
+            inc_energy_ch6,
+            inc_energy_ch11,
             total_throughput,
             num_clients,
             duty_cycle,

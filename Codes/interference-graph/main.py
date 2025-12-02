@@ -3,6 +3,7 @@ from datatype import *
 from metrics import *
 from sim import *
 from utils import *
+from generate_training_data import create_random_topology
 
 def main():
     env = Environment(x_min=0, x_max=50, y_min=0, y_max=50)
@@ -12,22 +13,20 @@ def main():
     
     sim = WirelessSimulation(env, fading_model, interference_threshold_dbm=-75.0, enable_logging=True)
 
-    sim.add_access_point(AccessPoint(id=0, x=10, y=10, tx_power=25, channel=1, 
-                                     bandwidth=20, max_throughput=150.0))
-    sim.add_access_point(AccessPoint(id=1, x=40, y=10, tx_power=25, channel=11, 
-                                     bandwidth=20, max_throughput=150.0))
-    sim.add_access_point(AccessPoint(id=2, x=25, y=25, tx_power=25, channel=1, 
-                                     bandwidth=20, max_throughput=150.0))                                     
-    sim.add_access_point(AccessPoint(id=3, x=10, y=40, tx_power=25, channel=1, 
-                                     bandwidth=20, max_throughput=150.0))
-    sim.add_access_point(AccessPoint(id=4, x=40, y=40, tx_power=25, channel=1, 
-                                     bandwidth=20, max_throughput=150.0))
+    N_ap = 4
+    ap_positions = create_random_topology(N_ap, env)
+    for i, (x, y) in enumerate(ap_positions):
+        channel = random.choice([1, 6, 11])
+        tx_power = random.uniform(20, 30)
+        sim.add_access_point(AccessPoint(id=i, x=x, y=y, tx_power=tx_power, channel=channel, 
+                                         bandwidth=20, max_throughput=150.0))
 
-    for i in range(25):
-        x = random.uniform(5, 45)
-        y = random.uniform(5, 45)
+    N_client = 25
+    client_positions = create_random_topology(N_client, env)
+    for i, (x, y) in enumerate(client_positions):
         demand_mbps = random.uniform(5, 30)
-        sim.add_client(Client(id=i, x=x, y=y, demand_mbps=demand_mbps))
+        velocity = random.uniform(0.5, 2.0)
+        sim.add_client(Client(id=i, x=x, y=y, demand_mbps=demand_mbps, velocity=velocity))
 
 
     sim.initialize()
