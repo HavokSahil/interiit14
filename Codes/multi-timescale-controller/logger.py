@@ -185,6 +185,13 @@ class SimulationLogger:
         if graph is not None:
             self.log_interference_graph(step, graph)
     
+    def log(self, message: str):
+        """
+        Log a generic message to console or file.
+        For now, just print to console with timestamp.
+        """
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
+
     def print_summary(self):
         """Print summary of logged data."""
         print("\n=== Logging Summary ===")
