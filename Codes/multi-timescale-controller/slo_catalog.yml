@@ -1,0 +1,419 @@
+# slo_catalog.yml
+# Hybrid SLO catalog for Policy, SLOs & Compliance
+# Version: 1.1
+
+version: 1.1
+description: "Hybrid SLO catalog combining project spec values with vendor guidance. Contains roles for ExamHall, QoS classes, and IoT."
+
+global:
+  percentiles:
+    tail: "P95"        # tail-sensitive metrics
+    congestion: "P50"  # congestion/typical metrics
+  
+  normalizers:
+    RSSI_min: -95
+    RSSI_max: -30
+    SNR_min: 0
+    SNR_max: 50
+    PER_max_pct: 20
+    Retry_max_pct: 30
+  
+  defaults:
+    monitoring_window_seconds: 300
+    penalty_clip_max: 1.0
+    penalty_scale_for_BO_reward: 3.0
+    warning_threshold: 0.03
+    critical_threshold: 0.10
+
+roles:
+  ExamHallStrict:
+    display_name: "Exam Hall (Strict)"
+    purpose: "High-density exam mode. Enforce strict fairness and stability."
+    qos_weights:
+      ws: 0.10
+      wt: 0.15
+      wr: 0.30
+      wl: 0.30
+      wa: 0.15
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -66
+        authority: "P95"
+        action: "IncreaseTxPower/Steer"
+      SNR_dB:
+        operator: ">="
+        value: 20
+        authority: "P95"
+        action: "Notify/Steer"
+      PER_pct:
+        operator: "<="
+        value: 3.0
+        authority: "P95"
+        action: "Penalty/Throttle"
+      Retry_pct:
+        operator: "<="
+        value: 3.0
+        authority: "P95"
+        action: "Penalty/Throttle"
+      Airtime_util:
+        operator: "<="
+        value: 60
+        authority: "P50"
+        action: "EnforceAirtimeFairness"
+      CCA_busy:
+        operator: "<="
+        value: 60
+        authority: "P50"
+        action: "Steer/ChannelChange"
+    regulatory:
+      max_channel_width_MHz: 20
+    long_term_kpis:
+      median_throughput_lift_pct: 20
+      post_steer_sinr_gain_db: 3
+
+  ExamHallModerate:
+    display_name: "Exam Hall (Moderate)"
+    purpose: "Exam environment with slightly more tolerance."
+    qos_weights:
+      ws: 0.12
+      wt: 0.18
+      wr: 0.30
+      wl: 0.25
+      wa: 0.15
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -67
+        authority: "P95"
+        action: "IncreaseTxPower/Steer"
+      SNR_dB:
+        operator: ">="
+        value: 20
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 5.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 5.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "AirtimeFairness"
+      CCA_busy:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "Steer"
+    regulatory:
+      max_channel_width_MHz: 20
+    long_term_kpis:
+      median_throughput_lift_pct: 15
+      post_steer_sinr_gain_db: 2
+
+  VO:
+    display_name: "Voice (VO)"
+    purpose: "Real-time voice; prioritize low latency & reliability"
+    qos_weights:
+      ws: 0.25
+      wt: 0.10
+      wr: 0.35
+      wl: 0.25
+      wa: 0.05
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -67
+        authority: "P95"
+        action: "IncreaseTxPower"
+      SNR_dB:
+        operator: ">="
+        value: 25
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 2.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 5.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "Steer"
+      CCA_busy:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "Steer"
+    regulatory:
+      max_channel_width_MHz: 20
+    long_term_kpis:
+      median_throughput_lift_pct: 15
+      post_steer_sinr_gain_db: 3
+
+  VI:
+    display_name: "Video (VI)"
+    purpose: "Video streaming; prioritize throughput"
+    qos_weights:
+      ws: 0.20
+      wt: 0.40
+      wr: 0.20
+      wl: 0.15
+      wa: 0.05
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -67
+        authority: "P95"
+        action: "IncreaseTxPower/Steer"
+      SNR_dB:
+        operator: ">="
+        value: 20
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 3.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 7.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 75
+        authority: "P50"
+        action: "Steer"
+      CCA_busy:
+        operator: "<="
+        value: 75
+        authority: "P50"
+        action: "Steer"
+    regulatory:
+      max_channel_width_MHz: 80
+    long_term_kpis:
+      median_throughput_lift_pct: 15
+      post_steer_sinr_gain_db: 3
+
+  BE:
+    display_name: "Best Effort (BE)"
+    purpose: "General user traffic"
+    qos_weights:
+      ws: 0.15
+      wt: 0.35
+      wr: 0.25
+      wl: 0.15
+      wa: 0.10
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -70
+        authority: "P95"
+        action: "IncreaseTxPower"
+      SNR_dB:
+        operator: ">="
+        value: 20
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 5.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 10.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 80
+        authority: "P50"
+        action: "Steer"
+      CCA_busy:
+        operator: "<="
+        value: 80
+        authority: "P50"
+        action: "Steer"
+    regulatory:
+      max_channel_width_MHz: 80
+    long_term_kpis:
+      median_throughput_lift_pct: 10
+      post_steer_sinr_gain_db: 2
+
+  BK:
+    display_name: "Background (BK)"
+    purpose: "Low-priority background tasks"
+    qos_weights:
+      ws: 0.10
+      wt: 0.30
+      wr: 0.30
+      wl: 0.15
+      wa: 0.15
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -72
+        authority: "P95"
+        action: "Notify"
+      SNR_dB:
+        operator: ">="
+        value: 15
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 8.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 15.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 85
+        authority: "P50"
+        action: "Defer/Throttle"
+      CCA_busy:
+        operator: "<="
+        value: 85
+        authority: "P50"
+        action: "Defer"
+    regulatory:
+      max_channel_width_MHz: 160
+    long_term_kpis:
+      median_throughput_lift_pct: 5
+      post_steer_sinr_gain_db: 2
+
+  Guest:
+    display_name: "Guest"
+    purpose: "Public users; privacy-first"
+    qos_weights:
+      ws: 0.10
+      wt: 0.30
+      wr: 0.30
+      wl: 0.15
+      wa: 0.15
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -70
+        authority: "P95"
+        action: "IncreaseTxPower/Steer"
+      SNR_dB:
+        operator: ">="
+        value: 18
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 6.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 12.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "RateLimit"
+      CCA_busy:
+        operator: "<="
+        value: 70
+        authority: "P50"
+        action: "Steer"
+    regulatory:
+      max_channel_width_MHz: 80
+    long_term_kpis:
+      median_throughput_lift_pct: 8
+      post_steer_sinr_gain_db: 2
+
+  IoT:
+    display_name: "IoT"
+    purpose: "Sensors, cameras; low throughput, high availability"
+    qos_weights:
+      ws: 0.15
+      wt: 0.20
+      wr: 0.40
+      wl: 0.15
+      wa: 0.10
+    enforcement:
+      RSSI_dBm:
+        operator: ">="
+        value: -75
+        authority: "P95"
+        action: "Notify"
+      SNR_dB:
+        operator: ">="
+        value: 12
+        authority: "P95"
+        action: "Notify"
+      PER_pct:
+        operator: "<="
+        value: 10.0
+        authority: "P95"
+        action: "Penalty"
+      Retry_pct:
+        operator: "<="
+        value: 20.0
+        authority: "P95"
+        action: "Penalty"
+      Airtime_util:
+        operator: "<="
+        value: 90
+        authority: "P50"
+        action: "Schedule"
+      CCA_busy:
+        operator: "<="
+        value: 90
+        authority: "P50"
+        action: "Schedule"
+    regulatory:
+      max_channel_width_MHz: 40
+    long_term_kpis:
+      median_throughput_lift_pct: 3
+      post_steer_sinr_gain_db: 1
+
+long_term_evaluation:
+  median_throughput_lift_pct:
+    VO: 15
+    VI: 15
+    BE: 10
+    BK: 5
+    ExamHallStrict: 20
+    ExamHallModerate: 15
+  post_steer_sinr_gain_db:
+    VO: 3
+    VI: 3
+    BE: 2
+    BK: 2
+    ExamHallStrict: 3
+    ExamHallModerate: 2
+  config_churn_per_ap_per_day: 0.2
+  sensing_overhead_pct: 2
+
+policy_notes:
+  - "Percentile authority: P95 for tail sensitive metrics, P50 for congestion metrics."
+  - "Penalties are numeric [0..1] and feed Safe-BO; penalties clipped to penalty_clip_max."
+  - "All automated actions must be recorded in the audit trail with rollback token."
+  - "Regulatory checks must run before recommending tx-power or width changes."
