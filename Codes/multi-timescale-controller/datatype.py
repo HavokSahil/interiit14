@@ -54,6 +54,7 @@ class Interferer:
     y: float
     tx_power: float
     channel: int
+    type: str = "Bluetooth"  # Type of interferer: BLE, Bluetooth, or Microwave
     bandwidth: float = 20.0
     duty_cycle: float = 1.0 # Fraction of time it is transmitting (0.0 to 1.0)
     hopping_enabled: bool = False
