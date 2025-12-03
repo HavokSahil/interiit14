@@ -69,9 +69,24 @@ class RRMEngine:
         
         self.client_view_api = ClientViewAPI(access_points, clients)
         
-        # Controllers (placeholders for Phase 2 & 3)
-        self.slow_loop_engine: Optional[int] = None  # TODO: Implement SlowLoopController
-        self.fast_loop_engine: Optional[int] = None  # TODO: Implement FastLoopController
+        # Controllers
+        from slow_loop_controller import SlowLoopController
+        from fast_loop_controller import FastLoopController
+        
+        self.slow_loop_engine = SlowLoopController(
+            self.policy_engine,
+            self.config_engine,
+            self.sensing_api,
+            self.client_view_api,
+            period=slow_loop_period
+        )
+        
+        self.fast_loop_engine = FastLoopController(
+            self.policy_engine,
+            self.config_engine,
+            self.client_view_api,
+            clients
+        )
         
         # Configuration
         self.slow_loop_period = slow_loop_period
@@ -102,16 +117,22 @@ class RRMEngine:
         qoe_views = self.client_view_api.compute_all_views()
         results['qoe'] = qoe_views
         
-        # TODO: Fast loop (every step) - Phase 3
-        # steering_actions = self.fast_loop_engine.execute()
-        # results['steering'] = steering_actions
+        # Fast loop (every step)
+        steering_actions = self.fast_loop_engine.execute()
+        if steering_actions:
+            results['steering'] = [
+                {'client_id': cid, 'old_ap': old, 'new_ap': new}
+                for cid, old, new in steering_actions
+            ]
         
-        # TODO: Slow loop (periodic) - Phase 2
-        # if step % self.slow_loop_period == 0:
-        #     config = self.slow_loop_engine.execute(step)
-        #     if config:
-        #         self.config_engine.apply_config(config)
-        #         results['config_update'] = config
+        # Slow loop (periodic)
+        if self.slow_loop_engine.should_execute(step):
+            config = self.slow_loop_engine.execute(step)
+            if config:
+                success = self.config_engine.apply_config(config)
+                if success:
+                    results['config_update'] = config.to_dict()
+                    results['optimization_type'] = config.metadata.get('optimization', 'unknown')
         
         return results
     
@@ -154,4 +175,8 @@ class RRMEngine:
         # Print sub-component status
         self.policy_engine.print_status()
         self.config_engine.print_status()
+        if self.slow_loop_engine:
+            self.slow_loop_engine.print_status()
+        if self.fast_loop_engine:
+            self.fast_loop_engine.print_status()
 
