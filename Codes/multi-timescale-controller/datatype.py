@@ -46,6 +46,12 @@ class Client:
     airtime_fraction: float = 0.0
     rssi_dbm: float = 0.0 # Received Signal Strength Indicator in dBm
     retry_rate: float = 0.0 # Packet retry rate as percentage (0-100)
+    
+    # QoE-related fields
+    association_time: float = 0.0  # Time associated with current AP (in simulation steps)
+    inactive_msec: float = 0.0  # Inactivity time in milliseconds
+    tx_packets: int = 0  # Number of transmitted packets
+    rx_packets: int = 0  # Number of received packets
 
 @dataclass
 class Interferer:

@@ -43,6 +43,12 @@ class ClientAssociationManager:
                 if client.associated_ap is not None:
                     ap_dict[client.associated_ap].roam_out += 1
                 ap_dict[nearest_ap.id].roam_in += 1
+                
+                # Reset association time on roaming
+                client.association_time = 0.0
+            else:
+                # Increment association time if staying with same AP
+                client.association_time += 1.0
 
             client.associated_ap = nearest_ap.id
             
@@ -93,6 +99,12 @@ class ClientAssociationManager:
                 if client.associated_ap is not None:
                     ap_dict[client.associated_ap].roam_out += 1
                 ap_dict[best_ap].roam_in += 1
+                
+                # Reset association time on roaming
+                client.association_time = 0.0
+            else:
+                # Increment association time if staying with same AP
+                client.association_time += 1.0
 
             client.associated_ap = best_ap
 
