@@ -275,7 +275,7 @@ class SimulationVisualizer:
             print(f"Error loading GNN model: {e}")
             self.gnn_model = None
     
-    def _create_graph_snapshot(self) -> Optional[Data]:
+    def _create_graph_snapshot(self) -> Optional["Data"]:
         # ... (Keep existing implementation, it's fine)
         # For brevity in this replacement, I'm assuming the previous implementation of _create_graph_snapshot is preserved 
         # or I need to copy it. Since I'm replacing the whole class, I MUST copy it.

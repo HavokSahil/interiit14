@@ -11,7 +11,7 @@ def main():
     base_model = PathLossModel(frequency_mhz=2400, path_loss_exp=5.0)
     fading_model = MultipathFadingModel(base_model, fading_margin_db=8.0)
     
-    sim = WirelessSimulation(env, fading_model, interference_threshold_dbm=-75.0, enable_logging=False)
+    sim = WirelessSimulation(env, fading_model, interference_threshold_dbm=-75.0, enable_logging=True)
 
     N_ap = 6
     ap_positions = create_random_topology(N_ap, env)
