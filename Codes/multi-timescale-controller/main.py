@@ -3,15 +3,15 @@ from datatype import *
 from metrics import *
 from sim import *
 from utils import *
-from generate_training_data import create_random_topology
+from generate_training_data import create_grid_topology, create_random_topology
 
 def main():
     env = Environment(x_min=0, x_max=50, y_min=0, y_max=50)
 
-    base_model = PathLossModel(frequency_mhz=2400, path_loss_exp=3.0)
+    base_model = PathLossModel(frequency_mhz=2400, path_loss_exp=5.0)
     fading_model = MultipathFadingModel(base_model, fading_margin_db=8.0)
     
-    sim = WirelessSimulation(env, fading_model, interference_threshold_dbm=-75.0, enable_logging=True)
+    sim = WirelessSimulation(env, fading_model, interference_threshold_dbm=-75.0, enable_logging=False)
 
     N_ap = 6
     ap_positions = create_random_topology(N_ap, env)
@@ -40,6 +40,10 @@ def main():
         print("  I: Toggle interference display")
         print("  A: Toggle association lines")
         print("  C: Toggle coverage areas")
+        print("  G: Toggle graph view")
+        print("  P: Toggle predicted graph (if GNN available)")
+        print("  Left Click: Select AP/Client")
+        print("  Drag AP: Move AP")
         print("  ESC: Exit")
         print("\nClient Color Code:")
         print("  Green: SINR > 20 dB (Excellent)")
@@ -47,7 +51,7 @@ def main():
         print("  Red: SINR < 10 dB (Poor)")
         print("\nClient Info: [SINR in dB] [Allocated/Demand Mbps] [Airtime %]\n")
 
-        sim.enable_visualization(width=1000, height=1040)
+        sim.enable_visualization(width=1920, height=1080)
         sim.run_with_visualization(steps=None, fps=10)  # None = run indefinitely
     else:
         if USE_VISUALIZATION and not PYGAME_AVAILABLE:

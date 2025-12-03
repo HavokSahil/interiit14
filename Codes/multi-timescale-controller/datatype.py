@@ -19,6 +19,12 @@ class AccessPoint:
     obss_pd_threshold: float = -82.0 # OBSS PD threshold in dBm
     cca_busy_percentage: float = 0.0 # Fraction of time energy on operating channel > threshold
     obss_pd_violation_history: deque = field(default_factory=lambda: deque(maxlen=100)) # History of violations
+    roam_in_rate: float = 0.0 # Rate of clients roaming into this AP (clients/step)
+    roam_in_history: deque = field(default_factory=lambda: deque(maxlen=100)) # Roam-in history
+    roam_out_rate: float = 0.0 # Rate of clients roaming out of this AP (clients/step)
+    roam_out_history: deque = field(default_factory=lambda: deque(maxlen=100)) # Roam-out history
+    p95_throughput: float = 0.0 # 95% of clients get at least this throughput (Mbps)
+    p95_retry_rate: float = 0.0 # 95th percentile of client retry rates (0-100%)
     total_allocated_throughput: float = 0.0
     connected_clients: List[int] = field(default_factory=list)
     roam_in: int = 0 # number of clients currently roaming into the AP
@@ -38,6 +44,21 @@ class Client:
     max_rate_mbps: float = 0.0 # maximum achievable rate based on the SINR
     throughput_mbps: float = 0.0 # actual allocated througput
     airtime_fraction: float = 0.0
+    rssi_dbm: float = 0.0 # Received Signal Strength Indicator in dBm
+    retry_rate: float = 0.0 # Packet retry rate as percentage (0-100)
+
+@dataclass
+class Interferer:
+    id: int
+    x: float
+    y: float
+    tx_power: float
+    channel: int
+    bandwidth: float = 20.0
+    duty_cycle: float = 1.0 # Fraction of time it is transmitting (0.0 to 1.0)
+    hopping_enabled: bool = False
+    hopping_channels: List[int] = field(default_factory=list)  # List of channels to hop through
+    hopping_index: int = 0  # Current index in hopping_channels list
 
 @dataclass
 class Environment:

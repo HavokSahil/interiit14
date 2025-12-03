@@ -46,7 +46,8 @@ class SimulationLogger:
                 'step', 'ap_id', 'x', 'y', 'tx_power', 'channel', 'bandwidth',
                 'noise_floor', 'max_throughput', 'allocated_throughput',
                 'duty_cycle', 'num_clients', 'inc_energy_ch1_dbm', 'inc_energy_ch6_dbm', 'inc_energy_ch11_dbm',
-                'obss_pd_threshold', 'cca_busy_percentage'
+                'obss_pd_threshold', 'cca_busy_percentage', 'roam_in_rate', 'roam_out_rate', 
+                'p95_throughput', 'p95_retry_rate'
             ])
     
     def _init_client_log(self):
@@ -55,8 +56,8 @@ class SimulationLogger:
             writer = csv.writer(f)
             writer.writerow([
                 'step', 'client_id', 'x', 'y', 'associated_ap', 'demand_mbps',
-                'sinr_db', 'max_rate_mbps', 'throughput_mbps', 'airtime_fraction',
-                'velocity', 'direction'
+                'rssi_dbm', 'sinr_db', 'max_rate_mbps', 'throughput_mbps', 'airtime_fraction',
+                'velocity', 'direction', 'retry_rate'
             ])
     
     def _init_roam_log(self):
@@ -99,7 +100,11 @@ class SimulationLogger:
                     f"{inc_energy_ch6:.2f}" if inc_energy_ch6 is not None else "N/A",
                     f"{inc_energy_ch11:.2f}" if inc_energy_ch11 is not None else "N/A",
                     f"{ap.obss_pd_threshold:.2f}",
-                    f"{ap.cca_busy_percentage:.2f}"
+                    f"{ap.cca_busy_percentage:.2f}",
+                    f"{ap.roam_in_rate:.4f}",
+                    f"{ap.roam_out_rate:.4f}",
+                    f"{ap.p95_throughput:.2f}",
+                    f"{ap.p95_retry_rate:.2f}"
                 ])
     
     def log_client_state(self, step: int, clients: List[Client]):
@@ -118,10 +123,10 @@ class SimulationLogger:
                 writer.writerow([
                     step, client.id, f"{client.x:.2f}", f"{client.y:.2f}",
                     client.associated_ap, f"{client.demand_mbps:.2f}",
-                    f"{sinr:.2f}" if sinr is not None else "N/A",
+                    f"{client.rssi_dbm:.2f}", f"{sinr:.2f}" if sinr is not None else "N/A",
                     f"{client.max_rate_mbps:.2f}", f"{client.throughput_mbps:.2f}",
                     f"{client.airtime_fraction:.4f}", f"{client.velocity:.2f}",
-                    f"{client.direction:.2f}"
+                    f"{client.direction:.2f}", f"{client.retry_rate:.2f}"
                 ])
     
     def log_roaming_events(self, step: int, clients: List[Client], roam_list: List[int]):

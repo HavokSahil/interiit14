@@ -9,6 +9,7 @@ class StationParser:
     def from_content(content: str) -> "Station":
         station = Station()
         StationParser._parse_content(station, content)
+        station.get_ip()
         return station
 
     def _parse_content(station: Station, content: str) -> None:

@@ -491,11 +491,19 @@ class SimulationVisualizer:
             else:
                 energy_str = "-inf"
             
+            # First line: Channel, Duty cycle, Client count, Energy
             info_text = self.small_font.render(
                 f"Ch{ap.channel} DUTY:{APMetricsManager.ap_duty(ap):.2f} C:{len(ap.connected_clients)} E:{energy_str}",
                 True, self.TEXT_COLOR
             )
-            self.screen.blit(info_text, (pos[0] + 15, pos[1] - 8))
+            self.screen.blit(info_text, (pos[0] + 15, pos[1] - 15))
+            
+            # Second line: OBSS PD threshold and CCA busy percentage
+            cca_text = self.small_font.render(
+                f"OBSS_PD:{ap.obss_pd_threshold:.0f}dBm CCA:{ap.cca_busy_percentage:.1f}%",
+                True, self.TEXT_COLOR
+            )
+            self.screen.blit(cca_text, (pos[0] + 15, pos[1] + 0))
     
     def draw_clients(self):
         """Draw clients with SINR color coding."""

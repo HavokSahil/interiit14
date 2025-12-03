@@ -9,9 +9,11 @@ from control.controller import Controller
 from dashboard.bsstm_dashboard import BSSTransitionResponseDashboard
 from dashboard.nbrank_dashboard import NeighborRankingDashboard
 from dashboard.qoe_dashboard import QoEDashboard
+from dashboard.transport_qoe_dashboard import TransportQoEDashboard
 from dashboard.socket_pool import SocketPool
 from db.nbrank_db import NeighborRankingDB
 from db.qoe_db import QoEDB
+from db.transport_stats_db import TransportStatsDB
 from db.station_db import StationDB
 from db.neighbor_db import NeighborDB
 from db.bmrep_db import BeaconMeasurementDB
@@ -23,6 +25,8 @@ from dashboard.station_dashboard import StationDashboard
 from logger import Logger, LogLevel
 from metrics.nbranking import NeighborRanking
 from metrics.qoe import QoE
+from metrics.transport_qoe import TransportQoE
+from metrics.transport_collector import TransportStatsCollector
 from metrics.tm_engine import TransitionManagementEngine
 from protocol.rxmux import RxMux
 from store.routine import Routine
@@ -87,6 +91,30 @@ def bss_tm_scheduler(controller: Controller,
         sleep(interval_sec)
 
 
+def transport_stats_scheduler(collector: TransportStatsCollector,
+                             transport_qoe: TransportQoE,
+                             interval_sec: float = 30.0,
+                             test_duration: int = 10):
+    """Scheduler for collecting transport layer stats and computing QoE.
+    
+    Args:
+        collector: TransportStatsCollector instance
+        transport_qoe: TransportQoE instance
+        interval_sec: How often to run collection (default 30s)
+        test_duration: Duration of each iperf3 test (default 10s)
+    """
+    while True:
+        Logger.log_info(f"[Scheduler] Running transport_stats_scheduler")
+        
+        # Collect transport stats for all stations
+        collector.collect_all(duration=test_duration)
+        
+        # Update Transport QoE scores
+        transport_qoe.update()
+        
+        sleep(interval_sec)
+
+
 def accept_thread(pool: SocketPool, name: str):
     """Accept incoming connections and track them."""
     Logger.log_info(f"[SocketPool] Starting accept thread for {name}")
@@ -115,6 +143,7 @@ def main():
     sock_pool.create("stqoe", "stqoe.sock", mode="server")
     sock_pool.create("statn", "statn.sock", mode="server")
     sock_pool.create("bsstm", "bsstm.sock", mode="server")
+    sock_pool.create("trqoe", "trqoe.sock", mode="server")
 
     # Databases
     stationDB = StationDB()
@@ -124,15 +153,24 @@ def main():
     neighborDB = NeighborDB()
     nbrankDB = NeighborRankingDB()
     qoeDB = QoEDB()
+    transportStatsDB = TransportStatsDB()
 
     # QoE calculator (needs to be created before dashboard)
     qoe_calc = QoE()
+    
+    # Transport layer components
+    transport_qoe = TransportQoE()
+    transport_collector = TransportStatsCollector(
+        iperf_server="192.168.1.1",  # Configure as needed
+        port=5201
+    )
     
     # Dashboards
     bmrep_dashboard = BeaconMeasurementDashboard(bmrepDB)
     lmrep_dashboard = LinkMeasurementDashboard(lmrepDB)
     nbrank_dashboard = NeighborRankingDashboard(nbrankDB)
     qoe_dashboard = QoEDashboard(qoeDB, qoe_engine=qoe_calc)  # Pass engine for rich features
+    transport_qoe_dashboard = TransportQoEDashboard(transportStatsDB, transport_qoe=transport_qoe)
     station_dashboard = StationDashboard(stationDB)
     bss_dashboard = BSSTransitionResponseDashboard(bsstmDB)
 
@@ -175,6 +213,12 @@ def main():
         args=(ctrl,),
         daemon=True
     )
+    
+    transport_thread = threading.Thread(
+        target=transport_stats_scheduler,
+        args=(transport_collector, transport_qoe, 30.0, 10),  # Run every 30s, 10s tests
+        daemon=True
+    )
 
     lm_thread.start()
     bm_thread.start()
@@ -182,9 +226,10 @@ def main():
     nbrank_thread.start()
     stateapi_thread.start()
     bss_tm_thread.start()
+    transport_thread.start()
 
     # Start accept threads for each server socket
-    for name in ["bmrep", "lmrep", "nrank", "stqoe", "statn", "bsstm"]:
+    for name in ["bmrep", "lmrep", "nrank", "stqoe", "statn", "bsstm", "trqoe"]:
         threading.Thread(
             target=accept_thread, 
             args=(sock_pool, name), 
@@ -213,13 +258,14 @@ def main():
             (qoe_dashboard, "stqoe"),
             (nbrank_dashboard, "nrank"),
             (station_dashboard, "statn"),
-            (bss_dashboard, "bsstm")
+            (bss_dashboard, "bsstm"),
+            (transport_qoe_dashboard, "trqoe")
         ]:
             clients = sock_pool.get_clients(name)
             if clients:
                 Logger.log_info(f"[Dashboard] Updating {name} dashboard for {len(clients)} client(s)")
                 for client in clients:
-                    if isinstance(dash, QoEDashboard):
+                    if isinstance(dash, (QoEDashboard, TransportQoEDashboard)):
                         dash.show(pipe=client.conn, replace=True, mode="full")
                     elif isinstance(dash, StationDashboard):
                         # Always re-create dashboard output so it fetches latest data

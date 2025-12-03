@@ -12,6 +12,8 @@ class Station:
         self.mac: str | None = None
         self.flags: list[str] = []
 
+        self.ip: str | None = None
+
         # Basic STA info
         self.aid: int | None = None
         self.capability: list[str] | None = None
@@ -84,6 +86,33 @@ class Station:
             k: v for k, v in vars(self).items()
         }
         return attrs
+
+    def get_ip(self) -> str | None:
+        """Populate and return the IP address associated with this station's MAC."""
+        if not self.mac:
+            return None
+    
+        import subprocess
+    
+        try:
+            out = subprocess.check_output(["ip", "neigh"], text=True)
+        except Exception:
+            return None
+    
+        target = self.mac.lower()
+    
+        for line in out.splitlines():
+            parts = line.split()
+            # expected format:
+            # IP  dev  IFACE  lladdr  MAC  STATE
+            if len(parts) >= 5 and parts[3] == "lladdr":
+                ip, mac = parts[0], parts[4].lower()
+                if mac == target:
+                    self.ip = ip
+                    return ip
+    
+        return None
+
 
     def __str__(self) -> str:
         """Prettier and multi-column tabular string representation of StationBasicInfo."""
