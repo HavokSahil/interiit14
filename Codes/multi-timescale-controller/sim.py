@@ -145,7 +145,6 @@ class WirelessSimulation:
         print("\nClient Status:")
         for client in self.clients:
             print(f"  Client {client.id}: AP={client.associated_ap}, "
-                  f"Load={client.load:.2f}, "
                   f"Airtime={client.airtime_fraction:.2%}, "
                   f"SINR={client.sinr_db:.1f} dB, "
                   f"Throughput={client.throughput_mbps:.1f} Mbps, "
