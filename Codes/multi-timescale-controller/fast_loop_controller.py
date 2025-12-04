@@ -1,340 +1,503 @@
 """
-Fast Loop Controller for RRMEngine.
+Fast Loop Controller - Interference-Based Optimization
 
-Real-time optimization running every step:
-- Client steering based on QoE thresholds
-- Load balancing across APs
-- Uses ClientViewAPI for QoE monitoring
-- Uses PolicyEngine for role-based thresholds
+Uses real-time interference graph to optimize:
+- Channel assignment
+- Bandwidth (20/40/80 MHz)
+- OBSS-PD threshold (spatial reuse)
+
+Runs every 10 minutes (60 steps) with configuration from YAML.
 """
 
-from typing import Dict, List, Optional, Tuple
-from datatype import AccessPoint, Client
-from policy_engine import PolicyEngine
+from typing import Dict, List, Optional, Any, Tuple
+import networkx as nx
+import yaml
+from pathlib import Path
+from datatype import AccessPoint
 from config_engine import ConfigEngine
-from clientview import ClientViewAPI
-from utils import compute_distance
+from policy_engine import PolicyEngine
 
 
 class FastLoopController:
     """
-    Fast Loop Controller for real-time network optimization.
+    Fast Loop Controller for interference-based optimization.
     
-    Executes every simulation step to:
-    - Steer clients with poor QoE to better APs
-    - Balance load across APs
-    - Respond quickly to QoE degradation
+    Uses the interference graph to make reactive decisions about:
+    - Channel changes (to avoid congested channels)
+    - Bandwidth adjustments (reduce if crowded, increase if clear)
+    - OBSS-PD tuning (spatial reuse aggressiveness)
     """
     
     def __init__(self,
-                 policy_engine: PolicyEngine,
                  config_engine: ConfigEngine,
-                 client_view_api: ClientViewAPI,
-                 clients: List[Client]):
+                 policy_engine: PolicyEngine,
+                 access_points: List[AccessPoint],
+                 config_path: str = "fast_loop_config.yml"):
         """
         Initialize Fast Loop Controller.
         
         Args:
-            policy_engine: PolicyEngine instance
-            config_engine: ConfigEngine instance
-            client_view_api: ClientViewAPI instance
-            clients: List of all clients
+            config_engine: Configuration engine for applying changes
+            policy_engine: Policy engine for compliance checks
+            access_points: List of access points
+            config_path: Path to YAML configuration file
         """
-        self.policy_engine = policy_engine
         self.config_engine = config_engine
-        self.client_view_api = client_view_api
-        self.clients = clients
+        self.policy_engine = policy_engine
+        self.aps = {ap.id: ap for ap in access_points}
         
-        # Steering thresholds
-        self.qoe_threshold = 0.5  # Steer if QoE below this
-        self.rssi_threshold = -75.0  # Steer if RSSI below this (dBm)
-        self.rssi_improvement_threshold = 5.0  # Minimum RSSI gain for steering (dB)
+        # Load configuration
+        self.config = self._load_config(config_path)
         
-        # Load balancing
-        self.enable_load_balancing = True
-        self.max_load_imbalance = 3  # Max client difference before balancing
+        # State tracking
+        self.last_actions = {}  # ap_id -> {action, step, config_before}
+        self.action_history = []  # List of all actions taken
+        self.current_step = 0  # Track current simulation step
         
-        # Hysteresis to prevent ping-pong
-        self.min_association_time = 5  # Min steps before steering again
-        
-        # Tracking
-        self.steering_count = 0
-        self.last_steering_step = {}  # client_id -> step
+        # Statistics
+        self.stats = {
+            'channel_changes': 0,
+            'bandwidth_changes': 0,
+            'obss_pd_changes': 0,
+            'total_actions': 0,
+            'rollbacks': 0
+        }
     
-    def execute(self) -> List[Tuple[int, int, int]]:
-        """
-        Main execution method - runs every step.
-        
-        Returns:
-            List of steering actions: [(client_id, old_ap, new_ap), ...]
-        """
-        steering_actions = []
-        
-        # Get current QoE for all clients
-        qoe_views = self.client_view_api.compute_all_views()
-        
-        # Build client QoE map
-        client_qoe_map = {}
-        for ap_id, ap_view in qoe_views.items():
-            for client_result in ap_view.client_results:
-                client_qoe_map[client_result.client_id] = client_result.qoe_ap
-        
-        # Identify steering candidates
-        candidates = self._identify_steering_candidates(client_qoe_map)
-        
-        # Steer candidates to better APs
-        for client in candidates:
-            best_ap = self._find_best_ap(client, client_qoe_map)
-            
-            if best_ap and best_ap != client.associated_ap:
-                old_ap = client.associated_ap
-                
-                # Update client association
-                client.associated_ap = best_ap
-                client.association_time = 0.0  # Reset association time
-                
-                steering_actions.append((client.id, old_ap, best_ap))
-                self.last_steering_step[client.id] = self.steering_count
-                
-        # Load balancing (if enabled and no steering happened)
-        if self.enable_load_balancing and len(steering_actions) == 0:
-            balance_actions = self._balance_load()
-            steering_actions.extend(balance_actions)
-        
-        self.steering_count += len(steering_actions)
-        return steering_actions
+    def _load_config(self, config_path: str) -> Dict:
+        """Load configuration from YAML file"""
+        try:
+            with open(config_path, 'r') as f:
+                return yaml.safe_load(f)
+        except FileNotFoundError:
+            print(f"[Fast Loop] Config not found: {config_path}, using defaults")
+            return self._get_default_config()
     
-    def _identify_steering_candidates(self, client_qoe_map: Dict[int, float]) -> List[Client]:
-        """
-        Identify clients that should be considered for steering.
-        
-        Args:
-            client_qoe_map: Mapping of client_id to QoE score
-            
-        Returns:
-            List of Client objects that are candidates for steering
-        """
-        candidates = []
-        
-        for client in self.clients:
-            # Skip if not associated
-            if client.associated_ap is None:
-                continue
-            
-            # Check hysteresis - avoid steering too frequently
-            if client.association_time < self.min_association_time:
-                continue
-            
-            # Get client's QoE
-            qoe = client_qoe_map.get(client.id, 1.0)
-            
-            # Check role-specific thresholds from SLO catalog
-            role_id = self.policy_engine.get_client_role(client.id)
-            
-            # Reason 1: Poor QoE
-            if qoe < self.qoe_threshold:
-                candidates.append(client)
-                continue
-            
-            # Reason 2: Poor RSSI
-            if client.rssi_dbm < self.rssi_threshold:
-                candidates.append(client)
-                continue
-            
-            # Reason 3: Role-specific violations
-            # Get enforcement rules for this client's role
-            metrics = {
-                'RSSI_dBm': client.rssi_dbm,
-                'Retry_pct': client.retry_rate,
+    def _get_default_config(self) -> Dict:
+        """Return default configuration if YAML not found"""
+        return {
+            'thresholds': {
+                'interference': {'low': 0.2, 'moderate': 0.5, 'high': 0.7},
+                'cca_busy': {'low': 0.3, 'moderate': 0.6, 'high': 0.8},
+                'retry_rate': {'low': 5.0, 'moderate': 10.0, 'high': 20.0}
+            },
+            'channels': {
+                'band_2ghz': {'available': [1, 6, 11]},
+                'band_5ghz': {'available': [36, 40, 44, 48, 149, 153, 157, 161]}
+            },
+            'bandwidth': {
+                'max_increase_step': 1,
+                'max_decrease_step': 1
+            },
+            'obss_pd': {
+                'min_threshold': -82,
+                'max_threshold': -62,
+                'step_size': 3
             }
-            actions = self.policy_engine.evaluate_client_compliance(client.id, metrics)
-            
-            if 'Steer' in actions:
-                candidates.append(client)
-        
-        return candidates
+        }
     
-    def _find_best_ap(self, client: Client, client_qoe_map: Dict[int, float]) -> Optional[int]:
+    def execute(self, interference_graph: nx.DiGraph, current_step: int = 0) -> List[Dict[str, Any]]:
         """
-        Find the best AP for a client to associate with.
+        Execute Fast Loop optimization.
         
         Args:
-            client: Client to find AP for
-            client_qoe_map: Current QoE scores
+            interference_graph: Real-time interference graph with:
+                - Nodes: AP info (channel, load, position)
+                - Edges: Interference weights (0-1)
+            current_step: Current simulation step number
+        
+        Returns:
+            List of actions taken: [{'ap_id': 0, 'type': 'channel_change', ...}, ...]
+        """
+        self.current_step = current_step
+        actions = []
+        
+        # Enforce safety limit on concurrent actions
+        max_actions = self.config.get('safety', {}).get('max_actions_per_loop', 3)
+        
+        for ap_id in self.aps.keys():
+            if len(actions) >= max_actions:
+                break
+            
+            # Check cooldown for this AP
+            if not self._check_cooldown(ap_id):
+                continue
+            
+            # Analyze interference from graph
+            analysis = self._analyze_interference(ap_id, interference_graph)
+            
+            # Get current AP metrics
+            ap = self.aps[ap_id]
+            metrics = {
+                'cca_busy': getattr(ap, 'cca_busy_percentage', 0.0),
+                'retry_rate': getattr(ap, 'p95_retry_rate', 0.0),
+                'channel': ap.channel,
+                'bandwidth': ap.bandwidth,
+                'obss_pd': ap.obss_pd_threshold
+            }
+            
+            # Decide action (priority-based)
+            action = self._decide_action(ap_id, analysis, metrics)
+            
+            if action:
+                # Apply action
+                result = self._apply_action(ap_id, action, metrics)
+                if result['success']:
+                    actions.append(result)
+                    self.stats['total_actions'] += 1
+        
+        return actions
+    
+    def _analyze_interference(self, ap_id: int, graph: nx.DiGraph) -> Dict[str, Any]:
+        """
+        Analyze interference for a single AP.
+        
+        Args:
+            ap_id: Access Point ID
+            graph: Interference graph
             
         Returns:
-            AP ID of best AP, or None if current AP is best
+            Analysis dict with interference metrics
         """
-        aps = list(self.config_engine.aps.values())
-        current_ap_id = client.associated_ap
+        if ap_id not in graph.nodes:
+            return {'total_interference': 0.0, 'num_interferers': 0, 'channel_interference': {}}
         
-        best_ap_id = current_ap_id
-        best_score = float('-inf')
+        # Get interferers (incoming edges)
+        interferers = list(graph.predecessors(ap_id))
         
-        for ap in aps:
-            score = self._calculate_ap_score(client, ap, client_qoe_map)
+        # Calculate total interference
+        total_interference = sum(
+            graph[i][ap_id].get('weight', 0.0)
+            for i in interferers
+        )
+        
+        # Group interference by channel
+        channel_interference = {}
+        for interferer_id in interferers:
+            interferer_channel = graph.nodes[interferer_id].get('channel', 1)
+            weight = graph[interferer_id][ap_id].get('weight', 0.0)
             
-            if score > best_score:
-                best_score = score
-                best_ap_id = ap.id
+            if interferer_channel not in channel_interference:
+                channel_interference[interferer_channel] = 0.0
+            channel_interference[interferer_channel] += weight
         
-        # Only steer if new AP is significantly better
-        if best_ap_id != current_ap_id:
-            current_score = self._calculate_ap_score(
-                client, 
-                self.config_engine.aps[current_ap_id],
-                client_qoe_map
+        # Find current channel interference
+        current_channel = self.aps[ap_id].channel
+        current_channel_interference = channel_interference.get(current_channel, 0.0)
+        
+        return {
+            'total_interference': total_interference,
+            'num_interferers': len(interferers),
+            'channel_interference': channel_interference,
+            'current_channel_interference': current_channel_interference,
+            'interferer_ids': interferers
+        }
+    
+    def _decide_action(self, ap_id: int, analysis: Dict, metrics: Dict) -> Optional[Dict]:
+        """
+        Decide what action to take based on analysis and metrics.
+        
+        Priority order with intermediate rules to avoid dead zones:
+        1. Channel change (if severe interference)
+        2. Bandwidth reduction (if moderate interference + medium retry)
+        3. OBSS-PD increase (if high CCA but low retry)
+        4. Bandwidth increase (if low interference)
+        5. OBSS-PD decrease (if high retry)
+        6. MODERATE OBSS-PD increase (fill dead zone)
+        7. MODERATE OBSS-PD decrease (fill dead zone)
+        8. MODERATE channel change (fallback)
+        9. Small Bandwidth Reduction (fallback for congestion)
+        """
+        thresholds = self.config['thresholds']
+        interference = analysis['total_interference']
+        cca_busy = metrics['cca_busy']
+        retry_rate = metrics['retry_rate']
+        
+        # Priority 1: Channel Change (severe interference)
+        if (interference > thresholds['interference']['high'] and 
+            retry_rate > thresholds['retry_rate']['high']):
+            new_channel = self._find_best_channel(ap_id, analysis, metrics)
+            if new_channel and new_channel != metrics['channel']:
+                return {
+                    'type': 'channel_change',
+                    'new_channel': new_channel,
+                    'reason': 'severe_interference'
+                }
+        
+        # Priority 2: Bandwidth Reduction (moderate interference + medium retry)
+        if (interference > thresholds['interference']['moderate'] and
+            retry_rate > thresholds['retry_rate']['moderate'] and
+            metrics['bandwidth'] > 20):
+            new_bw = self._get_reduced_bandwidth(metrics['bandwidth'])
+            if new_bw:
+                return {
+                    'type': 'bandwidth_reduce',
+                    'new_bandwidth': new_bw,
+                    'reason': 'high_interference'
+                }
+        
+        # Priority 3: OBSS-PD Increase (high CCA, low retry)
+        if (cca_busy > thresholds['cca_busy']['high'] and
+            retry_rate < thresholds['retry_rate']['moderate'] and
+            metrics['obss_pd'] < self.config['obss_pd']['max_threshold']):
+            new_obss_pd = min(
+                metrics['obss_pd'] + self.config['obss_pd']['step_size'],
+                self.config['obss_pd']['max_threshold']
             )
-            
-            # Require minimum improvement to avoid unnecessary steering
-            if best_score > current_score + 0.1:  # Small threshold
-                return best_ap_id
+            return {
+                'type': 'obss_pd_increase',
+                'new_obss_pd': new_obss_pd,
+                'reason': 'high_cca_low_retry'
+            }
+        
+        # Priority 4: Bandwidth Increase (clean spectrum)
+        if (interference < thresholds['interference']['low'] and
+            cca_busy < thresholds['cca_busy']['low'] and
+            retry_rate < thresholds['retry_rate']['low']):
+            new_bw = self._get_increased_bandwidth(metrics['bandwidth'], metrics['channel'])
+            if new_bw:
+                return {
+                    'type': 'bandwidth_increase',
+                    'new_bandwidth': new_bw,
+                    'reason': 'clean_spectrum'
+                }
+        
+        # Priority 5: OBSS-PD Decrease (high retry)
+        if (retry_rate > thresholds['retry_rate']['high'] and
+            metrics['obss_pd'] > self.config['obss_pd']['min_threshold']):
+            new_obss_pd = max(
+                metrics['obss_pd'] - self.config['obss_pd']['step_size'],
+                self.config['obss_pd']['min_threshold']
+            )
+            return {
+                'type': 'obss_pd_decrease',
+                'new_obss_pd': new_obss_pd,
+                'reason': 'high_retry_rate'
+            }
+        
+        # === NEW: INTERMEDIATE RULES TO FILL DEAD ZONES ===
+        
+        # Priority 6: MODERATE OBSS-PD Increase (moderate CCA, low-moderate retry)
+        # Fills dead zone: CCA=50-75%, retry=4-8%
+        if (cca_busy > thresholds['cca_busy']['moderate'] and
+            retry_rate < thresholds['retry_rate']['moderate'] and
+            metrics['obss_pd'] < self.config['obss_pd']['max_threshold']):
+            new_obss_pd = min(
+                metrics['obss_pd'] + self.config['obss_pd']['step_size'],
+                self.config['obss_pd']['max_threshold']
+            )
+            return {
+                'type': 'obss_pd_increase',
+                'new_obss_pd': new_obss_pd,
+                'reason': 'moderate_cca_optimization'
+            }
+        
+        # Priority 7: MODERATE OBSS-PD Decrease (moderate retry)
+        # Fills dead zone: retry=8-18%
+        if (retry_rate > thresholds['retry_rate']['moderate'] and
+            metrics['obss_pd'] > self.config['obss_pd']['min_threshold']):
+            new_obss_pd = max(
+                metrics['obss_pd'] - self.config['obss_pd']['step_size'],
+                self.config['obss_pd']['min_threshold']
+            )
+            return {
+                'type': 'obss_pd_decrease',
+                'new_obss_pd': new_obss_pd,
+                'reason': 'moderate_retry_mitigation'
+            }
+        
+        # Priority 8: Channel Change Fallback (moderate interference)
+        # Even if retry isn't super high, change channel if interference is bad
+        if (interference > thresholds['interference']['moderate'] and
+            analysis['num_interferers'] >= 2):
+            new_channel = self._find_best_channel(ap_id, analysis, metrics)
+            if new_channel and new_channel != metrics['channel']:
+                return {
+                    'type': 'channel_change',
+                    'new_channel': new_channel,
+                    'reason': 'moderate_interference'
+                }
+        
+        # Priority 9: Small Bandwidth Reduction (fallback for congestion)
+        # If we're on high bandwidth and have any signs of trouble
+        if (metrics['bandwidth'] > 40 and
+            (cca_busy > thresholds['cca_busy']['moderate'] or 
+             interference > thresholds['interference']['moderate'])):
+            new_bw = self._get_reduced_bandwidth(metrics['bandwidth'])
+            if new_bw:
+                return {
+                    'type': 'bandwidth_reduce',
+                    'new_bandwidth': new_bw,
+                    'reason': 'congestion_mitigation'
+                }
+        
+        # Priority 10: Proactive Optimization (prevent complete stagnation)
+        # If we've reached here, network is "stable" but we can still optimize
+        # Take small actions to explore better configurations
+        if self.current_step % 360 == 0:  # Once per hour
+            # Try small OBSS-PD adjustments even in stable conditions
+            if cca_busy > 0.4:  # CCA above 40%
+                if metrics['obss_pd'] < -65:  # Room to increase
+                    return {
+                        'type': 'obss_pd_increase',
+                        'new_obss_pd': min(metrics['obss_pd'] + 3, -62),
+                        'reason': 'proactive_optimization'
+                    }
+            elif cca_busy < 0.3 and retry_rate > 5.0:  # Low CCA but non-zero retry
+                if metrics['obss_pd'] > -80:  # Not too conservative already
+                    return {
+                        'type': 'obss_pd_decrease',
+                        'new_obss_pd': max(metrics['obss_pd'] - 3, -82),
+                        'reason': 'proactive_stabilization'
+                    }
         
         return None
     
-    def _calculate_ap_score(self, client: Client, ap: AccessPoint, 
-                           client_qoe_map: Dict[int, float]) -> float:
-        """
-        Calculate score for associating a client with an AP.
+    def _find_best_channel(self, ap_id: int, analysis: Dict, metrics: Dict) -> Optional[int]:
+        """Find channel with minimum predicted interference"""
+        current_channel = metrics['channel']
         
-        Higher score = better choice.
-        
-        Args:
-            client: Client to evaluate
-            ap: AccessPoint to evaluate
-            client_qoe_map: Current QoE scores
-            
-        Returns:
-            Score (higher is better)
-        """
-        score = 0.0
-        
-        # Factor 1: Signal strength (RSSI estimate)
-        dist = compute_distance(client.x, client.y, ap.x, ap.y)
-        
-        # Simplified RSSI estimation: RSSI = TxPower - PathLoss
-        # PathLoss ≈ 40 + 20*log10(dist) for dist in meters
-        if dist > 0:
-            import math
-            path_loss = 40 + 20 * math.log10(dist) if dist >= 1 else 40
-            estimated_rssi = ap.tx_power - path_loss
+        # Determine available channels based on current band
+        if current_channel <= 14:
+            # 2.4 GHz
+            available = self.config['channels']['band_2ghz']['available']
         else:
-            estimated_rssi = ap.tx_power  # Very close
+            # 5 GHz
+            available = self.config['channels']['band_5ghz']['available']
         
-        # Normalize RSSI to [-90, -30] → [0, 1]
-        rssi_score = (estimated_rssi - (-90)) / 60.0
-        rssi_score = max(0.0, min(1.0, rssi_score))
-        score += 0.5 * rssi_score  # 50% weight
-        
-        # Factor 2: AP load (fewer clients = better)
-        ap_clients = [c for c in self.clients if c.associated_ap == ap.id]
-        load_score = 1.0 / (1.0 + len(ap_clients) * 0.1)  # Decays with load
-        score += 0.3 * load_score  # 30% weight
-        
-        # Factor 3: AP's average QoE
-        qoe_views = self.client_view_api.compute_all_views()
-        ap_view = qoe_views.get(ap.id)
-        if ap_view and ap_view.num_clients > 0:
-            qoe_score = ap_view.avg_qoe
-        else:
-            qoe_score = 0.7  # Neutral score for empty AP
-        score += 0.2 * qoe_score  # 20% weight
-        
-        return score
-    
-    def _balance_load(self) -> List[Tuple[int, int, int]]:
-        """
-        Balance client load across APs.
-        
-        Moves clients from heavily loaded APs to lightly loaded APs.
-        
-        Returns:
-            List of steering actions
-        """
-        aps = list(self.config_engine.aps.values())
-        
-        if len(aps) < 2:
-            return []  # Need at least 2 APs to balance
-        
-        # Calculate load per AP
-        ap_loads = {}
-        for ap in aps:
-            ap_clients = [c for c in self.clients if c.associated_ap == ap.id]
-            ap_loads[ap.id] = ap_clients
-        
-        # Find most and least loaded APs
-        most_loaded = max(ap_loads.items(), key=lambda x: len(x[1]))
-        least_loaded = min(ap_loads.items(), key=lambda x: len(x[1]))
-        
-        load_diff = len(most_loaded[1]) - len(least_loaded[1])
-        
-        # Only balance if imbalance exceeds threshold
-        if load_diff <= self.max_load_imbalance:
-            return []
-        
-        # Move one client from most loaded to least loaded
-        # Choose client with best signal to least loaded AP
-        most_loaded_ap = self.config_engine.aps[most_loaded[0]]
-        least_loaded_ap = self.config_engine.aps[least_loaded[0]]
-        
-        best_client = None
-        best_rssi = float('-inf')
-        
-        for client in most_loaded[1]:
-            # Check hysteresis
-            if client.association_time < self.min_association_time:
-                continue
-            
-            dist = compute_distance(client.x, client.y, least_loaded_ap.x, least_loaded_ap.y)
-            if dist > 0:
-                import math
-                path_loss = 40 + 20 * math.log10(dist) if dist >= 1 else 40
-                estimated_rssi = least_loaded_ap.tx_power - path_loss
+        # Find channel with minimum interference
+        channel_scores = {}
+        for channel in available:
+            if channel == current_channel:
+                channel_scores[channel] = analysis['current_channel_interference']
             else:
-                estimated_rssi = least_loaded_ap.tx_power
+                # Estimate interference on this channel
+                channel_scores[channel] = analysis['channel_interference'].get(channel, 0.0)
+        
+        # Find best channel
+        best_channel = min(channel_scores, key=channel_scores.get)
+        
+        # Check if improvement is significant enough
+        min_improvement = self.config['thresholds']['min_improvement']['channel_change']
+        current_interference = channel_scores[current_channel]
+        best_interference = channel_scores[best_channel]
+        
+        if current_interference > 0 and best_interference < current_interference * (1 - min_improvement):
+            return best_channel
+        
+        return None
+    
+    def _get_reduced_bandwidth(self, current_bw: int) -> Optional[int]:
+        """Get next smaller bandwidth (gradual reduction)"""
+        bw_options = [20, 40, 80, 160]
+        try:
+            current_idx = bw_options.index(current_bw)
+            if current_idx > 0:
+                return bw_options[current_idx - 1]
+        except ValueError:
+            pass
+        return None
+    
+    def _get_increased_bandwidth(self, current_bw: int, channel: int) -> Optional[int]:
+        """Get next larger bandwidth (gradual increase)"""
+        # Check band
+        if channel <= 14:
+            max_bw = 20  # 2.4 GHz limited to 20 MHz
+        else:
+            max_bw = 80  # 5 GHz can go up to 80 MHz
+        
+        bw_options = [20, 40, 80, 160]
+        try:
+            current_idx = bw_options.index(current_bw)
+            if current_idx < len(bw_options) - 1:
+                next_bw = bw_options[current_idx + 1]
+                if next_bw <= max_bw:
+                    return next_bw
+        except ValueError:
+            pass
+        return None
+    
+    def _apply_action(self, ap_id: int, action: Dict, metrics_before: Dict) -> Dict[str, Any]:
+        """
+        Apply configuration action to AP.
+        
+        Returns:
+            Result dictionary with success status
+        """
+        ap = self.aps[ap_id]
+        action_type = action['type']
+        
+        try:
+            if action_type == 'channel_change':
+                ap.channel = action['new_channel']
+                config = self.config_engine.build_channel_config(ap_id, action['new_channel'])
+                self.config_engine.apply_config(config)
+                self.stats['channel_changes'] += 1
+                
+            elif action_type in ['bandwidth_reduce', 'bandwidth_increase']:
+                ap.bandwidth = action['new_bandwidth']
+                # Note: ConfigEngine may not have build_bandwidth_config yet
+                # For now, just update AP attribute
+                self.stats['bandwidth_changes'] += 1
+                
+            elif action_type in ['obss_pd_increase', 'obss_pd_decrease']:
+                ap.obss_pd_threshold = action['new_obss_pd']
+                self.stats['obss_pd_changes'] += 1
             
-            if estimated_rssi > best_rssi and estimated_rssi > self.rssi_threshold:
-                best_rssi = estimated_rssi
-                best_client = client
+            # Record action
+            self.last_actions[ap_id] = {
+                'step': self.current_step,  # Use self.current_step
+                'action': action,
+                'metrics_before': metrics_before
+            }
+            
+            return {
+                'success': True,
+                'ap_id': ap_id,
+                'type': action_type,
+                'action': action,
+                'reason': action.get('reason', '')
+            }
+            
+        except Exception as e:
+            print(f"[Fast Loop] Failed to apply action for AP {ap_id}: {e}")
+            return {
+                'success': False,
+                'ap_id': ap_id,
+                'type': action_type,
+                'error': str(e)
+            }
+    
+    def _check_cooldown(self, ap_id: int) -> bool:
+        """Check if AP is in cooldown period"""
+        if ap_id not in self.last_actions:
+            return True
         
-        if best_client:
-            old_ap = best_client.associated_ap
-            best_client.associated_ap = least_loaded_ap.id
-            best_client.association_time = 0.0
-            return [(best_client.id, old_ap, least_loaded_ap.id)]
+        last_action = self.last_actions[ap_id]
+        steps_since = self.current_step - last_action['step']  # Use actual steps
         
-        return []
+        # Get cooldown from config
+        min_steps = self.config.get('safety', {}).get('min_time_between_actions_same_ap', 60)
+        
+        return steps_since >= min_steps
     
-    def set_qoe_threshold(self, threshold: float):
-        """Set QoE threshold for steering."""
-        self.qoe_threshold = max(0.0, min(1.0, threshold))
-    
-    def set_rssi_threshold(self, threshold: float):
-        """Set RSSI threshold for steering (dBm)."""
-        self.rssi_threshold = threshold
-    
-    def enable_load_balance(self, enabled: bool):
-        """Enable or disable load balancing."""
-        self.enable_load_balancing = enabled
-    
-    def get_statistics(self) -> Dict[str, any]:
-        """Get controller statistics."""
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get controller statistics"""
         return {
-            'total_steers': self.steering_count,
-            'qoe_threshold': self.qoe_threshold,
-            'rssi_threshold': self.rssi_threshold,
-            'load_balancing_enabled': self.enable_load_balancing
+            'channel_changes': self.stats['channel_changes'],
+            'bandwidth_changes': self.stats['bandwidth_changes'],
+            'obss_pd_changes': self.stats['obss_pd_changes'],
+            'total_actions': self.stats['total_actions'],
+            'rollbacks': self.stats['rollbacks']
         }
     
     def print_status(self):
-        """Print controller status."""
+        """Print controller status"""
         print("\n" + "="*60)
         print("FAST LOOP CONTROLLER STATUS")
         print("="*60)
-        print(f"QoE Threshold: {self.qoe_threshold:.2f}")
-        print(f"RSSI Threshold: {self.rssi_threshold} dBm")
-        print(f"Min Association Time: {self.min_association_time} steps")
-        print(f"Load Balancing: {'Enabled' if self.enable_load_balancing else 'Disabled'}")
-        print(f"Max Load Imbalance: {self.max_load_imbalance} clients")
-        print(f"Total Steering Actions: {self.steering_count}")
+        print(f"Total Actions: {self.stats['total_actions']}")
+        print(f"  Channel Changes: {self.stats['channel_changes']}")
+        print(f"  Bandwidth Changes: {self.stats['bandwidth_changes']}")
+        print(f"  OBSS-PD Changes: {self.stats['obss_pd_changes']}")
+        print(f"Rollbacks: {self.stats['rollbacks']}")
         print()

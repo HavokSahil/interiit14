@@ -22,10 +22,8 @@ from clientview import ClientViewAPI
 # Import enhanced event loop
 from models import (
     EnhancedEventLoop, Event, EventType, Severity,
-    SensingSource, PostActionMetrics, AuditRecord,
-    ActionType, ExecutionStatus
+    SensingSource, PostActionMetrics
 )
-import uuid
 
 
 @dataclass
@@ -63,6 +61,7 @@ class EnhancedRRMEngine:
                  slo_catalog_path: str = "slo_catalog.yml",
                  default_role: str = "BE",
                  slow_loop_period: int = 100,
+                 fast_loop_period: int = 60,  # 10 minutes at 360 steps/hour
                  cooldown_steps: int = 50,
                  audit_log_dir: str = "audit_logs"):
         """
@@ -76,6 +75,7 @@ class EnhancedRRMEngine:
             slo_catalog_path: Path to SLO catalog YAML file
             default_role: Default role for clients
             slow_loop_period: Steps between slow loop executions
+            fast_loop_period: Steps between fast loop executions (default: 60 = 10 min)
             cooldown_steps: Steps between configuration changes
             audit_log_dir: Directory for audit logs
         """
@@ -97,6 +97,16 @@ class EnhancedRRMEngine:
         self.sensing_api: Optional[SensingAPI] = None
         if interferers and prop_model:
             self.sensing_api = SensingAPI(access_points, interferers, prop_model)
+        
+        # Initialize Interference Graph Builder for Fast Loop
+        if prop_model:
+            from metrics import InterferenceGraphBuilder
+            self.graph_builder = InterferenceGraphBuilder(
+                propagation_model=prop_model,
+                interference_threshold_dbm=-75.0
+            )
+        else:
+            self.graph_builder = None
         
         self.client_view_api = ClientViewAPI(access_points, clients)
         
@@ -121,33 +131,19 @@ class EnhancedRRMEngine:
         except ImportError:
             self.slow_loop_engine = None
         
-        # ========== NEW: REFACTORED FAST LOOP CONTROLLER ==========
+        # Fast Loop Controller (interference-based optimization)
         try:
-            from fast_loop_refactored import RefactoredFastLoopController
-            self.fast_loop_engine = RefactoredFastLoopController(
-                policy_engine=self.policy_engine,
+            from fast_loop_controller import FastLoopController
+            self.fast_loop_engine = FastLoopController(
                 config_engine=self.config_engine,
-                client_view_api=self.client_view_api,
+                policy_engine=self.policy_engine,
                 access_points=access_points,
-                clients=clients,
-                audit_logger=self._log_fast_loop_action
+                config_path="fast_loop_config.yml"
             )
-            print("[RRM] Refactored Fast Loop Controller initialized")
+            print("[RRM] Fast Loop Controller initialized (interference-based)")
         except ImportError as e:
-            print(f"[RRM] Refactored Fast Loop not available: {e}")
-            # Fallback to old fast loop
-            try:
-                from fast_loop_controller import FastLoopController
-                self.fast_loop_engine = FastLoopController(
-                    self.policy_engine,
-                    self.config_engine,
-                    self.client_view_api,
-                    clients
-                )
-                print("[RRM] Using original Fast Loop Controller")
-            except ImportError:
-                self.fast_loop_engine = None
-                print("[RRM] No Fast Loop Controller available")
+            self.fast_loop_engine = None
+            print(f"[RRM] Fast Loop Controller not available: {e}")
         
         # State Management
         self.state = RRMState()
@@ -156,56 +152,12 @@ class EnhancedRRMEngine:
         self.cooldown_steps = cooldown_steps
         self.last_slow_loop_step = 0
         self.slow_loop_period = slow_loop_period
+        self.last_fast_loop_step = 0
+        self.fast_loop_period = fast_loop_period
         self.current_step = 0
         
         # Event injection tracking
         self.injected_events = []
-    
-    def _log_fast_loop_action(self, record: Dict[str, Any]):
-        """
-        Adapter to log Fast Loop actions to the Audit Logger.
-        Converts dict record to AuditRecord object.
-        """
-        if not self.event_loop or not hasattr(self.event_loop, 'audit_logger'):
-            return
-
-        try:
-            # Map Fast Loop event strings to ActionType
-            action_map = {
-                "tx_power_step": ActionType.POWER_ADJUST,
-                "tx_success": ActionType.POWER_ADJUST,
-                "tx_rolled_back": ActionType.POWER_ADJUST,
-                "qoe_correction": ActionType.POWER_ADJUST,
-                "qoe_success": ActionType.POWER_ADJUST
-            }
-            
-            event_name = record.get("event", "unknown")
-            action_type = action_map.get(event_name, ActionType.POWER_ADJUST)
-            
-            # Determine execution status
-            status = ExecutionStatus.SUCCESS
-            if "rolled_back" in event_name or "failed" in event_name:
-                status = ExecutionStatus.ROLLED_BACK
-            
-            # Create AuditRecord
-            audit_record = AuditRecord(
-                audit_id=str(uuid.uuid4()),
-                record_type="FAST_LOOP_ACTION",
-                timestamp_utc=datetime.utcnow(),
-                ap_id=str(record.get("ap", "unknown")),
-                action_type=action_type,
-                reason=record.get("reason", f"Fast Loop: {event_name}"),
-                execution_status=status,
-                actor="FAST_LOOP_CONTROLLER",
-                degradation_detected=(status == ExecutionStatus.ROLLED_BACK),
-                auto_rollback_triggered=(status == ExecutionStatus.ROLLED_BACK)
-            )
-            
-            # Log it
-            self.event_loop.audit_logger.log_action(audit_record)
-            
-        except Exception as e:
-            print(f"[RRM] Failed to log Fast Loop audit: {e}")
     
     def execute(self, step: int) -> Dict[str, Any]:
         """
@@ -297,34 +249,30 @@ class EnhancedRRMEngine:
                         results['optimization_type'] = config.metadata.get('optimization')
         
         
-        # ========== PRIORITY 5: REFACTORED FAST LOOP ==========
-        if self.fast_loop_engine:
+        # ========== PRIORITY 5: FAST LOOP (Every 10 minutes) ==========
+        if self.fast_loop_engine and (step - self.last_fast_loop_step >= self.fast_loop_period):
             try:
-                # Check if it's the refactored controller (has execute() returning list)
-                fast_results = self.fast_loop_engine.execute()
-                
-                if fast_results:
-                    # Refactored controller returns list of action dictionaries
-                    if isinstance(fast_results, list):
-                        results['fast_loop'] = fast_results
-                        
-                        # Track actions
-                        for action_result in fast_results:
-                            status = action_result.get('result', {}).get('status')
-                            if status == 'acted_success':
+                # Build interference graph
+                if self.graph_builder:
+                    interference_graph = self.graph_builder.build_graph(list(self.aps.values()))
+                    
+                    # Execute Fast Loop with graph and current step
+                    actions = self.fast_loop_engine.execute(interference_graph, current_step=step)
+                    
+                    if actions:
+                        # Track successful actions
+                        for action in actions:
+                            if action.get('success'):
                                 self.state.total_config_changes += 1
                         
-                        # Get statistics from refactored controller
+                        results['fast_loop_actions'] = actions
+                        
+                        # Get statistics
                         if hasattr(self.fast_loop_engine, 'get_statistics'):
                             results['fast_loop_stats'] = self.fast_loop_engine.get_statistics()
-                    
-                    # Old controller returns list of steering tuples
-                    else:
-                        self.state.total_steering_actions += len(fast_results)
-                        results['steering'] = [
-                            {'client_id': cid, 'old_ap': old, 'new_ap': new}
-                            for cid, old, new in fast_results
-                        ]
+                
+                self.last_fast_loop_step = step
+                
             except Exception as e:
                 print(f"[RRM] Fast Loop error: {e}")
                 results['fast_loop_error'] = str(e)
