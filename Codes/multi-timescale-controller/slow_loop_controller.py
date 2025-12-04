@@ -16,6 +16,9 @@ from sensing import SensingAPI
 from clientview import ClientViewAPI
 from utils import compute_distance
 import random
+import production_package.run_inference as run_inference
+model_dir = "production_package/model"
+config_path = "production_package/config/config.yaml"
 
 
 class SlowLoopController:
@@ -50,9 +53,19 @@ class SlowLoopController:
         self.sensing_api = sensing_api
         self.client_view_api = client_view_api
         self.period = period
+        self.stats = {}
+        self.ensemble, self.model = run_inference.load_ensemble(model_dir, config_path)
+        self.explainer = run_inference.ActionExplainer(safety_module=self.ensemble.safety if hasattr(self.ensemble, 'safety') else None)
+        def denormalize_fn(state):
+            mean = 0
+            if hasattr(self.ensemble, 'state_mean') and self.ensemble.state_mean is not None:
+                mean = self.ensemble.state_mean
+            std = self.ensemble.state_std
+            return state * std + mean
+        self.denormalize_fn = denormalize_fn
         
         # Optimization settings
-        self.allowed_channels = [1, 6, 11]
+        self.allowed_channels = [1, 2, 3, 6, 7, 10, 11, 36, 40, 44, 48, 52, 149, 153, 157, 161]
         self.power_levels = [10.0, 15.0, 20.0, 25.0, 30.0]  # dBm
         
         # Tracking
@@ -71,7 +84,7 @@ class SlowLoopController:
         """
         return (step - self.last_execution) >= self.period
     
-    def execute(self, step: int) -> Optional[NetworkConfig]:
+    def execute(self, step: int, safe_rl_data) -> Optional[NetworkConfig]:
         """
         Main execution method.
         
@@ -85,18 +98,91 @@ class SlowLoopController:
             return None
         
         self.last_execution = step
+        config = self.config_engine.get_current_config()
+        self.bandwidths = [20, 40, 80]
+        before = config
+        for i, j in safe_rl_data.items():
+            inference = run_inference.run_inference_on_state(j, self.ensemble, self.explainer, self.denormalize_fn)
+            ap_config = config.ap_configs[i]
+            print(f'[Slow Loop] AP {i} Action: {inference["ACTION"]}, Reason: {inference["REASON"]}, Confidence: {inference["CONFIDENCE"]}, Status: {inference["STATUS"]}, Current QoE: {inference["Current_QoE"]}')
+            if inference["ACTION"] in self.stats:
+                self.stats[inference["ACTION"]] += 1
+            else:
+                self.stats[inference["ACTION"]] = 1
+            if inference["ACTION"] == "+2 dBm Tx Power":
+                if ap_config.tx_power >= max(self.power_levels):
+                    continue
+                new_power = -1.0
+                for power_level in self.power_levels:
+                    if power_level > ap_config.tx_power:
+                        new_power = power_level
+                        break
+                ap_config.tx_power = new_power
+            elif inference["ACTION"] == "-2 dBm Tx Power":
+                if ap_config.tx_power <= min(self.power_levels):
+                    continue
+                new_power = 30.0
+                for power_level in self.power_levels[::-1]:
+                    if power_level < ap_config.tx_power:
+                        new_power = power_level
+                        break
+                ap_config.tx_power = new_power
+            elif inference["ACTION"] == "+4 dB OBSS-PD":
+                ap_config.obss_pd_threshold += 4
+            elif inference["ACTION"] == "-4 dB OBSS-PD":
+                ap_config.obss_pd_threshold -= 4
+            elif inference["ACTION"] == "Increase Channel Width":
+                if ap_config.bandwidth >= max(self.bandwidths):
+                    continue
+                new_bandwidth = 20
+                for bandwidth in self.bandwidths:
+                    if bandwidth > ap_config.bandwidth:
+                        new_bandwidth = bandwidth
+                        break
+                ap_config.bandwidth = new_bandwidth
+            elif inference["ACTION"] == "Decrease Channel Width":
+                if ap_config.bandwidth <= min(self.bandwidths):
+                    continue
+                new_bandwidth = 80
+                for bandwidth in self.bandwidths[::-1]:
+                    if bandwidth < ap_config.bandwidth:
+                        new_bandwidth = bandwidth
+                        break
+                ap_config.bandwidth = new_bandwidth
+            elif inference["ACTION"] == "Increase Channel Number":
+                if ap_config.channel >= max(self.allowed_channels):
+                    continue
+                new_channel = 1
+                for channel in self.allowed_channels:
+                    if channel > ap_config.channel:
+                        new_channel = channel
+                        break
+                ap_config.channel = new_channel
+            elif inference["ACTION"] == "Decrease Channel Number":
+                if ap_config.channel >= min(self.allowed_channels):
+                    continue
+                new_channel = 11
+                for channel in self.allowed_channels[::-1]:
+                    if channel < ap_config.channel:
+                        new_channel = channel
+                        break
+                ap_config.channel = new_channel
+            config.ap_configs[i] = ap_config
+#        print(config == before)
+        return config
+                
         
         # Choose optimization based on mode
-        if self.optimization_mode == "channel":
-            return self.optimize_channels()
-        elif self.optimization_mode == "power":
-            return self.optimize_power()
-        elif self.optimization_mode == "both":
-            # First optimize channels, then power
-            channel_config = self.optimize_channels()
-            if channel_config:
-                self.config_engine.apply_config(channel_config)
-            return self.optimize_power()
+#        if self.optimization_mode == "channel":
+#            return self.optimize_channels()
+#        elif self.optimization_mode == "power":
+#            return self.optimize_power()
+#        elif self.optimization_mode == "both":
+#            # First optimize channels, then power
+#            channel_config = self.optimize_channels()
+#            if channel_config:
+#                self.config_engine.apply_config(channel_config)
+#            return self.optimize_power()
         
         return None
     
@@ -366,7 +452,9 @@ class SlowLoopController:
         print("="*60)
         print(f"Period: {self.period} steps")
         print(f"Last Execution: Step {self.last_execution}")
-        print(f"Optimization Mode: {self.optimization_mode}")
-        print(f"Allowed Channels: {self.allowed_channels}")
-        print(f"Power Levels: {self.power_levels} dBm")
+#        print(f"Optimization Mode: {self.optimization_mode}")
+#        print(f"Allowed Channels: {self.allowed_channels}")
+#        print(f"Power Levels: {self.power_levels} dBm")
+        for i, j in self.stats.items():
+            print(f"{i} Events: {j}")
         print()

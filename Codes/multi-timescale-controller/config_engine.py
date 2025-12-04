@@ -75,7 +75,7 @@ class ConfigEngine:
         self.max_history_size = 10
         
         # Configuration constraints
-        self.allowed_channels = [1, 6, 11]
+        self.allowed_channels = [1, 2, 3, 6, 7, 10, 11, 36, 40, 44, 48, 52, 149, 153, 157, 161]
         self.min_power = 10.0  # dBm
         self.max_power = 30.0  # dBm
         self.allowed_bandwidths = [20.0, 40.0, 80.0, 160.0]

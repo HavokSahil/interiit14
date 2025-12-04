@@ -41,7 +41,7 @@ class ThreeDaySimulation:
         # Simulation parameters
         self.steps_per_hour = 360  # 10 seconds per step = 360 steps/hour
         self.hours_per_day = 24
-        self.num_days = 3
+        self.num_days = 200
         self.total_steps = self.steps_per_hour * self.hours_per_day * self.num_days
         
         # Statistics tracking
@@ -386,6 +386,7 @@ class ThreeDaySimulation:
         print("\n✓ 3-day simulation log generation complete!")
 
 
+import sys
 def main():
     """Main entry point"""
     print("\n" + "="*70)

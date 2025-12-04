@@ -159,7 +159,7 @@ class EnhancedRRMEngine:
         # Event injection tracking
         self.injected_events = []
     
-    def execute(self, step: int) -> Dict[str, Any]:
+    def execute(self, step: int, safe_rl_data) -> Dict[str, Any]:
         """
         Main RRM execution loop with Enhanced Event Loop priority.
         
@@ -239,7 +239,7 @@ class EnhancedRRMEngine:
         # ========== PRIORITY 4: SLOW LOOP ==========
         if self.slow_loop_engine and not in_cooldown:
             if self.slow_loop_engine.should_execute(step):
-                config = self.slow_loop_engine.execute(step)
+                config = self.slow_loop_engine.execute(step, safe_rl_data)
                 if config:
                     success = self.config_engine.apply_config(config)
                     if success:
