@@ -94,6 +94,7 @@ class AuditLogger:
     def create_event_action_record(self,
                                    event: Event,
                                    ap_id: str,
+                                   step: int,
                                    action_type: ActionType,
                                    config_changes: List[ConfigurationChange],
                                    rollback_token: RollbackToken,
@@ -126,7 +127,8 @@ class AuditLogger:
             reason=reason,
             confidence_score=event.detection_confidence,
             regulatory_check_passed=True,  # Set externally
-            execution_status=ExecutionStatus.PENDING
+            execution_status=ExecutionStatus.PENDING,
+            time_step=step
         )
         
         return record
@@ -220,9 +222,7 @@ class AuditLogger:
         ]
         return results[-limit:]
     
-    def export_audit_trail(self, ap_id: Optional[str] = None,
-                          start_date: Optional[datetime] = None,
-                          end_date: Optional[datetime] = None) -> str:
+    def export_audit_trail(self, ap_id: Optional[str] = None) -> str:
         """
         Export audit trail for compliance.
         
@@ -244,13 +244,7 @@ class AuditLogger:
                 # Apply filters
                 if ap_id and record.ap_id != ap_id:
                     continue
-                
-                if start_date and record.timestamp_utc < start_date:
-                    continue
-                
-                if end_date and record.timestamp_utc > end_date:
-                    continue
-                
+
                 # Write record
                 json_record = self._serialize_record(record)
                 f.write(json.dumps(json_record) + '\n')
@@ -271,7 +265,7 @@ class AuditLogger:
         return {
             'audit_id': record.audit_id,
             'record_type': record.record_type,
-            'timestamp_utc': record.timestamp_utc.isoformat(),
+            'time_step': record.time_step,
             'event': self._serialize_event(record.event) if record.event else None,
             'ap_id': record.ap_id,
             'action_type': str(record.action_type) if record.action_type else None,
@@ -313,7 +307,7 @@ class AuditLogger:
             'severity': int(event.severity),
             'ap_id': event.ap_id,
             'radio': event.radio,
-            'timestamp_utc': event.timestamp_utc.isoformat(),
+            'time_step': event.time_step,
             'detection_confidence': event.detection_confidence,
             'metadata': event.metadata,
             'sensing_source': str(event.sensing_source)

@@ -294,7 +294,7 @@ class EnhancedRRMEngine:
                     severity=Severity.HIGH,
                     ap_id=f"ap_{ap_id}",
                     radio="2g",  # Assume 2.4 GHz for now
-                    timestamp_utc=datetime.utcnow(),
+                    time_step=self.current_step,
                     detection_confidence=sensing.confidence,
                     metadata={
                         'interferer_type': sensing.major_interferer_type,
@@ -315,7 +315,7 @@ class EnhancedRRMEngine:
                     severity=Severity.HIGH,
                     ap_id=f"ap_{ap_id}",
                     radio="2g",
-                    timestamp_utc=datetime.utcnow(),
+                    time_step=self.current_step,
                     detection_confidence=1.0,
                     metadata={
                         'avg_qoe': view.avg_qoe,
@@ -339,7 +339,7 @@ class EnhancedRRMEngine:
             severity=Severity.CRITICAL,
             ap_id=f"ap_{ap_id}",
             radio="5g",
-            timestamp_utc=datetime.utcnow(),
+            time_step=self.current_step,
             detection_confidence=1.0,
             metadata={
                 'channel': channel,
@@ -371,7 +371,7 @@ class EnhancedRRMEngine:
             severity=Severity.HIGH,
             ap_id=f"ap_{ap_id}",
             radio="2g",
-            timestamp_utc=datetime.utcnow(),
+            time_step=self.current_step,
             detection_confidence=0.85,
             metadata={
                 'interferer_type': interferer_type,
@@ -400,7 +400,7 @@ class EnhancedRRMEngine:
             severity=Severity.HIGH,
             ap_id=f"ap_{ap_id}",
             radio="2g",
-            timestamp_utc=datetime.utcnow(),
+            time_step=self.current_step,
             detection_confidence=1.0,
             metadata={'cca_busy_pct': cca_busy_pct}
         )

@@ -70,7 +70,7 @@ class Event:
     severity: Severity
     ap_id: str  # hashed site-specific ID
     radio: str  # "2g", "5g", "6g"
-    timestamp_utc: datetime
+    time_step: int
     detection_confidence: float
     metadata: Dict[str, Any] = field(default_factory=dict)
     sensing_source: SensingSource = SensingSource.SERVING_RADIO
@@ -151,7 +151,7 @@ class AuditRecord:
     """Audit record for Event Loop actions"""
     audit_id: str
     record_type: str = "EVENT_LOOP_ACTION"
-    timestamp_utc: datetime = field(default_factory=datetime.utcnow)
+    time_step: int = 0
     
     # Event details
     event: Optional[Event] = None
@@ -204,7 +204,7 @@ class AuditRecord:
             Hex-encoded signature
         """
         # Create canonical representation
-        data_to_sign = f"{self.audit_id}|{self.timestamp_utc.isoformat()}|{self.ap_id}|{self.action_type}|{self.execution_status}"
+        data_to_sign = f"{self.audit_id}|{self.time_step}|{self.ap_id}|{self.action_type}|{self.execution_status}"
         
         # Generate HMAC
         signature = hmac.new(

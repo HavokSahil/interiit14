@@ -214,6 +214,7 @@ class EnhancedEventLoop:
         audit_record = self.audit_logger.create_event_action_record(
             event=event,
             ap_id=event.ap_id,
+            step=step,
             action_type=ActionType.CHANNEL_CHANGE,
             config_changes=config_changes,
             rollback_token=token,
@@ -292,7 +293,7 @@ class EnhancedEventLoop:
         
         config_changes = [ConfigurationChange("channel", ap.channel, new_channel, "2g")]
         audit_record = self.audit_logger.create_event_action_record(
-            event, event.ap_id, ActionType.CHANNEL_CHANGE, config_changes, token,
+            event, event.ap_id, step, ActionType.CHANNEL_CHANGE, config_changes, token,
             f"Non-WiFi interference burst detected (duty={duty_cycle}%)"
         )
         self.audit_logger.log_action(audit_record)
@@ -342,7 +343,7 @@ class EnhancedEventLoop:
         
         config_changes = [ConfigurationChange("obss_pd_threshold", old_obss_pd, new_obss_pd)]
         audit_record = self.audit_logger.create_event_action_record(
-            event, event.ap_id, ActionType.OBSS_PD_TUNE, config_changes, token,
+            event, event.ap_id, step, ActionType.OBSS_PD_TUNE, config_changes, token,
             "Spectrum saturation detected, increasing OBSS-PD"
         )
         self.audit_logger.log_action(audit_record)
