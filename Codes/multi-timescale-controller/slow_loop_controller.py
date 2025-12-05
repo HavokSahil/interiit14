@@ -15,11 +15,10 @@ from config_engine import ConfigEngine, APConfig, NetworkConfig
 from sensing import SensingAPI
 from clientview import ClientViewAPI
 from utils import compute_distance
-import random
+import numpy as np
 import production_package.run_inference as run_inference
 model_dir = "production_package/model"
 config_path = "production_package/config/config.yaml"
-
 
 class SlowLoopController:
     """

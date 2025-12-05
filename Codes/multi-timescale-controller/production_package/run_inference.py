@@ -235,7 +235,24 @@ def get_q_values_from_ensemble(ensemble, state):
 
 
 def run_inference_on_state(row, ensemble, explainer, denormalize_fn):
-    state = list(row.values())
+    headers = [
+        "client_count",
+        "rssi_p50",
+        "retry_rate_p95",
+        "retry_rate_p95",
+        "cca_busy_pct",
+        "throughput_mbps_p50",
+        "throughput_mbps_p10",
+        "rssi_p50",
+        "obss_pd_threshold",
+        "tx_power",
+        "noise_floor",
+        "bandwidth",
+        "airtime_fraction_p50",
+        "cca_busy_pct",
+        "roam_out_rate",
+    ]
+    state = np.array([row[header] for header in headers], dtype=np.float32)
     try:
         action, _ = ensemble.select_action(state, deterministic=True, use_safety_shield=True)
         action = int(action)
