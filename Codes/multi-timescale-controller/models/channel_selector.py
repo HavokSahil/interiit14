@@ -89,13 +89,13 @@ class EmergencyChannelSelector:
         Returns:
             Best channel number
         """
-        # Get candidate channels
+        # Get candidate channels - use only non-overlapping channels
         if radio == "2g":
-            candidates = self.CHANNELS_2G.copy()
+            candidates = self.NON_OVERLAP_2G.copy()  # Only 1, 6, 11
             fallback = 1
-        else:  # 5g
-            candidates = self.CHANNELS_5G.copy()
-            fallback = 36
+        else:  # 5g - but we're not using 5GHz anymore
+            candidates = self.NON_OVERLAP_2G.copy()  # Fallback to 2.4GHz non-overlapping
+            fallback = 1
         
         # Remove excluded channels
         if excluded_channels:

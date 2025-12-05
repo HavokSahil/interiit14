@@ -61,8 +61,8 @@ thresholds:
   # Interference levels (0-1 normalized)
   interference:
     low: 0.15     # Below this: minimal interference (lowered)
-    moderate: 0.4  # Between low-moderate: some interference (lowered)
-    high: 0.6     # Above this: severe interference (lowered)
+    moderate: 0.3  # Between low-moderate: some interference (lowered)
+    high: 0.5     # Above this: severe interference (lowered)
     
   # CCA busy percentage (0-1)
   cca_busy:

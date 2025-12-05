@@ -4,6 +4,7 @@ from metrics import *
 from sim import *
 from utils import *
 from generate_training_data import create_random_topology
+import random
 
 def main():
     env = Environment(x_min=0, x_max=50, y_min=0, y_max=50)

@@ -1,0 +1,142 @@
+\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}System Purpose}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Architectural Components}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Design Goals}{5}{section.1.3}%
+\contentsline {chapter}{\numberline {2}System Architecture Overview}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Component Organization}{6}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Measurement Layer}{6}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Analytics Layer}{6}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Decision Layer}{7}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Control Layer}{7}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}Management Layer}{7}{subsection.2.1.5}%
+\contentsline {section}{\numberline {2.2}Data Flow}{7}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Threading Model}{8}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Schedulers and Data Acquisition}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Scheduler Framework}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Link Measurement Scheduler}{9}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Beacon Measurement Scheduler}{10}{section.3.3}%
+\contentsline {section}{\numberline {3.4}QoE Scheduler}{10}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Neighbor Ranking Scheduler}{11}{section.3.5}%
+\contentsline {section}{\numberline {3.6}BSS Transition Scheduler}{11}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Quality of Experience (QoE) Computation}{12}{chapter.4}%
+\contentsline {section}{\numberline {4.1}AP-Side QoE}{12}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Signal Quality Component}{12}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Throughput Component}{13}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Reliability Component}{13}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Latency Component}{13}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Activity Component}{13}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}TCP QoE (Updated)}{13}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Part 1: TCP Packet Capture}{14}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Part 2: TCP Layer Fields}{14}{subsection.4.2.2}%
+\contentsline {subsubsection}{Core TCP Variables}{14}{subsubsection*.2}%
+\contentsline {subsubsection}{Flow Identification}{14}{subsubsection*.3}%
+\contentsline {subsection}{\numberline {4.2.3}Part 3: Raw Metric Extraction}{14}{subsection.4.2.3}%
+\contentsline {subsubsection}{Metric 1: Round-Trip Time (RTT)}{14}{subsubsection*.4}%
+\contentsline {subsubsection}{Metric : RTT Jitter (Variability)}{15}{subsubsection*.5}%
+\contentsline {subsubsection}{Metric 3: Packet Loss Rate}{15}{subsubsection*.6}%
+\contentsline {subsubsection}{Metric 4: Throughput}{15}{subsubsection*.7}%
+\contentsline {subsection}{\numberline {4.2.4}Part 4: Normalization with Parameters}{16}{subsection.4.2.4}%
+\contentsline {subsubsection}{RTT Normalization}{16}{subsubsection*.8}%
+\contentsline {subsubsection}{Jitter Normalization}{16}{subsubsection*.9}%
+\contentsline {subsubsection}{Loss Rate Normalization}{16}{subsubsection*.10}%
+\contentsline {subsubsection}{Throughput Normalization}{16}{subsubsection*.11}%
+\contentsline {subsection}{\numberline {4.2.5}Part 5: Final QoE Computation}{17}{subsection.4.2.5}%
+\contentsline {subsubsection}{QoE Formula}{17}{subsubsection*.12}%
+\contentsline {subsection}{\numberline {4.2.6}Summary of Formulas with Parameters}{17}{subsection.4.2.6}%
+\contentsline {subsubsection}{Raw Metrics (TCP Only)}{17}{subsubsection*.13}%
+\contentsline {subsubsection}{Normalization with Parameters}{17}{subsubsection*.14}%
+\contentsline {subsubsection}{Final QoE with Weights}{17}{subsubsection*.15}%
+\contentsline {section}{\numberline {4.3}Historical Trend Analysis}{17}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Moving Average}{18}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Trend Computation}{18}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Volatility}{18}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Post-Roam QoE Delta Analysis}{18}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Neighbor Ranking Algorithm}{20}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Ranking Overview}{20}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Scoring Formula}{20}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}RSSI Component}{20}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Capacity Component}{20}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Load Component}{21}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Neighbor Aggregation}{21}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Sorting and Selection}{21}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Future Enhancement: Historical Performance}{21}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Transition Management Logic}{22}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Steering Decision Process}{22}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Decision Algorithm}{22}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}QoE Threshold}{22}{section.6.2}%
+\contentsline {section}{\numberline {6.3}BSS Transition Request Construction}{23}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Request Mode}{23}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Neighbor List}{23}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Additional Parameters}{23}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}Rate Limiting and Hysteresis}{24}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Minimum Time Between Steers}{24}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}QoE Hysteresis}{24}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Minimum RSSI Delta}{24}{subsection.6.4.3}%
+\contentsline {section}{\numberline {6.5}Steering Event Logging}{24}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Client Response Handling}{25}{section.6.6}%
+\contentsline {chapter}{\numberline {7}StateAPI: HTTP Interface}{26}{chapter.7}%
+\contentsline {section}{\numberline {7.1}API Purpose and Design}{26}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Data Refresh Process}{26}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Response Structure}{26}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Station Record Format}{27}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Identity}{27}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Connection Status}{27}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Signal Metrics}{27}{subsection.7.4.3}%
+\contentsline {subsection}{\numberline {7.4.4}Throughput Metrics}{27}{subsection.7.4.4}%
+\contentsline {subsection}{\numberline {7.4.5}Reliability Metrics}{27}{subsection.7.4.5}%
+\contentsline {subsection}{\numberline {7.4.6}Latency Metrics}{27}{subsection.7.4.6}%
+\contentsline {subsection}{\numberline {7.4.7}Activity Metrics}{28}{subsection.7.4.7}%
+\contentsline {subsection}{\numberline {7.4.8}QoE Summary}{28}{subsection.7.4.8}%
+\contentsline {subsection}{\numberline {7.4.9}Timestamp}{28}{subsection.7.4.9}%
+\contentsline {section}{\numberline {7.5}Identifier Anonymization}{28}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Anonymization Algorithm}{28}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Privacy Properties}{29}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Implementation}{29}{subsection.7.5.3}%
+\contentsline {subsection}{\numberline {7.5.4}OUI Retention Rationale}{29}{subsection.7.5.4}%
+\contentsline {section}{\numberline {7.6}Example API Output}{29}{section.7.6}%
+\contentsline {chapter}{\numberline {8}Dashboards and Socket Multiplexing}{32}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Dashboard Architecture}{32}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Socket Naming and Multiplexing}{32}{section.8.2}%
+\contentsline {section}{\numberline {8.3}SocketPool Management}{32}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Event Generation}{32}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Storage and Snapshotting}{34}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Database Architecture}{34}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Snapshot Mechanism}{34}{section.9.2}%
+\contentsline {subsection}{\numberline {9.2.1}Snapshot Format}{34}{subsection.9.2.1}%
+\contentsline {subsection}{\numberline {9.2.2}Serialization Process}{35}{subsection.9.2.2}%
+\contentsline {subsection}{\numberline {9.2.3}Recovery Process}{35}{subsection.9.2.3}%
+\contentsline {subsection}{\numberline {9.2.4}Retention Policy}{35}{subsection.9.2.4}%
+\contentsline {subsection}{\numberline {9.2.5}Snapshot Consistency}{36}{subsection.9.2.5}%
+\contentsline {chapter}{\numberline {10}802.11mc RTT (Updated)}{37}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Introduction}{37}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Basic Principle of 802.11mc Wi-Fi RTT}{37}{section.10.2}%
+\contentsline {subsection}{\numberline {10.2.1}FTM Exchange Protocol}{37}{subsection.10.2.1}%
+\contentsline {subsection}{\numberline {10.2.2}RTT and Distance Formulas}{37}{subsection.10.2.2}%
+\contentsline {section}{\numberline {10.3}Collected Data (FTM-Only, No MAC/MCS)}{38}{section.10.3}%
+\contentsline {section}{\numberline {10.4}Floor Plan, AP/Client Placement, and Tiles}{38}{section.10.4}%
+\contentsline {subsection}{\numberline {10.4.1}Coordinate System and Tiles}{38}{subsection.10.4.1}%
+\contentsline {subsection}{\numberline {10.4.2}Floor Plan with AP and Client Placement}{38}{subsection.10.4.2}%
+\contentsline {section}{\numberline {10.5}Assigning FTM Measurements to Tiles}{39}{section.10.5}%
+\contentsline {section}{\numberline {10.6}Time Windows and Aggregation}{40}{section.10.6}%
+\contentsline {section}{\numberline {10.7}Hotspot and Interference Metrics (Formulas)}{40}{section.10.7}%
+\contentsline {subsection}{\numberline {10.7.1}Metric 1 -- FTM Precision Hotspot}{40}{subsection.10.7.1}%
+\contentsline {subsection}{\numberline {10.7.2}Metric 2 -- Coverage Quality Hotspot}{40}{subsection.10.7.2}%
+\contentsline {subsection}{\numberline {10.7.3}Metric 3 -- Multipath Distortion Indicator}{41}{subsection.10.7.3}%
+\contentsline {subsection}{\numberline {10.7.4}Combined Hotspot Severity per Tile}{41}{subsection.10.7.4}%
+\contentsline {section}{\numberline {10.8}Heatmap and Visualizations}{42}{section.10.8}%
+\contentsline {subsection}{\numberline {10.8.1}Heatmap Concept}{42}{subsection.10.8.1}%
+\contentsline {subsection}{\numberline {10.8.2}Example Heatmap}{42}{subsection.10.8.2}%
+\contentsline {subsection}{\numberline {10.8.3}Per-Tile Metric Comparison}{43}{subsection.10.8.3}%
+\contentsline {section}{\numberline {10.9}Overall Implementation Flow (High Level)}{44}{section.10.9}%
+\contentsline {subsection}{\numberline {10.9.1}Detailed Steps}{44}{subsection.10.9.1}%
+\contentsline {section}{\numberline {10.10}Privacy Considerations}{45}{section.10.10}%
+\contentsline {section}{\numberline {10.11}Conclusion}{45}{section.10.11}%
+\contentsline {section}{\numberline {10.12}Key Formulas Summary}{45}{section.10.12}%
+\contentsline {section}{\numberline {10.13}Example FTM Data Record}{45}{section.10.13}%
+\contentsline {section}{\numberline {10.14}Client System Requirements}{46}{section.10.14}%
+\contentsline {section}{\numberline {10.15}Results}{46}{section.10.15}%
+\contentsline {chapter}{\numberline {11}Conclusion}{48}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Architectural Summary}{48}{section.11.1}%
+\contentsline {section}{\numberline {11.2}Privacy and Security}{48}{section.11.2}%
+\contentsline {section}{\numberline {11.3}Production Readiness}{48}{section.11.3}%
+\contentsline {section}{\numberline {11.4}Final Remarks}{49}{section.11.4}%

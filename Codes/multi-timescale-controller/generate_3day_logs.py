@@ -9,9 +9,9 @@ Generates comprehensive simulation logs spanning 3 days with:
 - Network optimization cycles
 
 Output:
-- simulation_logs_3day/ directory with CSV logs
-- audit_logs_3day/ directory with audit trail
-- Summary statistics and analytics
+- 3_day_logs/state_logs/ - CSV logs for APs, Clients, etc.
+- 3_day_logs/audit/ - Audit trail for all RRM actions
+- 3_day_logs/analysis/ - Plots and summary statistics
 """
 
 import random
@@ -25,24 +25,44 @@ from datatype import *
 from metrics import *
 from sim import *
 from utils import *
-from generate_training_data import create_grid_topology, create_random_topology
+from generate_training_data import create_grid_topology, create_random_topology, create_linear_topology
 from enhanced_rrm_engine import EnhancedRRMEngine
 
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 class ThreeDaySimulation:
     """Generate 3-day realistic simulation logs"""
     
-    def __init__(self, output_dir="simulation_logs_3day", audit_dir="audit_logs_3day"):
-        self.output_dir = Path(output_dir)
-        self.audit_dir = Path(audit_dir)
-        self.output_dir.mkdir(exist_ok=True)
-        self.audit_dir.mkdir(exist_ok=True)
+    def __init__(self, root_dir="3_day_logs", enable_rrm=True):
+        self.root_dir = Path(root_dir)
+        self.state_dir = self.root_dir / "state_logs"
+        self.audit_dir = self.root_dir / "audit"
+        self.analysis_dir = self.root_dir / "analysis"
+        
+        # Create directories
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        self.audit_dir.mkdir(parents=True, exist_ok=True)
+        self.analysis_dir.mkdir(parents=True, exist_ok=True)
         
         # Simulation parameters
-        self.steps_per_hour = 360  # 10 seconds per step = 360 steps/hour
+        self.steps_per_hour = 60  # 1 minute per step = 60 steps/hour
         self.hours_per_day = 24
         self.num_days = 3
         self.total_steps = self.steps_per_hour * self.hours_per_day * self.num_days
+        
+        # Simulated time: start from a random time 4 days ago
+        self.sim_start_time = datetime.now() - timedelta(
+            days=4,
+            hours=random.randint(0, 23),
+            minutes=random.randint(0, 59)
+        )
+        self.seconds_per_step = 60  # 1 minute per step
+        
+        # RRM control switch
+        self.enable_rrm = enable_rrm
         
         # Statistics tracking
         self.stats = {
@@ -51,19 +71,34 @@ class ThreeDaySimulation:
             'actions_executed': 0,
             'rollbacks_triggered': 0,
             'peak_clients': 0,
-            'total_roams': 0
+            'total_roams': 0,
+            'client_counts': [],
+            'qoe_values': [],
+            # Track all loop actions
+            'fast_loop_actions': 0,
+            'event_loop_actions': 0,
+            'slow_loop_actions': 0
         }
+        
+        # Comprehensive audit log
+        self.audit_log = []
+        
+        # Active interferers with expiration tracking
+        # {interferer_id: {'interferer': Interferer, 'expires_at_step': int}}
+        self.active_interferers = {}
+        self.next_interferer_id = 1000  # Start ID for dynamic interferers
         
         print(f"\n{'='*70}")
         print("3-DAY SIMULATION LOG GENERATOR")
         print(f"{'='*70}")
         print(f"Total steps: {self.total_steps:,}")
-        print(f"Steps per hour: {self.steps_per_hour}")
         print(f"Duration: {self.num_days} days")
-        print(f"Output: {self.output_dir}/")
-        print(f"Audit: {self.audit_dir}/")
+        print(f"Output Directory: {self.root_dir}/")
+        print(f"  ├─ State Logs: {self.state_dir}/")
+        print(f"  ├─ Audit Logs: {self.audit_dir}/")
+        print(f"  └─ Analysis:   {self.analysis_dir}/")
         print(f"{'='*70}\n")
-    
+
     def get_hour_of_day(self, step):
         """Get hour of day (0-23) from step number"""
         total_hours = step / self.steps_per_hour
@@ -110,309 +145,401 @@ class ThreeDaySimulation:
         return int(base_count * multiplier)
     
     def inject_random_events(self, step, rrm, sim):
-        """Inject random events based on probability"""
+        """Inject random events based on probability - creates REAL interferers"""
         hour = self.get_hour_of_day(step)
         
-        # DFS radar events (very rare, 0.1% per hour)
-        # Only inject if there are 5 GHz APs (channel > 14)
-        if random.random() < 0.001:
-            five_ghz_aps = [ap.id for ap in sim.access_points if ap.channel > 14]
-            if five_ghz_aps:  # Check if list is not empty
-                ap_id = random.choice(five_ghz_aps)
-                rrm.inject_dfs_event(ap_id, sim.access_points[ap_id].channel)
-                self.stats['events_by_type']['dfs_radar'] = \
-                    self.stats['events_by_type'].get('dfs_radar', 0) + 1
-                self.stats['events_by_hour'][hour] += 1
+        # First, remove expired interferers
+        self._cleanup_expired_interferers(step, sim)
         
-        # Interference bursts (more common during peak hours)
-        interference_prob = 0.02 if self.is_peak_hour(hour) else 0.005
+        # NOTE: DFS radar events removed - only using 2.4GHz channels (1, 6, 11)
+        # DFS only applies to 5GHz channels
+
+        
+        # Interference bursts: ~5-10 per day during peak, ~2-3 otherwise
+        # Peak: 0.003 per step ≈ 0.18/hour ≈ 1.4/peak period
+        # Off-peak: 0.0005 per step
+        interference_prob = 0.002 if self.is_peak_hour(hour) else 0.0003
         if random.random() < interference_prob:
-            if sim.access_points:  # Check if APs exist
+            if sim.access_points:
                 ap_id = random.choice([ap.id for ap in sim.access_points])
-                rrm.inject_interference_event(ap_id, random.choice(["Microwave", "Bluetooth", "Zigbee"]))
-                self.stats['events_by_type']['interference'] = \
-                    self.stats['events_by_type'].get('interference', 0) + 1
-                self.stats['events_by_hour'][hour] += 1
+                ap = next((a for a in sim.access_points if a.id == ap_id), None)
+                if ap:
+                    interferer_type = random.choice(["Microwave", "Bluetooth", "Zigbee"])
+                    
+                    # Create REAL interferer near the AP
+                    interferer = self._create_real_interferer(ap, interferer_type, step, sim)
+                    
+                    # Also notify RRM engine (if enabled, it will react)
+                    rrm.inject_interference_event(ap_id, interferer_type)
+                    
+                    self.stats['events_by_type']['interference'] = \
+                        self.stats['events_by_type'].get('interference', 0) + 1
+                    self.stats['events_by_hour'][hour] += 1
+                    self._log_audit_entry(step, 'EVENT_INJECTION', 'interference', ap_id, {
+                        'type': interferer_type,
+                        'interferer_id': interferer.id,
+                        'position': (interferer.x, interferer.y),
+                        'channel': interferer.channel,
+                        'tx_power': interferer.tx_power
+                    })
         
-        # Spectrum saturation (during peak hours)
-        if self.is_peak_hour(hour) and random.random() < 0.01:
-            if sim.access_points:  # Check if APs exist
+        # Spectrum saturation: ~3-5 per day during peak only
+        # 0.001 per step ≈ 0.06/hour ≈ 0.5/peak period
+        if self.is_peak_hour(hour) and random.random() < 0.001:
+            if sim.access_points:
                 ap_id = random.choice([ap.id for ap in sim.access_points])
                 cca_busy = random.uniform(92, 98)
                 rrm.inject_spectrum_saturation_event(ap_id, cca_busy)
                 self.stats['events_by_type']['spectrum_sat'] = \
                     self.stats['events_by_type'].get('spectrum_sat', 0) + 1
                 self.stats['events_by_hour'][hour] += 1
-    
+                self._log_audit_entry(step, 'EVENT_INJECTION', 'spectrum_saturation', ap_id, {'cca_busy': cca_busy})
+
+    def _create_real_interferer(self, ap, interferer_type: str, step: int, sim) -> 'Interferer':
+        """
+        Create a real Interferer object that impacts network physics.
+        
+        The interferer is placed near the affected AP and lasts for 5-15 minutes.
+        """
+        # Interferer characteristics based on type
+        interferer_configs = {
+            'Microwave': {'tx_power': 15.0, 'duty_cycle': 0.5, 'bandwidth': 20.0},
+            'Bluetooth': {'tx_power': 4.0, 'duty_cycle': 0.3, 'bandwidth': 2.0},
+            'Zigbee': {'tx_power': 0.0, 'duty_cycle': 0.1, 'bandwidth': 2.0}  # 0 dBm = 1mW
+        }
+        config = interferer_configs.get(interferer_type, {'tx_power': 10.0, 'duty_cycle': 0.3, 'bandwidth': 10.0})
+        
+        # Place interferer near AP (within 5-15 meters)
+        offset_x = random.uniform(-15, 15)
+        offset_y = random.uniform(-15, 15)
+        x = max(sim.env.x_min, min(sim.env.x_max, ap.x + offset_x))
+        y = max(sim.env.y_min, min(sim.env.y_max, ap.y + offset_y))
+        
+        # Create interferer on same channel as AP
+        interferer = Interferer(
+            id=self.next_interferer_id,
+            x=x,
+            y=y,
+            tx_power=config['tx_power'],
+            channel=ap.channel,
+            type=interferer_type,
+            bandwidth=config['bandwidth'],
+            duty_cycle=config['duty_cycle']
+        )
+        self.next_interferer_id += 1
+        
+        # Duration: 5-15 minutes (5-15 steps at 1 min/step)
+        duration_steps = random.randint(5, 15)
+        expires_at = step + duration_steps
+        
+        # Track and add to simulation
+        self.active_interferers[interferer.id] = {
+            'interferer': interferer,
+            'expires_at_step': expires_at,
+            'ap_id': ap.id,
+            'type': interferer_type
+        }
+        sim.interferers.append(interferer)
+        
+        print(f"[Interference] Created {interferer_type} near AP {ap.id} (ID:{interferer.id}, expires step {expires_at})")
+        return interferer
+
+    def _cleanup_expired_interferers(self, step: int, sim):
+        """Remove expired interferers from the simulation"""
+        expired_ids = []
+        for int_id, data in self.active_interferers.items():
+            if step >= data['expires_at_step']:
+                expired_ids.append(int_id)
+        
+        for int_id in expired_ids:
+            data = self.active_interferers.pop(int_id)
+            interferer = data['interferer']
+            if interferer in sim.interferers:
+                sim.interferers.remove(interferer)
+                print(f"[Interference] {data['type']} near AP {data['ap_id']} expired (ID:{int_id})")
+
+    def _get_simulated_time(self, step):
+        """Get simulated timestamp for a given step"""
+        return self.sim_start_time + timedelta(seconds=step * self.seconds_per_step)
+
+    def _log_audit_entry(self, step, action_type, action_name, ap_id=None, details=None):
+        """Log an audit entry for any RRM action"""
+        sim_time = self._get_simulated_time(step)
+        entry = {
+            'timestamp': sim_time.isoformat(),
+            'step': step,
+            'day': self.get_day_number(step) + 1,
+            'hour': self.get_hour_of_day(step),
+            'action_type': action_type,
+            'action_name': action_name,
+            'ap_id': ap_id,
+            'details': details or {}
+        }
+        self.audit_log.append(entry)
+
+    def _process_rrm_result(self, step, rrm_result):
+        """Process RRM result and log all actions to audit"""
+        
+        # Event Loop actions
+        if 'event_action' in rrm_result:
+            self.stats['event_loop_actions'] += 1
+            self.stats['actions_executed'] += 1
+            event_data = rrm_result.get('event_action', {})
+            ap_id = event_data.get('ap_id')
+            self._log_audit_entry(step, 'EVENT_LOOP', 'event_response', ap_id, event_data)
+        
+        # Fast Loop actions
+        if 'fast_loop_actions' in rrm_result:
+            actions = rrm_result['fast_loop_actions']
+            for action in actions:
+                if action.get('success'):
+                    self.stats['fast_loop_actions'] += 1
+                    ap_id = action.get('ap_id')
+                    self._log_audit_entry(step, 'FAST_LOOP', action.get('action', 'unknown'), ap_id, action)
+        
+        # Slow Loop actions - DISABLED per user request
+        # if 'slow_loop' in rrm_result:
+        #     self.stats['slow_loop_actions'] += 1
+        #     slow_data = rrm_result.get('slow_loop', {})
+        #     self._log_audit_entry(step, 'SLOW_LOOP', 'optimization', None, slow_data)
+        
+        # Steering/roaming
+        if rrm_result.get('steering'):
+            self.stats['total_roams'] += len(rrm_result['steering'])
+            for steer in rrm_result['steering']:
+                self._log_audit_entry(step, 'STEERING', 'client_roam', steer.get('to_ap'), steer)
+
     def adjust_client_count(self, sim, target_count):
         """Dynamically add or remove clients to match target"""
         current_count = len(sim.clients)
-        
         if target_count > current_count:
-            # Add clients
             for _ in range(target_count - current_count):
                 x = random.uniform(sim.env.x_min, sim.env.x_max)
                 y = random.uniform(sim.env.y_min, sim.env.y_max)
-                demand = random.uniform(5, 30)
-                velocity = random.uniform(0.5, 2.0)
-                
-                client = Client(
-                    id=len(sim.clients),
-                    x=x, y=y,
-                    demand_mbps=demand,
-                    velocity=velocity
-                )
-                sim.add_client(client)
-        
+                sim.add_client(Client(id=len(sim.clients), x=x, y=y, demand_mbps=random.uniform(5, 30), velocity=random.uniform(0.5, 2.0)))
         elif target_count < current_count:
-            # Remove clients (remove from end)
-            clients_to_remove = current_count - target_count
-            for _ in range(clients_to_remove):
+            for _ in range(current_count - target_count):
                 if sim.clients:
                     removed = sim.clients.pop()
                     if removed.associated_ap is not None:
                         ap = next((a for a in sim.access_points if a.id == removed.associated_ap), None)
                         if ap and removed.id in ap.connected_clients:
                             ap.connected_clients.remove(removed.id)
-    
+
     def run(self):
         """Run 3-day simulation"""
-        # Create environment
-        env = Environment(x_min=0, x_max=100, y_min=0, y_max=100)
-        
-        # Create propagation model
+        env = Environment(x_min=0, x_max=50, y_min=0, y_max=50)
         base_model = PathLossModel(frequency_mhz=2400, path_loss_exp=5.0)
         fading_model = MultipathFadingModel(base_model, fading_margin_db=8.0)
         
-        # Create simulation with logging
-        log_filename = f"3day_sim_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
         sim = WirelessSimulation(
             env, fading_model,
             interference_threshold_dbm=-75.0,
             enable_logging=True,
-            log_dir=str(self.output_dir)
+            log_dir=str(self.state_dir)
         )
         
-        # Create 6 APs with mixed channels
+        # Create network
         print("Creating network topology...")
-        N_ap = 6
-        ap_positions = create_grid_topology(N_ap, env)
-        ap_channels = [52, 6, 36, 11, 40, 1]  # Mix of 2.4G and 5G
+        N_ap = 8
+        ap_positions = create_linear_topology(N_ap, env)
+        ap_channels = [1, 1, 6, 6, 11, 11, 1, 6]  # 8 channels for 8 APs (2.4GHz only)
         
         for i, (x, y) in enumerate(ap_positions):
             channel = ap_channels[i]
-            tx_power = random.uniform(20, 23)
-            bandwidth = 80 if channel > 14 else 20
-            
-            ap = AccessPoint(
-                id=i, x=x, y=y,
-                tx_power=tx_power,
-                channel=channel,
-                bandwidth=bandwidth,
-                max_throughput=150.0
-            )
-            sim.add_access_point(ap)
+            bandwidth = 20
+            sim.add_access_point(AccessPoint(id=i, x=x, y=y, tx_power=random.uniform(23, 30), channel=channel, bandwidth=bandwidth, max_throughput=150.0))
         
-        # Start with initial clients
+        # Initial clients
         initial_clients = self.get_client_count(0)
         client_positions = create_random_topology(initial_clients, env)
         for i, (x, y) in enumerate(client_positions):
-            demand = random.uniform(5, 30)
-            velocity = random.uniform(0.5, 2.0)
-            sim.add_client(Client(id=i, x=x, y=y, demand_mbps=demand, velocity=velocity))
+            sim.add_client(Client(id=i, x=x, y=y, demand_mbps=random.uniform(10, 50), velocity=random.uniform(0.1, 0.5)))
         
-        # Add interferers
-        for i in range(2):
-            x = random.uniform(env.x_min, env.x_max)
-            y = random.uniform(env.y_min, env.y_max)
-            interferer = Interferer(
-                id=i,
-                x=x, y=y,
-                tx_power=random.uniform(25, 35),
-                channel=random.choice([6, 11]),
-                type=random.choice(["Microwave", "Bluetooth"]),
-                duty_cycle=random.uniform(0.5, 0.8)
-            )
-            sim.add_interferer(interferer)
-        
-        # Initialize simulation
         sim.initialize()
         
-        # Create Enhanced RRM Engine
+        # RRM Engine - Fast Loop and Event Loop only (no Slow Loop)
         rrm = EnhancedRRMEngine(
             access_points=sim.access_points,
             clients=sim.clients,
             interferers=sim.interferers,
             prop_model=fading_model,
-            cooldown_steps=20,
+            cooldown_steps=10,
+            fast_loop_period=30,  # Every 30 steps = 30 minutes
+            slow_loop_period=999999,  # Effectively disable slow loop
             audit_log_dir=str(self.audit_dir)
         )
+        # Disable slow loop engine
+        rrm.slow_loop_engine = None
         
         print(f"Starting 3-day simulation ({self.total_steps:,} steps)...")
-        print("This will take several minutes...\n")
-        
-        # Progress tracking
-        last_report_step = 0
-        report_interval = self.steps_per_hour  # Report every hour
-        
+        print(f"RRM Enabled: {self.enable_rrm}")
         start_time = time.time()
         
-        # Main simulation loop
+        # Main loop
         for step in range(1, self.total_steps + 1):
-            # Get current time context
-            hour = self.get_hour_of_day(step)
-            day = self.get_day_number(step)
-            
-            # Adjust client count based on time of day
-            if step % (self.steps_per_hour // 6) == 0:  # Every 10 minutes
+            # Adjust client count every 10 minutes (10 steps)
+            if step % 10 == 0:
                 target_clients = self.get_client_count(step)
                 self.adjust_client_count(sim, target_clients)
                 self.stats['peak_clients'] = max(self.stats['peak_clients'], len(sim.clients))
             
-            # Execute simulation step
             sim.step()
             
-            # Inject random events
+            # Always inject events (for realistic conditions)
             self.inject_random_events(step, rrm, sim)
             
-            # Execute RRM engine
-            rrm_result = rrm.execute(step)
+            # RRM execution (if enabled) - reacts to injected events
+            if self.enable_rrm:
+                rrm_result = rrm.execute(step)
+                # Process and log all RRM actions
+                self._process_rrm_result(step, rrm_result)
             
-            # Track statistics
-            if 'event_action' in rrm_result:
-                self.stats['actions_executed'] += 1
+            # Time series data every 30 mins (30 steps)
+            if step % 30 == 0:
+                self.stats['client_counts'].append(len(sim.clients))
             
-            if rrm_result.get('steering'):
-                self.stats['total_roams'] += len(rrm_result['steering'])
-            
-            # Progress reporting
-            if step - last_report_step >= report_interval:
-                elapsed = time.time() - start_time
+            # Progress every hour
+            if step % self.steps_per_hour == 0:
+                day = self.get_day_number(step)
+                hour = self.get_hour_of_day(step)
                 progress = (step / self.total_steps) * 100
-                eta = (elapsed / step) * (self.total_steps - step)
-                
-                print(f"\r[Day {day+1}, Hour {hour:02d}:00] "
-                      f"Step {step:,}/{self.total_steps:,} ({progress:.1f}%) | "
-                      f"Clients: {len(sim.clients)} | "
-                      f"Events: {sum(self.stats['events_by_type'].values())} | "
-                      f"Actions: {self.stats['actions_executed']} | "
-                      f"ETA: {eta/60:.1f}min", end='')
-                
-                last_report_step = step
+                total_events = sum(self.stats['events_by_type'].values())
+                print(f"\r[Day {day+1}, Hour {hour:02d}:00] {progress:.1f}% | Clients: {len(sim.clients)} | Events: {total_events} | FL: {self.stats['fast_loop_actions']} | EL: {self.stats['event_loop_actions']}", end='')
         
         print("\n\nSimulation complete!")
         
-        # Update final statistics
-        rrm_stats = rrm.event_loop.get_statistics()
-        self.stats['rollbacks_triggered'] = rrm_stats['rollbacks_triggered']
+        # Final stats from RRM
+        try:
+            rrm_stats = rrm.event_loop.get_statistics()
+            self.stats['rollbacks_triggered'] = rrm_stats.get('rollbacks_triggered', 0)
+        except:
+            pass
         
-        # Generate summary report
+        # Export event loop audit trail
+        try:
+            rrm.event_loop.audit_logger.export_audit_trail()
+        except:
+            pass
+        
         self.generate_summary_report(sim, rrm, start_time)
-    
+        self.save_audit_log()
+        self.generate_plots()
+
+    def save_audit_log(self):
+        """Save comprehensive audit log to file"""
+        audit_file = self.audit_dir / "comprehensive_audit.json"
+        
+        # Group by action type for summary
+        summary = {
+            'total_entries': len(self.audit_log),
+            'by_action_type': {},
+            'entries': self.audit_log
+        }
+        
+        for entry in self.audit_log:
+            action_type = entry['action_type']
+            summary['by_action_type'][action_type] = summary['by_action_type'].get(action_type, 0) + 1
+        
+        with open(audit_file, 'w') as f:
+            json.dump(summary, f, indent=2)
+        
+        print(f"\nComprehensive audit log saved to {audit_file}")
+        print(f"  Total entries: {len(self.audit_log)}")
+        for action_type, count in summary['by_action_type'].items():
+            print(f"  - {action_type}: {count}")
+
+    def generate_plots(self):
+        """Generate analysis plots"""
+        print("\nGenerating analysis plots...")
+        
+        # Set seaborn style
+        sns.set_theme(style="whitegrid")
+        
+        # 1. Events by Hour
+        plt.figure(figsize=(12, 6))
+        hours = list(range(24))
+        data = pd.DataFrame({'Hour': hours, 'Events': self.stats['events_by_hour']})
+        
+        sns.barplot(data=data, x='Hour', y='Events', color='skyblue', edgecolor='black')
+        plt.title('Events Distribution by Hour of Day', fontsize=14)
+        plt.xlabel('Hour of Day (0-23)', fontsize=12)
+        plt.ylabel('Number of Events', fontsize=12)
+        plt.tight_layout()
+        plt.savefig(self.analysis_dir / 'events_by_hour.png')
+        plt.close()
+        
+        # 2. Client Count Over Time
+        plt.figure(figsize=(14, 7))
+        plt.plot(self.stats['client_counts'], label='Active Clients', color='#2ecc71', linewidth=2)
+        plt.title('Client Load Trend Over 3 Days', fontsize=14)
+        plt.xlabel('Time (30-min intervals)', fontsize=12)
+        plt.ylabel('Number of Active Clients', fontsize=12)
+        plt.fill_between(range(len(self.stats['client_counts'])), self.stats['client_counts'], alpha=0.3, color='#2ecc71')
+        plt.grid(True, alpha=0.3)
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(self.analysis_dir / 'client_load_trend.png')
+        plt.close()
+        
+        # 3. Actions by Loop Type (Pie Chart)
+        plt.figure(figsize=(8, 8))
+        loop_actions = {
+            'Fast Loop': self.stats['fast_loop_actions'],
+            'Event Loop': self.stats['event_loop_actions'],
+            'Slow Loop': self.stats['slow_loop_actions']
+        }
+        # Filter out zeros
+        loop_actions = {k: v for k, v in loop_actions.items() if v > 0}
+        if loop_actions:
+            plt.pie(loop_actions.values(), labels=loop_actions.keys(), autopct='%1.1f%%', 
+                   colors=['#3498db', '#e74c3c', '#2ecc71'])
+            plt.title('RRM Actions by Loop Type', fontsize=14)
+            plt.tight_layout()
+            plt.savefig(self.analysis_dir / 'actions_by_loop.png')
+        plt.close()
+        
+        print(f"Plots saved to {self.analysis_dir}/")
+
     def generate_summary_report(self, sim, rrm, start_time):
         """Generate summary statistics and report"""
         elapsed = time.time() - start_time
         
-        print(f"\n{'='*70}")
-        print("3-DAY SIMULATION SUMMARY")
-        print(f"{'='*70}")
-        
-        print(f"\nDuration: {elapsed/60:.1f} minutes ({elapsed:.1f} seconds)")
-        print(f"Steps executed: {self.total_steps:,}")
-        print(f"Steps per second: {self.total_steps/elapsed:.1f}")
-        
-        print(f"\nNetwork Statistics:")
-        print(f"  Access Points: {len(sim.access_points)}")
-        print(f"  Peak Clients: {self.stats['peak_clients']}")
-        print(f"  Total Client Roams: {self.stats['total_roams']:,}")
-        
-        print(f"\nEvent Statistics:")
-        total_events = sum(self.stats['events_by_type'].values())
-        print(f"  Total Events: {total_events}")
-        for event_type, count in sorted(self.stats['events_by_type'].items()):
-            print(f"    {event_type}: {count}")
-        
-        print(f"\nRRM Statistics:")
-        print(f"  Actions Executed: {self.stats['actions_executed']}")
-        print(f"  Rollbacks Triggered: {self.stats['rollbacks_triggered']}")
-        
-        rrm_stats = rrm.event_loop.get_statistics()
-        print(f"  Event Loop Stats:")
-        print(f"    Events Processed: {rrm_stats['events_processed']}")
-        print(f"    Active Monitoring: {rrm_stats['active_monitoring']}")
-        
-        print(f"\nEvents by Hour of Day:")
-        for hour in range(24):
-            bar = '█' * (self.stats['events_by_hour'][hour] // 5)
-            print(f"  {hour:02d}:00 - {hour:02d}:59  {self.stats['events_by_hour'][hour]:4d}  {bar}")
-        
-        # Generate JSON summary
         summary = {
-            'simulation_duration_sec': elapsed,
+            'duration_sec': elapsed,
             'total_steps': self.total_steps,
-            'num_days': self.num_days,
             'network': {
                 'access_points': len(sim.access_points),
                 'peak_clients': self.stats['peak_clients'],
                 'total_roams': self.stats['total_roams']
             },
             'events': {
-                'total': total_events,
-                'by_type': self.stats['events_by_type'],
-                'by_hour': self.stats['events_by_hour']
+                'total': sum(self.stats['events_by_type'].values()),
+                'by_type': self.stats['events_by_type']
             },
-            'rrm': {
-                'actions_executed': self.stats['actions_executed'],
-                'rollbacks_triggered': self.stats['rollbacks_triggered'],
-                'events_processed': rrm_stats['events_processed']
+            'rrm_actions': {
+                'fast_loop': self.stats['fast_loop_actions'],
+                'event_loop': self.stats['event_loop_actions'],
+                'slow_loop': self.stats['slow_loop_actions'],
+                'total': self.stats['fast_loop_actions'] + self.stats['event_loop_actions'] + self.stats['slow_loop_actions']
             },
-            'generated_at': datetime.now().isoformat()
+            'rollbacks': self.stats['rollbacks_triggered']
         }
         
-        summary_file = self.output_dir / "simulation_summary.json"
-        with open(summary_file, 'w') as f:
+        with open(self.analysis_dir / "summary.json", 'w') as f:
             json.dump(summary, f, indent=2)
-        
-        print(f"\n{'='*70}")
-        print(f"Logs saved to: {self.output_dir}/")
-        print(f"Audit trail: {self.audit_dir}/")
-        print(f"Summary: {summary_file}")
-        print(f"{'='*70}\n")
-        
-        # Export audit trail
-        audit_export = rrm.event_loop.audit_logger.export_audit_trail()
-        print(f"Audit trail exported: {audit_export}")
-        
-        print("\n✓ 3-day simulation log generation complete!")
-
+            
+        print(f"\nSummary saved to {self.analysis_dir}/summary.json")
 
 def main():
-    """Main entry point"""
-    print("\n" + "="*70)
-    print("3-DAY SIMULATION LOG GENERATOR")
-    print("="*70)
-    print("\nThis will generate comprehensive logs for a 3-day simulation period.")
-    print("Including:")
-    print("  - Realistic day/night client patterns")
-    print("  - Peak/off-peak hour variations")
-    print("  - Random event injection (DFS, interference, etc.)")
-    print("  - Complete audit trail")
-    print("\nEstimated time: 10-15 minutes")
-    print("Estimated disk space: ~50-100 MB")
+    import argparse
+    parser = argparse.ArgumentParser(description='3-Day Simulation Log Generator')
+    parser.add_argument('--no-rrm', action='store_true', help='Disable RRM actions')
+    parser.add_argument('--output', '-o', default='3_day_logs', help='Output directory')
+    args = parser.parse_args()
     
-    response = input("\nProceed? (y/n): ")
-    
-    if response.lower() != 'y':
-        print("Cancelled.")
-        return
-    
-    sim = ThreeDaySimulation(
-        output_dir="simulation_logs_3day",
-        audit_dir="audit_logs_3day"
-    )
-    
+    sim = ThreeDaySimulation(root_dir=args.output, enable_rrm=not args.no_rrm)
     sim.run()
-
 
 if __name__ == "__main__":
     main()
