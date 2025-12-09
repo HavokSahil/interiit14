@@ -163,7 +163,7 @@ class DQNAgent:
         if use_epsilon and np.random.random() < self.epsilon:
             if use_safety_shield:
                 safe_actions = self.safety.get_safe_actions(
-                    state, self.denormalize_state
+                    state, None
                 )
                 if safe_actions:
                     return np.random.choice(safe_actions)
@@ -176,7 +176,7 @@ class DQNAgent:
             if use_safety_shield:
                 q_values = self.safety.mask_unsafe_actions(
                     q_values, state_tensor,
-                    denormalize_fn=self.denormalize_state
+                    denormalize_fn=None
                 )
             
             action = q_values.argmax(dim=1).item()

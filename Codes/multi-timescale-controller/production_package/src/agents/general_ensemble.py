@@ -184,7 +184,7 @@ class GeneralEnsembleAgent:
                 # Convert state to numpy for safety check
                 state_np = state if isinstance(state, np.ndarray) else state.cpu().numpy()
                 safe_mask = torch.tensor([
-                    self.safety.is_action_safe(state_np, a, self.denormalize_state)
+                    self.safety.is_action_safe(state_np, a, None)
                     for a in range(9)
                 ], dtype=torch.bool, device=self.device).unsqueeze(0)
                 

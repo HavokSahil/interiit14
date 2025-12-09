@@ -286,7 +286,7 @@ class BCQAgent:
             # Apply safety mask
             if use_safety_shield:
                 safe_mask = torch.tensor([
-                    self.safety.is_action_safe(state, a, self.denormalize_state)
+                    self.safety.is_action_safe(state, a, None)
                     for a in range(self.action_dim)
                 ], dtype=torch.bool, device=self.device)
                 

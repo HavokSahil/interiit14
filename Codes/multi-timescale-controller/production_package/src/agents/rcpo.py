@@ -209,7 +209,7 @@ class RCPOAgent:
             # Apply safety mask to logits
             if use_safety_shield:
                 for action_idx in range(self.action_dim):
-                    if not self.safety.is_action_safe(state, action_idx, self.denormalize_state):
+                    if not self.safety.is_action_safe(state, action_idx, None):
                         logits[0, action_idx] = -20  # Mask unsafe actions
             
             probs = self._safe_softmax(logits)
@@ -396,7 +396,7 @@ class RCPOAgent:
                     for i in range(states.shape[0]):
                         state_np = batch['state'][i].numpy()
                         for action_idx in range(self.action_dim):
-                            if not self.safety.is_action_safe(state_np, action_idx, self.denormalize_state):
+                            if not self.safety.is_action_safe(state_np, action_idx, None):
                                 logits[i, action_idx] = -20
                 
                 probs = self._safe_softmax(logits)

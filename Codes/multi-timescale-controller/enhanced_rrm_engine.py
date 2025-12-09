@@ -128,7 +128,15 @@ class EnhancedRRMEngine:
                 self.client_view_api,
                 period=slow_loop_period
             )
-        except ImportError:
+            print("[RRM] Slow Loop Controller initialized (SafeRL-based)")
+        except ImportError as e:
+            print(f"[RRM] Slow Loop disabled: import error - {e}")
+            self.slow_loop_engine = None
+        except FileNotFoundError as e:
+            print(f"[RRM] Slow Loop disabled: SafeRL model not found - {e}")
+            self.slow_loop_engine = None
+        except Exception as e:
+            print(f"[RRM] Slow Loop disabled: {e}")
             self.slow_loop_engine = None
         
         # Fast Loop Controller (interference-based optimization)
@@ -159,7 +167,7 @@ class EnhancedRRMEngine:
         # Event injection tracking
         self.injected_events = []
     
-    def execute(self, step: int, safe_rl_data) -> Dict[str, Any]:
+    def execute(self, step: int, safe_rl_data: Optional[Dict] = None) -> Dict[str, Any]:
         """
         Main RRM execution loop with Enhanced Event Loop priority.
         

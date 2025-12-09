@@ -429,8 +429,7 @@ class FastLoopController:
         try:
             if action_type == 'channel_change':
                 ap.channel = action['new_channel']
-                config = self.config_engine.build_channel_config(ap_id, action['new_channel'])
-                self.config_engine.apply_config(config)
+                # Note: Just update AP directly, ConfigEngine.apply_config expects NetworkConfig
                 self.stats['channel_changes'] += 1
                 
             elif action_type in ['bandwidth_reduce', 'bandwidth_increase']:

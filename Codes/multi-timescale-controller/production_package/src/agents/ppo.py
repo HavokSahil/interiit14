@@ -175,7 +175,7 @@ class PPOAgent:
                 # Get safe action mask
                 safe_mask = []
                 for action_idx in range(self.action_dim):
-                    is_safe = self.safety.is_action_safe(state, action_idx, self.denormalize_state)
+                    is_safe = self.safety.is_action_safe(state, action_idx, None)
                     safe_mask.append(is_safe)
                 safe_mask = torch.tensor(safe_mask, dtype=torch.bool)
                 
@@ -212,7 +212,7 @@ class PPOAgent:
             # === SAFETY VALIDATION (should never fail) ===
             if use_safety_shield:
                 selected_action = action.item()
-                if not self.safety.is_action_safe(state, selected_action, self.denormalize_state):
+                if not self.safety.is_action_safe(state, selected_action, None):
                     # This should never happen with hard masking, but just in case
                     print(f"WARNING: Safety violation detected! Falling back to No-op.")
                     return 4, 0.0, value.squeeze().item()
@@ -587,7 +587,7 @@ class PPOAgent:
                     for i in range(states.shape[0]):
                         state = states[i].cpu().numpy()
                         for action_idx in range(self.action_dim):
-                            if not self.safety.is_action_safe(state, action_idx, self.denormalize_state):
+                            if not self.safety.is_action_safe(state, action_idx, None):
                                 logits[i, action_idx] = float('-inf')  # HARD mask
                 
                 probs = self._safe_softmax(logits)
@@ -609,7 +609,7 @@ class PPOAgent:
                 for i in range(states.shape[0]):
                     state = states[i].cpu().numpy()
                     action = actions[i].item()
-                    if not self.safety.is_action_safe(state, action, self.denormalize_state):
+                    if not self.safety.is_action_safe(state, action, None):
                         constraint_violations += 1
                     total_samples += 1
         

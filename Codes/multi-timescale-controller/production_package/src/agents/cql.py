@@ -188,7 +188,7 @@ class CQLAgent:
         if np.random.random() < epsilon:
             if use_safety_shield:
                 safe_actions = self.safety.get_safe_actions(
-                    state, self.denormalize_state
+                    state, None
                 )
                 if safe_actions:
                     return np.random.choice(safe_actions)
@@ -216,7 +216,7 @@ class CQLAgent:
             
             # === SAFETY MASKING ===
             if use_safety_shield:
-                safe_mask = self.safety.get_safe_action_mask(state, self.denormalize_state)
+                safe_mask = self.safety.get_safe_action_mask(state, None)
                 for i in range(self.action_dim):
                     if not safe_mask[i]:
                         q_values[i] = -100  # Finite mask value

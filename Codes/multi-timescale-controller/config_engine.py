@@ -195,11 +195,11 @@ class ConfigEngine:
                 continue
             
             # Validate channel
-#            if ap_config.channel not in self.allowed_channels:
-#                errors.append(
-#                    f"AP {ap_id}: Invalid channel {ap_config.channel}. "
-#                    f"Allowed: {self.allowed_channels}"
-#                )
+            if ap_config.channel not in self.allowed_channels:
+                errors.append(
+                    f"AP {ap_id}: Invalid channel {ap_config.channel}. "
+                    f"Allowed: {self.allowed_channels}"
+                )
             
             # Validate power
             if not (self.min_power <= ap_config.tx_power <= self.max_power):

@@ -15,10 +15,11 @@ from config_engine import ConfigEngine, APConfig, NetworkConfig
 from sensing import SensingAPI
 from clientview import ClientViewAPI
 from utils import compute_distance
-import numpy as np
+import random
 import production_package.run_inference as run_inference
 model_dir = "production_package/model"
 config_path = "production_package/config/config.yaml"
+
 
 class SlowLoopController:
     """
@@ -55,16 +56,11 @@ class SlowLoopController:
         self.stats = {}
         self.ensemble, self.model = run_inference.load_ensemble(model_dir, config_path)
         self.explainer = run_inference.ActionExplainer(safety_module=self.ensemble.safety if hasattr(self.ensemble, 'safety') else None)
-        def denormalize_fn(state):
-            mean = 0
-            if hasattr(self.ensemble, 'state_mean') and self.ensemble.state_mean is not None:
-                mean = self.ensemble.state_mean
-            std = self.ensemble.state_std
-            return state * std + mean
-        self.denormalize_fn = denormalize_fn
+        # denormalize_fn removed as we work with raw data directly
+
         
-        # Optimization settings
-        self.allowed_channels = [1, 2, 3, 6, 7, 10, 11, 36, 40, 44, 48, 52, 149, 153, 157, 161]
+        # Optimization settings (2.4GHz non-overlapping channels only)
+        self.allowed_channels = [1, 6, 11]
         self.power_levels = [10.0, 15.0, 20.0, 25.0, 30.0]  # dBm
         
         # Tracking
@@ -97,18 +93,31 @@ class SlowLoopController:
             return None
         
         self.last_execution = step
+        print(f"\n[Slow Loop] Executing at step {step} (next execution at step {step + self.period})")
         config = self.config_engine.get_current_config()
         self.bandwidths = [20, 40, 80]
         before = config
+        actions_taken = []
+        if safe_rl_data is None:
+            safe_rl_data = {}
         for i, j in safe_rl_data.items():
-            inference = run_inference.run_inference_on_state(j, self.ensemble, self.explainer, self.denormalize_fn)
+            inference = self._run_inference_raw(j)
             ap_config = config.ap_configs[i]
-            print(f'[Slow Loop] AP {i} Action: {inference["ACTION"]}, Reason: {inference["REASON"]}, Confidence: {inference["CONFIDENCE"]}, Status: {inference["STATUS"]}, Current QoE: {inference["Current_QoE"]}')
-            if inference["ACTION"] in self.stats:
-                self.stats[inference["ACTION"]] += 1
+            action = inference["ACTION"]
+            # Only print if action is not "No Action"
+            if action != "No Action":
+                try:
+                    conf = float(inference["CONFIDENCE"])
+                    qoe = float(inference["Current_QoE"])
+                    print(f'  AP {i}: {action} (Confidence: {conf:.2f}, QoE: {qoe:.2f})')
+                except (ValueError, TypeError):
+                    print(f'  AP {i}: {action} (Confidence: {inference["CONFIDENCE"]}, QoE: {inference["Current_QoE"]})')
+                actions_taken.append((i, action))
+            if action in self.stats:
+                self.stats[action] += 1
             else:
-                self.stats[inference["ACTION"]] = 1
-            if inference["ACTION"] == "+2 dBm Tx Power":
+                self.stats[action] = 1
+            if action == "+2 dBm Tx Power":
                 if ap_config.tx_power >= max(self.power_levels):
                     continue
                 new_power = -1.0
@@ -117,7 +126,7 @@ class SlowLoopController:
                         new_power = power_level
                         break
                 ap_config.tx_power = new_power
-            elif inference["ACTION"] == "-2 dBm Tx Power":
+            elif action == "-2 dBm Tx Power":
                 if ap_config.tx_power <= min(self.power_levels):
                     continue
                 new_power = 30.0
@@ -126,11 +135,11 @@ class SlowLoopController:
                         new_power = power_level
                         break
                 ap_config.tx_power = new_power
-            elif inference["ACTION"] == "+4 dB OBSS-PD":
+            elif action == "+4 dB OBSS-PD":
                 ap_config.obss_pd_threshold += 4
-            elif inference["ACTION"] == "-4 dB OBSS-PD":
+            elif action == "-4 dB OBSS-PD":
                 ap_config.obss_pd_threshold -= 4
-            elif inference["ACTION"] == "Increase Channel Width":
+            elif action == "Increase Channel Width":
                 if ap_config.bandwidth >= max(self.bandwidths):
                     continue
                 new_bandwidth = 20
@@ -139,7 +148,7 @@ class SlowLoopController:
                         new_bandwidth = bandwidth
                         break
                 ap_config.bandwidth = new_bandwidth
-            elif inference["ACTION"] == "Decrease Channel Width":
+            elif action == "Decrease Channel Width":
                 if ap_config.bandwidth <= min(self.bandwidths):
                     continue
                 new_bandwidth = 80
@@ -148,7 +157,7 @@ class SlowLoopController:
                         new_bandwidth = bandwidth
                         break
                 ap_config.bandwidth = new_bandwidth
-            elif inference["ACTION"] == "Increase Channel Number":
+            elif action == "Increase Channel Number":
                 if ap_config.channel >= max(self.allowed_channels):
                     continue
                 new_channel = 1
@@ -157,7 +166,7 @@ class SlowLoopController:
                         new_channel = channel
                         break
                 ap_config.channel = new_channel
-            elif inference["ACTION"] == "Decrease Channel Number":
+            elif action == "Decrease Channel Number":
                 if ap_config.channel >= min(self.allowed_channels):
                     continue
                 new_channel = 11
@@ -457,3 +466,57 @@ class SlowLoopController:
         for i, j in self.stats.items():
             print(f"{i} Events: {j}")
         print()
+
+    def _run_inference_raw(self, row_dict):
+        """
+        Run inference on raw state dictionary.
+        
+        Handles raw data correctly by NOT applying denormalization.
+        """
+        state = list(row_dict.values())
+        
+        # 1. Select Action (Ensemble expects RAW state)
+        # Note: We use deterministic=True for production
+        try:
+            action, _ = self.ensemble.select_action(state, deterministic=True, use_safety_shield=True)
+            action = int(action)
+        except Exception as e:
+            print(f"Action selection error: {e}")
+            action = 8  # No-op
+            
+        # 2. Check Safety (Safety expects RAW state if denormalize_fn is None)
+        try:
+            is_safe = self.ensemble.safety.is_action_safe(state, action, denormalize_fn=None)
+            status = "SAFE" if is_safe else "BLOCKED"
+        except:
+            status = "SAFE"
+            
+        # 3. Get Q-values for explanation
+        q_values = run_inference.get_q_values_from_ensemble(self.ensemble, state)
+        
+        # 4. Generate Explanation (Explainer expects RAW state if denormalize_fn is None)
+        try:
+            explanation = self.explainer.explain_action(
+                state=state,
+                action=action,
+                q_values=q_values,
+                agent_type="Ensemble",
+                denormalize_fn=None  # Important: State is already raw
+            )
+            reason = explanation.primary_reason.value
+            confidence = explanation.confidence
+        except Exception as e:
+            # print(f"Explanation error: {e}")
+            reason = "HIGH_Q_VALUE"
+            confidence = 0.5
+            
+        current_qoe = run_inference.calculate_qoe(row_dict)
+        action_name = run_inference.get_action_name(action)
+        
+        return {
+            'ACTION': action_name,
+            'REASON': reason,
+            'CONFIDENCE': f"{confidence:.2%}",
+            'STATUS': status,
+            'Current_QoE': current_qoe
+        }
