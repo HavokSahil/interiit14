@@ -1,0 +1,59 @@
+========================================
+COMMANDS TO RUN THE PIPELINE
+========================================
+
+1. INSTALL DEPENDENCIES:
+   pip install -r requirements.txt
+
+2. RUN COMPLETE PIPELINE (Recommended):
+   python run_pipeline.py --mode all
+
+   This will:
+   - Generate 50K dataset
+   - Train all models (CQL, IQL, BCQ)
+   - Evaluate models
+   - Generate plots
+   - Run inference
+
+3. RUN INDIVIDUAL STEPS:
+
+   # Generate dataset only
+   python run_pipeline.py --mode dataset --samples 50000 --augmentation
+
+   # Train models only
+   python run_pipeline.py --mode train --epochs 100
+
+   # Create ensemble only
+   python run_pipeline.py --mode ensemble
+
+   # Evaluate models only
+   python run_pipeline.py --mode evaluate
+
+   # Generate plots only
+   python run_pipeline.py --mode plots
+
+   # Run inference only
+   python run_pipeline.py --mode inference
+
+4. OR USE HELPER SCRIPTS DIRECTLY:
+
+   python generate_dataset.py --samples 50000 --augmentation
+   python train_models.py --epochs 100
+   python create_ensemble.py
+   python evaluate_models.py
+   python generate_plots.py
+   python run_inference.py --input data/rrm_dataset_expanded.h5 --output predictions.csv
+
+========================================
+OUTPUT LOCATIONS
+========================================
+
+- Dataset: data/rrm_dataset_expanded.h5
+- Individual Models: checkpoints/CQL/best.pt, checkpoints/IQL/best.pt, checkpoints/BCQ/best.pt
+- Ensemble Model: model/ (agent_0.pt, agent_1.pt, agent_2.pt, production_metadata.json)
+- Evaluation: results/
+- Plots: plots/
+- Predictions: data/predictions.csv
+
+========================================
+

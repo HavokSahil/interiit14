@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated files
+*.h5
+*.csv
+*.pt
+*.pth
+*.png
+*.jpg
+*.json
+!config/*.yaml
+!requirements.txt
+!README.md
+
+# Directories
+checkpoints/
+results/
+plots/
+data/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+

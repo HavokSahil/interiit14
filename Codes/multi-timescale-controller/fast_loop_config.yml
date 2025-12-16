@@ -1,0 +1,178 @@
+# Fast Loop Controller Configuration
+# Controls channel, bandwidth, and OBSS-PD optimization behavior
+
+# Execution
+execution:
+  period_steps: 60  # Run every 60 steps (10 minutes at 360 steps/hour)
+
+# Channel Management
+channels:
+  # 2.4 GHz channels
+  band_2ghz:
+    available: [1, 6, 11]  # Non-overlapping channels
+    primary: [6]  # Preferred channel
+    
+  # 5 GHz channels  
+  band_5ghz:
+    # Non-DFS channels (safe, no radar)
+    non_dfs: [36, 40, 44, 48, 149, 153, 157, 161, 165]
+    
+    # DFS channels (may require radar detection)
+    dfs: [52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144]
+    
+    # Available = non-DFS by default (for safety)
+    available: [36, 40, 44, 48, 149, 153, 157, 161, 165]
+    primary: [36, 149]  # Preferred channels (lower/upper)
+    
+  # 6 GHz channels (if supported)
+  band_6ghz:
+    available: [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69, 73, 77]
+    primary: [1, 33, 65]
+
+# Bandwidth Management
+bandwidth:
+  # Available options per band
+  options_2ghz: [20]  # Only 20 MHz for 2.4 GHz
+  options_5ghz: [20, 40, 80]  # 20, 40, 80 MHz for 5 GHz
+  options_6ghz: [20, 40, 80, 160]  # Up to 160 MHz for 6 GHz
+  
+  # Step limits (no large jumps)
+  max_increase_step: 1  # 20→40 or 40→80 (one step at a time)
+  max_decrease_step: 1  # 80→40 or 40→20
+  
+  # Minimum time between bandwidth changes
+  change_cooldown_steps: 120  # 20 minutes
+
+# OBSS-PD Threshold Management
+obss_pd:
+  # Range (dBm)
+  min_threshold: -82  # Most conservative (sense everything)
+  max_threshold: -62  # Most aggressive (ignore weak signals)
+  default: -82
+  
+  # Step size for adjustments
+  step_size: 3  # Adjust by ±3 dB at a time
+  
+  # Minimum time between changes
+  change_cooldown_steps: 60  # 10 minutes
+
+# Decision Thresholds
+thresholds:
+  # Interference levels (0-1 normalized)
+  interference:
+    low: 0.15     # Below this: minimal interference (lowered)
+    moderate: 0.3  # Between low-moderate: some interference (lowered)
+    high: 0.5     # Above this: severe interference (lowered)
+    
+  # CCA busy percentage (0-1)
+  cca_busy:
+    low: 0.25     # Lowered from 0.3
+    moderate: 0.50 # Lowered from 0.6
+    high: 0.75    # Lowered from 0.8
+    
+  # Retry rate percentage
+  retry_rate:
+    low: 4.0      # Lowered from 5.0
+    moderate: 8.0  # Lowered from 10.0
+    high: 18.0    # Lowered from 20.0
+    
+  # Minimum improvement required to trigger action
+  min_improvement:
+    channel_change: 0.3  # New channel must have 30% less interference
+    bandwidth_change: 0.2  # 20% improvement in metrics
+    obss_pd_change: 0.15  # 15% improvement
+
+# Action Priorities
+# Higher number = higher priority
+action_priority:
+  channel_change: 3      # Highest - most impactful
+  bandwidth_reduce: 2    # High - avoid interference
+  bandwidth_increase: 1  # Medium - opportunistic optimization
+  obss_pd_increase: 2    # High - improve spatial reuse
+  obss_pd_decrease: 1    # Medium - be conservative
+
+# Decision Rules
+rules:
+  # Channel Change Rules
+  channel_change:
+    # Trigger conditions (ANY of these)
+    triggers:
+      - condition: "interference > high AND retry_rate > high"
+        reason: "Severe interference causing packet loss"
+      - condition: "interference > moderate AND num_interferers >= 3"
+        reason: "Multiple interferers on same channel"
+      - condition: "cca_busy > high AND interference > moderate"
+        reason: "Channel saturation"
+    
+    # Evaluation strategy
+    strategy: "min_interference"  # Choose channel with minimum predicted interference
+    
+  # Bandwidth Reduction Rules
+  bandwidth_reduce:
+    triggers:
+      - condition: "interference > moderate AND retry_rate > moderate AND bandwidth > 20"
+        reason: "High interference - reduce channel width"
+      - condition: "cca_busy > high AND bandwidth > 20"
+        reason: "Channel congestion - narrow bandwidth"
+    
+    # Gradual reduction
+    gradual: true
+    
+  # Bandwidth Increase Rules  
+  bandwidth_increase:
+    triggers:
+      - condition: "interference < low AND cca_busy < low AND retry_rate < low AND bandwidth < max"
+        reason: "Clean spectrum - increase bandwidth"
+    
+    # Conservative approach
+    require_stable_conditions: true
+    stable_duration_steps: 30  # Require 5 minutes of stable low interference
+    
+  # OBSS-PD Increase (more aggressive)
+  obss_pd_increase:
+    triggers:
+      - condition: "cca_busy > moderate AND retry_rate < moderate AND obss_pd < max"
+        reason: "High CCA but low actual collisions - increase spatial reuse"
+    
+    max_adjustment_per_step: 6  # Max +6 dB per execution
+    
+  # OBSS-PD Decrease (more conservative)
+  obss_pd_decrease:
+    triggers:
+      - condition: "retry_rate > high AND obss_pd > min"
+        reason: "High collision rate - be more conservative"
+    
+    max_adjustment_per_step: 6  # Max -6 dB per execution
+
+# Statistics & Logging
+statistics:
+  track_metrics:
+    - interference_before
+    - interference_after
+    - channel_changes
+    - bandwidth_changes
+    - obss_pd_changes
+    - action_success_rate
+    
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+
+# Safety & Constraints
+safety:
+  # Prevent thrashing
+  min_time_between_actions_same_ap: 60  # 10 minutes
+  
+  # Rollback on degradation
+  enable_auto_rollback: true
+  rollback_window_steps: 60  # Monitor for 10 minutes after action
+  
+  # Degradation thresholds for rollback
+  rollback_thresholds:
+    retry_rate_increase: 10.0  # Rollback if retry rate increases by 10%
+    throughput_decrease: 20.0  # Rollback if throughput drops by 20%
+    
+  # Maximum actions per execution
+  max_actions_per_loop: 3  # Don't change more than 3 APs at once
+  
+  # Coordination
+  avoid_neighboring_ap_changes: true  # Don't change nearby APs simultaneously
+  neighbor_distance_threshold: 30.0  # meters

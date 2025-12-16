@@ -1,0 +1,264 @@
+# Safe RL for RRM Engine - Configuration
+
+# Dataset Configuration
+dataset:
+  num_samples: 10000
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  seed: 42
+  output_path: "data/rrm_dataset.h5"
+
+# Observation Space (15 features)
+observation:
+  features:
+    - name: "client_count"
+      min: 1
+      max: 50
+      distribution: "poisson"
+      mean: 15
+    - name: "median_rssi"
+      min: -90
+      max: -30
+      distribution: "normal"
+      mean: -65
+      std: 8
+    - name: "p95_retry_rate"
+      min: 0.0
+      max: 0.30
+      distribution: "beta"
+      alpha: 2
+      beta: 20
+    - name: "p95_per"
+      min: 0.0
+      max: 0.20
+      distribution: "beta"
+      alpha: 1.5
+      beta: 25
+    - name: "channel_utilization"
+      min: 0.0
+      max: 1.0
+      distribution: "beta"
+      alpha: 2
+      beta: 5
+    - name: "avg_throughput"
+      min: 1.0
+      max: 500.0
+      distribution: "lognormal"
+      mean: 4.0
+      std: 0.8
+    - name: "edge_p10_throughput"
+      min: 0.5
+      max: 200.0
+      distribution: "lognormal"
+      mean: 3.0
+      std: 1.0
+    - name: "neighbor_ap_rssi"
+      min: -90
+      max: -50
+      distribution: "normal"
+      mean: -70
+      std: 10
+    - name: "obss_pd_threshold"
+      min: -82
+      max: -62
+      distribution: "uniform"
+    - name: "tx_power"
+      min: 10
+      max: 20
+      distribution: "uniform"
+    - name: "noise_floor"
+      min: -100
+      max: -80
+      distribution: "normal"
+      mean: -92
+      std: 3
+    - name: "channel_width"
+      values: [20, 40, 80]
+      distribution: "categorical"
+      probs: [0.3, 0.4, 0.3]
+    - name: "airtime_usage"
+      min: 0.0
+      max: 1.0
+      distribution: "beta"
+      alpha: 2
+      beta: 4
+    - name: "cca_busy"
+      min: 0.0
+      max: 1.0
+      distribution: "beta"
+      alpha: 2
+      beta: 6
+    - name: "roaming_rate"
+      min: 0.0
+      max: 0.20
+      distribution: "beta"
+      alpha: 1
+      beta: 15
+
+# Action Space (9 discrete actions)
+action:
+  num_actions: 9
+  actions:
+    0: "increase_tx_power_2dBm"
+    1: "decrease_tx_power_2dBm"
+    2: "increase_obss_pd_4dBm"
+    3: "decrease_obss_pd_4dBm"
+    4: "increase_channel_width"
+    5: "decrease_channel_width"
+    6: "increase_channel_number"
+    7: "decrease_channel_number"
+    8: "no_op"
+
+# Reward Function Weights (Advanced Reward Function v3)
+reward:
+  # QoE Components
+  edge_throughput_weight: 0.25     # Edge client throughput (QoE proxy)
+  avg_throughput_weight: 0.10      # Average throughput
+  latency_weight: 0.15             # NEW: Latency reward (voice/video critical)
+  
+  # RSSI Components
+  rssi_quality_weight: 0.08        # Absolute RSSI quality
+  rssi_improvement_weight: 0.02    # RSSI improvement delta
+  
+  # Reliability Penalties
+  p95_retry_penalty: 0.15          # Retry rate penalty
+  per_penalty: 0.10                # Packet error rate penalty
+  
+  # Stability Components  
+  stability_bonus_weight: 0.10     # Smart No-op bonus
+  churn_penalty_weight: 0.05       # Config churn penalty
+  
+  # NEW Advanced Components
+  fairness_weight: 0.05            # Jain's fairness index
+  interference_weight: 0.08        # CCA busy / interference reduction
+  energy_efficiency_weight: 0.02   # Power efficiency bonus
+  roaming_smoothness_weight: 0.03  # Stable client associations
+  peak_hour_multiplier: 1.5        # Bonus during peak hours
+
+# Safety Constraints
+safety:
+  # Soft constraints (penalties)
+  soft:
+    p95_retry_threshold: 0.08
+    config_churn_threshold: 0.2  # changes per day
+    min_client_rssi: -70
+    tx_power_step_max: 6
+    rssi_penalty_weight: 0.1
+  
+  # Hard constraints (cost = 1.0)
+  hard:
+    tx_power_min: 0
+    tx_power_max: 30
+    obss_pd_min: -82
+    obss_pd_max: -62
+    channel_change_interval_hours: 4
+  
+  # Safety Shield (stricter limits)
+  shield:
+    tx_power_min: 10
+    tx_power_max: 20
+    obss_pd_min: -82
+    obss_pd_max: -68
+    max_changes_per_window: 1
+
+# Training Configuration
+training:
+  batch_size: 256
+  learning_rate: 0.0003
+  gamma: 0.99
+  epochs: 100
+  eval_frequency: 10
+  device: "auto"  # auto, cpu, cuda
+  # Advanced training options
+  use_lr_scheduler: true  # Learning rate scheduling
+  lr_scheduler_type: "cosine_annealing_warm_restarts"  # cosine_annealing_warm_restarts, step, cosine
+  early_stopping_patience: 20
+  gradient_clip_norm: 1.0
+  # Curriculum learning
+  use_curriculum: false
+  curriculum_easy_ratio: 0.5  # Start with 50% easy samples
+
+# CQL Configuration (PHASE 3 - UCB exploration + reduced conservatism)
+cql:
+  alpha: 0.2           # Further reduced from 0.5 for less conservatism
+  num_random_actions: 10
+  min_q_weight: 0.1    # Reduced 10x (was 1.0) for more action diversity
+  target_update_freq: 100
+  tau: 0.005
+  use_lagrange: true   # Automatic alpha tuning
+  target_action_gap: 0.5  # Reduced from 1.0
+  # UCB Exploration (NEW)
+  exploration_weight: 1.0  # UCB coefficient
+  temperature_start: 1.0
+  temperature_end: 0.1
+  temperature_decay: 0.995
+
+# DQN Configuration (PHASE 2 - fixed Q-value learning)
+dqn:
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  target_update_freq: 100
+  buffer_size: 10000
+  double_dqn: true     # Use Double DQN
+  mask_value: -100     # Finite mask (was -1e9 - caused Q explosion)
+
+# PPO Configuration (PHASE 4 - hard safety enforcement)
+ppo:
+  clip_epsilon: 0.2
+  value_loss_coef: 0.5
+  entropy_coef: 0.05   # Higher entropy for exploration
+  max_grad_norm: 0.5
+  ppo_epochs: 4
+  num_minibatches: 4
+  learning_rate: 0.0001  # Reduced for stability
+  bc_pretrain_epochs: 20  # More behavior cloning
+  hard_safety: true    # NEW: Hard -inf masking (guarantees 0% violations)
+
+# RCPO Configuration (Reward-Constrained Policy Optimization)
+rcpo:
+  clip_epsilon: 0.2
+  value_loss_coef: 0.5
+  entropy_coef: 0.1  # Higher entropy for exploration
+  max_grad_norm: 0.5
+  ppo_epochs: 4
+  num_minibatches: 4
+  learning_rate: 0.0003
+  constraint_threshold: 0.1  # Max expected cost
+  lambda_lr: 0.001  # Lagrange multiplier learning rate
+  lambda_init: 0.1  # Initial Lagrange multiplier
+  lambda_max: 10.0  # Max Lagrange multiplier
+
+# BCQ Configuration (Batch-Constrained Q-Learning) - NEW
+bcq:
+  learning_rate: 0.0003
+  threshold: 0.3        # BCQ action filtering threshold (0-1)
+  num_samples: 10       # Number of VAE samples for action selection
+  latent_dim: 32        # VAE latent dimension
+  target_update_freq: 100
+  tau: 0.005
+
+# IQL Configuration (Implicit Q-Learning) - OPTIMIZED via Optuna
+# Best trial: #45 - Safety: 100%, Diversity: 90.7%
+iql:
+  learning_rate: 0.000138  # Optimized: 0.00013811663892848684
+  expectile: 0.9           # Optimized: 0.9 (less conservative, more optimistic)
+  temperature: 3.56        # Optimized: 3.562370989873499
+  target_update_freq: 100
+  tau: 0.0043               # Optimized: 0.004318403947309606
+  # Hyperparameter tuning ranges
+  expectile_range: [0.5, 0.6, 0.7, 0.8, 0.9]
+  temperature_range: [1.0, 2.0, 3.0, 5.0, 10.0]
+  lr_range: [1e-4, 3e-4, 5e-4, 1e-3]
+  tau_range: [0.001, 0.005, 0.01]
+
+# Neural Network Architecture
+network:
+  hidden_layers: [256, 256, 128]
+  activation: "relu"  # Options: relu, leaky_relu, swish, tanh
+  dropout: 0.1
+  use_batch_norm: false  # Enable batch normalization
+  # Alternative architectures for experimentation
+  deep_architecture: [512, 512, 256, 128]  # Deeper network
+  wide_architecture: [512, 512, 128]  # Wider network

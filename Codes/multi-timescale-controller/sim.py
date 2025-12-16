@@ -6,6 +6,7 @@ from model import *
 from assoc import *
 from metrics import *
 from logger import SimulationLogger
+from log_digest import LogDigest
 
 # Check pygame availability
 try:
@@ -15,6 +16,8 @@ try:
     from visualizer import SimulationVisualizer
 except ImportError:
     PYGAME_AVAILABLE = False
+
+WINDOW_SIZE = 10
 
 class WirelessSimulation:
     """Main simulation coordinator."""
@@ -36,7 +39,8 @@ class WirelessSimulation:
         self.access_points = []
         self.clients = []
         self.visualizer = None
-        self.logger = SimulationLogger(log_dir=log_dir) if enable_logging else None
+        self.log_digest = LogDigest(log_dir=log_dir)
+        self.logger = SimulationLogger(log_digest=self.log_digest, log_dir=log_dir) if enable_logging else None
         self.step_count = 0
     
     def add_interferer(self, interferer: "Interferer"):
@@ -70,7 +74,8 @@ class WirelessSimulation:
             self.client_metrics.update()
             self.ap_metrics.update()
             graph = self.get_interference_graph()
-            self.logger.log_step(self.step_count, self.access_points, self.clients, roam_list, graph)
+            return self.logger.log_step(self.step_count, self.access_points, self.clients, roam_list, graph)
+        return None
     
     def step(self):
         """Execute one simulation step."""
@@ -99,7 +104,8 @@ class WirelessSimulation:
         # Log this step
         if self.logger:
             graph = self.get_interference_graph()
-            self.logger.log_step(self.step_count, self.access_points, self.clients, roam_list, graph)
+            return self.logger.log_step(self.step_count, self.access_points, self.clients, roam_list, graph)
+        return None
     
     def get_interference_graph(self) -> nx.DiGraph:
         """Get current interference graph."""

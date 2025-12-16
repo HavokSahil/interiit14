@@ -1,0 +1,223 @@
+% Policy Engine & SLO Framework Report
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit, backgrounds}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+
+% TikZ styles
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!20]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Title
+\title{\textbf{Policy Engine and SLO Framework: \\ Role-Based QoS Management in Wireless RRM}}
+\author{Multi-Timescale RRM System}
+\date{December 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report details the design and implementation of the Policy Engine within the Radio Resource Management (RRM) system. The Policy Engine enforces Service Level Objectives (SLOs) through a role-based framework, allowing differentiated Quality of Service (QoS) for diverse client types (e.g., Voice-over-IP, Best Effort, Exam Hall). We describe the SLO Catalog architecture, the mechanism for dynamic role assignment, weighted QoE computation, and the regulatory compliance enforcement algorithms. The system ensures that network resources are allocated according to high-level policy intents defined in a flexible YAML configuration.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Motivation}
+Modern wireless networks serve a heterogeneous mix of devices and applications, each with distinct performance requirements. Treating all clients equally leads to suboptimal outcomes where critical applications (e.g., VoIP, online exams) suffer due to resource contention from background traffic. The Policy Engine addresses this by:
+
+\begin{itemize}
+    \item \textbf{Differentiating Traffic:} Assigning semantic roles to clients based on application needs.
+    \item \textbf{Enforcing SLOs:} Monitoring specific metrics against defined thresholds per role.
+    \item \textbf{Guiding Optimization:} Providing weighted objectives to the RRM optimization loops.
+    \item \textbf{Ensuring Compliance:} Validating configurations against regulatory constraints.
+\end{itemize}
+
+\subsection{System Context}
+The Policy Engine acts as the legislative branch of the RRM system, defining the rules that the executive branches (Fast Loop, Slow Loop, Event Loop) must follow.
+
+\begin{equation}
+\text{Optimization Objective} = \sum_{c \in \text{Clients}} w_{role(c)} \cdot QoE(c)
+\end{equation}
+
+where $w_{role(c)}$ represents the priority weight derived from the client's assigned role.
+
+\section{Architecture}
+
+The Policy Engine consists of three main components:
+
+\begin{enumerate}
+    \item \textbf{SLO Catalog:} A static repository of role definitions, QoS weights, and enforcement rules loaded from configuration.
+    \item \textbf{Role Manager:} Dynamic state management mapping Client IDs to Role IDs.
+    \item \textbf{Compliance Evaluator:} Logic to check metrics against SLO thresholds and trigger actions.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{diagrams/policy_engine_architecture.png}
+\caption{Policy Engine Architecture}
+\end{figure}
+
+\section{SLO Framework}
+
+\subsection{Role Definition}
+A role encapsulates a set of requirements for a class of clients. It is defined by:
+
+\begin{itemize}
+    \item \textbf{QoS Weights:} Importance of different QoE components (Signal, Throughput, Reliability, Latency, Activity).
+    \item \textbf{Enforcement Rules:} Thresholds for specific metrics (e.g., RSSI, Retry Rate).
+    \item \textbf{Regulatory Constraints:} Limits on physical parameters (e.g., Max Channel Width).
+\end{itemize}
+
+\subsection{Metric Evaluation Logic}
+For a given role $R$ and metric $M$ with value $v$, an enforcement rule is defined as a tuple $(op, \tau, action)$, where $op$ is an operator (e.g., $\geq, <$) and $\tau$ is the threshold.
+
+\begin{equation}
+\text{Violation}(v) = \begin{cases} 
+1 & \text{if } v \ op \ \tau \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation}
+
+If $\text{Violation}(v) = 1$, the associated $action$ is added to the triggered list.
+
+\section{Core Algorithms}
+
+\subsection{Weighted QoE Computation}
+
+The Policy Engine computes a scalar QoE score for each client based on their role's preferences.
+
+\begin{algorithm}
+\caption{Weighted QoE Computation}
+\begin{algorithmic}[1]
+\Procedure{ComputeWeightedQoE}{$client\_id, components$}
+    \State $role \gets \Call{GetClientRole}{client\_id}$
+    \State $weights \gets \Call{GetQoSWeights}{role}$
+    
+    \State $QoE \gets 0$
+    \State $QoE \gets QoE + weights['ws'] \cdot components['signal\_quality']$
+    \State $QoE \gets QoE + weights['wt'] \cdot components['throughput']$
+    \State $QoE \gets QoE + weights['wr'] \cdot components['reliability']$
+    \State $QoE \gets QoE + weights['wl'] \cdot components['latency']$
+    \State $QoE \gets QoE + weights['wa'] \cdot components['activity']$
+    
+    \State \Return $QoE$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Compliance Checking}
+
+This algorithm runs periodically to ensure clients are receiving the service level promised by their role.
+
+\begin{algorithm}
+\caption{SLO Compliance Check}
+\begin{algorithmic}[1]
+\Procedure{CheckCompliance}{$client\_id, metrics$}
+    \State $role \gets \Call{GetClientRole}{client\_id}$
+    \State $rules \gets role.enforcement$
+    \State $actions \gets []$
+    
+    \For{$metric, rule \in rules$}
+        \If{$metric \in metrics$}
+            \State $val \gets metrics[metric]$
+            \State $violated \gets \text{False}$
+            
+            \If{$rule.op == '>='$ \textbf{and} $val < rule.thresh$}
+                \State $violated \gets \text{True}$
+            \ElsIf{$rule.op == '<='$ \textbf{and} $val > rule.thresh$}
+                \State $violated \gets \text{True}$
+            \EndIf
+            
+            \If{$violated$}
+                \State $actions.append(rule.action)$
+            \EndIf
+        \EndIf
+    \EndFor
+    
+    \State \Return $actions$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\section{Decision Flow Diagrams}
+
+\subsection{Enforcement Logic Flow}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2cm]
+
+\node (start) [startstop] {Metric Update};
+\node (role) [process, below of=start] {Lookup Client Role};
+\node (rules) [process, below of=role] {Fetch Enforcement Rules};
+\node (check) [decision, below of=rules, yshift=-1cm] {Threshold\\Violated?};
+\node (action) [critical, right of=check, xshift=3cm] {Trigger Action\\(e.g., Steer)};
+\node (ok) [process, left of=check, xshift=-3cm] {Compliant};
+\node (end) [startstop, below of=check, yshift=-2cm] {Return Actions};
+
+\draw [arrow] (start) -- (role);
+\draw [arrow] (role) -- (rules);
+\draw [arrow] (rules) -- (check);
+\draw [arrow] (check) -- node[anchor=south] {Yes} (action);
+\draw [arrow] (check) -- node[anchor=south] {No} (ok);
+\draw [arrow] (action) |- (end);
+\draw [arrow] (ok) |- (end);
+
+\end{tikzpicture}
+\caption{SLO Enforcement Logic}
+\end{figure}
+
+\section{Configuration Example}
+
+The SLO Catalog is defined in YAML. Below is a representative structure:
+
+\begin{lstlisting}[language=yaml, frame=single, basicstyle=\small\ttfamily]
+roles:
+  VO:
+    display_name: "Voice Over IP"
+    qos_weights:
+      ws: 0.2  # Signal
+      wt: 0.1  # Throughput
+      wr: 0.3  # Reliability
+      wl: 0.4  # Latency (Critical)
+      wa: 0.0  # Activity
+    enforcement:
+      latency:
+        operator: "<="
+        value: 50.0
+        action: "Prioritize/Steer"
+      packet_loss:
+        operator: "<="
+        value: 1.0
+        action: "IncreaseTxPower"
+
+  BE:
+    display_name: "Best Effort"
+    qos_weights:
+      ws: 0.3
+      wt: 0.5  # Throughput focused
+      wr: 0.1
+      wl: 0.1
+      wa: 0.0
+\end{lstlisting}
+
+\section{Conclusion}
+
+The Policy Engine provides a robust, data-driven framework for managing network QoS. By decoupling policy definition (YAML) from enforcement logic (Python), it allows network administrators to adapt to changing requirements without code modification. The integration of role-based weights ensures that the RRM optimization algorithms prioritize critical traffic, effectively translating high-level intent into low-level radio resource allocation.
+
+\end{document}

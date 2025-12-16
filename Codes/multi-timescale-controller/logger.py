@@ -4,21 +4,23 @@ from typing import List, Optional
 from datetime import datetime
 from datatype import AccessPoint, Client
 from metrics import APMetricsManager
+from log_digest import LogDigest
 
 
 class SimulationLogger:
     """Logger for wireless simulation that tracks AP state, client state, and roaming events."""
-    
-    def __init__(self, log_dir: str = "logs", prefix: str = "sim"):
+
+    def __init__(self, log_digest: LogDigest, log_dir: str = "logs", prefix: str = "sim"):
         """
         Initialize simulation logger.
-        
+
         Args:
             log_dir: Directory to store log files
             prefix: Prefix for log filenames
         """
         self.log_dir = log_dir
         self.prefix = prefix
+        self.log_digest = log_digest
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Create log directory if it doesn't exist
@@ -29,6 +31,25 @@ class SimulationLogger:
         self.client_log_path = os.path.join(log_dir, f"{prefix}_client_{self.timestamp}.csv")
         self.roam_log_path = os.path.join(log_dir, f"{prefix}_roam_{self.timestamp}.csv")
         self.graph_log_path = os.path.join(log_dir, f"{prefix}_graph_{self.timestamp}.csv")
+
+        self.ap_headers = [
+            'step', 'ap_id', 'x', 'y', 'tx_power', 'channel', 'bandwidth',
+            'noise_floor', 'max_throughput', 'allocated_throughput',
+            'duty_cycle', 'num_clients', 'inc_energy_ch1_dbm', 'inc_energy_ch6_dbm', 'inc_energy_ch11_dbm',
+            'obss_pd_threshold', 'cca_busy_percentage', 'roam_in_rate', 'roam_out_rate',
+            'p95_throughput', 'p95_retry_rate'
+        ]
+        self.client_headers = [
+            'step', 'client_id', 'x', 'y', 'associated_ap', 'demand_mbps',
+            'rssi_dbm', 'sinr_db', 'max_rate_mbps', 'throughput_mbps', 'airtime_fraction',
+            'velocity', 'direction', 'retry_rate'
+        ]
+        self.roam_headers = [
+            'step', 'client_id', 'from_ap', 'to_ap', 'client_x', 'client_y'
+        ]
+        self.graph_headers = [
+            'step', 'source_ap', 'dest_ap', 'weight', 'interference_dbm', 'distance'
+        ]
         
         # Initialize log files with headers
         self._init_ap_log()
@@ -42,39 +63,25 @@ class SimulationLogger:
         """Initialize AP log file with headers."""
         with open(self.ap_log_path, 'w', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([
-                'step', 'ap_id', 'x', 'y', 'tx_power', 'channel', 'bandwidth',
-                'noise_floor', 'max_throughput', 'allocated_throughput',
-                'duty_cycle', 'num_clients', 'inc_energy_ch1_dbm', 'inc_energy_ch6_dbm', 'inc_energy_ch11_dbm',
-                'obss_pd_threshold', 'cca_busy_percentage', 'roam_in_rate', 'roam_out_rate', 
-                'p95_throughput', 'p95_retry_rate'
-            ])
+            writer.writerow(self.ap_headers)
     
     def _init_client_log(self):
         """Initialize client log file with headers."""
         with open(self.client_log_path, 'w', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([
-                'step', 'client_id', 'x', 'y', 'associated_ap', 'demand_mbps',
-                'rssi_dbm', 'sinr_db', 'max_rate_mbps', 'throughput_mbps', 'airtime_fraction',
-                'velocity', 'direction', 'retry_rate'
-            ])
+            writer.writerow(self.client_headers)
     
     def _init_roam_log(self):
         """Initialize roaming log file with headers."""
         with open(self.roam_log_path, 'w', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([
-                'step', 'client_id', 'from_ap', 'to_ap', 'client_x', 'client_y'
-            ])
+            writer.writerow(self.roam_headers)
     
     def _init_graph_log(self):
         """Initialize interference graph log file with headers."""
         with open(self.graph_log_path, 'w', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([
-                'step', 'source_ap', 'dest_ap', 'weight', 'interference_dbm', 'distance'
-            ])
+            writer.writerow(self.graph_headers)
     
     def log_ap_state(self, step: int, access_points: List[AccessPoint]):
         """
@@ -91,8 +98,7 @@ class SimulationLogger:
                 inc_energy_ch1 = ap.inc_energy_ch1 if ap.inc_energy_ch1 != float('-inf') else None
                 inc_energy_ch6 = ap.inc_energy_ch6 if ap.inc_energy_ch6 != float('-inf') else None
                 inc_energy_ch11 = ap.inc_energy_ch11 if ap.inc_energy_ch11 != float('-inf') else None
-                
-                writer.writerow([
+                ap_data = [
                     step, ap.id, ap.x, ap.y, ap.tx_power, ap.channel, ap.bandwidth,
                     ap.noise_floor, ap.max_throughput, ap.total_allocated_throughput,
                     f"{duty_cycle:.4f}", len(ap.connected_clients), 
@@ -105,7 +111,10 @@ class SimulationLogger:
                     f"{ap.roam_out_rate:.4f}",
                     f"{ap.p95_throughput:.2f}",
                     f"{ap.p95_retry_rate:.2f}"
-                ])
+                ]
+
+                self.log_digest.add_ap(dict(zip(self.ap_headers, ap_data)))
+                writer.writerow(ap_data)
     
     def log_client_state(self, step: int, clients: List[Client]):
         """
@@ -119,15 +128,17 @@ class SimulationLogger:
             writer = csv.writer(f)
             for client in clients:
                 sinr = client.sinr_db if client.sinr_db != float('-inf') else None
-                
-                writer.writerow([
+                client_data = [
                     step, client.id, f"{client.x:.2f}", f"{client.y:.2f}",
                     client.associated_ap, f"{client.demand_mbps:.2f}",
                     f"{client.rssi_dbm:.2f}", f"{sinr:.2f}" if sinr is not None else "N/A",
                     f"{client.max_rate_mbps:.2f}", f"{client.throughput_mbps:.2f}",
                     f"{client.airtime_fraction:.4f}", f"{client.velocity:.2f}",
                     f"{client.direction:.2f}", f"{client.retry_rate:.2f}"
-                ])
+                ]
+
+                self.log_digest.add_client(dict(zip(self.client_headers, client_data)))
+                writer.writerow(client_data)
     
     def log_roaming_events(self, step: int, clients: List[Client], roam_list: List[int]):
         """
@@ -143,10 +154,12 @@ class SimulationLogger:
             for i, roamed in enumerate(roam_list):
                 if roamed and i < len(clients):
                     client = clients[i]
-                    writer.writerow([
+                    roam_data = [
                         step, client.id, client.last_assoc_ap, client.associated_ap,
                         f"{client.x:.2f}", f"{client.y:.2f}"
-                    ])
+                    ]
+
+                    writer.writerow(roam_data)
     
     def log_interference_graph(self, step: int, graph):
         """Log interference graph edges and weights for current step.
@@ -161,11 +174,12 @@ class SimulationLogger:
                 weight = data.get('weight', 0.0)
                 interference_dbm = data.get('interference_dbm', 0.0)
                 distance = data.get('distance', 0.0)
-                
-                writer.writerow([
+                interference_data = [
                     step, src, dst, f"{weight:.4f}", 
                     f"{interference_dbm:.2f}", f"{distance:.2f}"
-                ])
+                ]
+
+                writer.writerow(interference_data)
     
     def log_step(self, step: int, access_points: List[AccessPoint], 
                  clients: List[Client], roam_list: List[int], graph=None):
@@ -184,6 +198,7 @@ class SimulationLogger:
         self.log_roaming_events(step, clients, roam_list)
         if graph is not None:
             self.log_interference_graph(step, graph)
+        return self.log_digest.end_log()
     
     def log(self, message: str):
         """
