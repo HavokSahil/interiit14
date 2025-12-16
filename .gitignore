@@ -4,4 +4,5 @@
 **/*.log
 **/*.tmp
 **/*.csv
+**/*.zip
 **/__pycache__/*
